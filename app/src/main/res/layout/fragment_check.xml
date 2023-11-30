@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.main_screen.check.CheckFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/check_tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/dark_green"
+                app:layout_constraintBottom_toTopOf="@id/new_item_button"
+                app:tabBackground="@drawable/tab_background"
+                app:tabIndicator="@null"
+                app:tabMode="fixed"
+                app:tabTextAppearance="@style/tab_text" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/check_pager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@id/check_tab"
+                app:layout_constraintTop_toTopOf="parent" />
+            <Button
+                android:id="@+id/new_item_button"
+                android:text="добавить"
+                android:background="@drawable/edit_text_registration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                android:id="@+id/add_fab"-->
+<!--                style="@style/TextViewLight"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="90dp"-->
+<!--                android:backgroundTint="@color/dark_green"-->
+<!--                android:text="Добавить"-->
+<!--                android:textAlignment="center"-->
+<!--                app:elevation="2dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintLeft_toLeftOf="parent"-->
+<!--                app:layout_constraintRight_toRightOf="parent"-->
+<!--                app:srcCompat="@drawable/bottom_add_background"-->
+<!--                app:tint="@color/light_green_2" />-->
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</layout>

@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">SharedCard</string>
+    <string name="choose_an_avatar_for_myself">Выберите аватарку</string>
+    <string name="enter_your_name">Введите ваше имя</string>
+    <string name="create_account">Продолжить</string>
+    <string name="search">поиск</string>
+
+    <string name="tab_product">продукты</string>
+    <string name="tab_target">цели</string>
+
+    <string name="dialog_add_product">Добавить продукт</string>
+    <string name="dialog_add_target">Добавить цель</string>
+    <string name="dialog_text_hint_porduct">Название товара</string>
+    <string name="dialog_text_hint_target">Название цели</string>
+    <string name="dialog_text_hint_count">Кол-во</string>
+    <string name="dialog_text_hint_price">Цена</string>
+    <string name="dialog_add">Добавить</string>
+
+    <string name="search_bar_product">\uf002 Введите продукт</string>
+</resources>

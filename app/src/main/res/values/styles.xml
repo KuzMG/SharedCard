@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="popup_menu">
+        <item name="android:textColor">@color/dark_green</item>
+        <item name="android:itemBackground">@color/light_green_2</item>
+    </style>
+
+    <style name="TextViewLight">
+        <item name="android:textColor">@color/light_green_2</item>
+        <item name="android:fontFamily">@font/gothic</item>
+    </style>
+
+    <style name="TextViewLightTranslucent">
+        <item name="android:textColor">@color/light_green_2_translucent</item>
+        <item name="android:fontFamily">@font/gothic</item>
+    </style>
+
+    <style name="for_edit_text">
+        <item name="android:textColor">@color/dark_green</item>
+        <item name="android:textColorHint">@color/dark_green_translucent</item>
+        <item name="android:fontFamily">@font/gothic</item>
+    </style>
+
+    <style name="TextViewDark">
+        <item name="android:textColor">@color/dark_green</item>
+        <item name="android:fontFamily">@font/gothic</item>
+    </style>
+
+    <style name="TextViewKitchen">
+        <item name="android:textColor">@color/light_green_2</item>
+        <item name="android:fontFamily">@font/kitchen_home</item>
+    </style>
+
+    <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:fontFamily">@font/gothic</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="for_search_bar">
+        <item name="colorSecondary">@color/light_green_2_translucent</item>
+        <item name="backgroundTint">@color/light_green_2</item>
+        <item name="android:textColorHint">@color/light_green_2_translucent</item>
+        <item name="android:textColor">@color/light_green_2</item>
+        <item name="android:fontFamily">@font/update_gothic</item>
+    </style>
+
+    <style name="bottom_navigation" parent="@style/Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="android:backgroundTint">@color/dark_green</item>
+        <item name="labelVisibilityMode">unlabeled</item>
+        <!--        <item name="itemIconTint">@color/light_green_2_translucent</item>-->
+        <!--        <item name="colorPrimary">@color/pink_red</item>-->
+        <item name="itemIconSize">35dp</item>
+        <item name="elevation">20dp</item>
+        <item name="menu">@menu/bottom_menu</item>
+    </style>
+
+    <style name="toolbar">
+
+        <item name="titleTextColor">@color/light_green_2</item>
+    </style>
+
+    <style name="action_bar_text_style" parent="@style/TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textColor">@color/light_green_2</item>
+    </style>
+<!--    parent="Widget.AppCompat.SearchView"-->
+    <style name="SearchViewStyle">
+        <item name="searchIcon">@drawable/search_view_icon_search</item>
+    </style>
+
+<style name="actionBarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <item name="colorControlNormal">@color/light_green_2</item>
+    <item name="searchViewStyle">@style/Widget.AppCompat.SearchView.ActionBar</item>
+<!--    <item name="android:windowBackground">@color/background_material_dark</item>-->
+<!--    <item name="android:colorForeground">@color/foreground_material_dark</item>-->
+<!--    <item name="android:colorForegroundInverse">@color/foreground_material_light</item>-->
+<!--    <item name="android:colorBackground">@color/background_material_dark</item>-->
+<!--    <item name="android:colorBackgroundCacheHint">@color/abc_background_cache_hint_selector_material_dark</item>-->
+<!--    <item name="colorBackgroundFloating">@color/background_floating_material_dark</item>-->
+
+<!--    <item name="android:textColorPrimary">@color/abc_primary_text_material_dark</item>-->
+<!--    <item name="android:textColorPrimaryInverse">@color/abc_primary_text_material_light</item>-->
+<!--    <item name="android:textColorPrimaryDisableOnly">@color/abc_primary_text_disable_only_material_dark</item>-->
+<!--    <item name="android:textColorSecondary">@color/abc_secondary_text_material_dark</item>-->
+<!--    <item name="android:textColorSecondaryInverse">@color/abc_secondary_text_material_light</item>-->
+<!--    <item name="android:textColorTertiary">@color/abc_secondary_text_material_dark</item>-->
+<!--    <item name="android:textColorTertiaryInverse">@color/abc_secondary_text_material_light</item>-->
+<!--    <item name="android:textColorHint">@color/abc_hint_foreground_material_dark</item>-->
+<!--    <item name="android:textColorHintInverse">@color/abc_hint_foreground_material_light</item>-->
+<!--    <item name="android:textColorHighlight">@color/highlighted_text_material_dark</item>-->
+
+<!--    <item name="colorControlNormal">?android:attr/textColorSecondary</item>-->
+<!--    <item name="colorControlHighlight">@color/ripple_material_dark</item>-->
+<!--    <item name="colorButtonNormal">@color/button_material_dark</item>-->
+<!--    <item name="colorSwitchThumbNormal">@color/switch_thumb_material_dark</item>-->
+
+
+<!--    <item name="isLightTheme">false</item>-->
+<!--    <item name="android:colorPrimary">?attr/colorPrimary</item>-->
+<!--    <item name="android:colorPrimaryDark">?attr/colorPrimaryDark</item>-->
+<!--    <item name="android:colorAccent">?attr/colorAccent</item>-->
+<!--    <item name="android:colorControlNormal">?attr/colorControlNormal</item>-->
+<!--    <item name="android:colorControlActivated">?attr/colorControlActivated</item>-->
+<!--    <item name="android:colorControlHighlight">?attr/colorControlHighlight</item>-->
+<!--    <item name="android:colorButtonNormal">?attr/colorButtonNormal</item>-->
+
+
+
+
+</style>
+<!--    <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>-->
+
+</resources>
