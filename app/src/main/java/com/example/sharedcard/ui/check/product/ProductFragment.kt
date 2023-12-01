@@ -8,12 +8,14 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.sharedcard.R
 import com.example.sharedcard.database.entity.product.Product
 import com.example.sharedcard.ui.check.check_list.CheckListFragment
@@ -21,7 +23,7 @@ import com.example.sharedcard.ui.check.check_list.ListAdapterGeneral
 import com.example.sharedcard.ui.check.check_list.ViewHolderGeneral
 import com.project.shared_card.database.dao.product.ProductEntity
 
-private const val DATE_FORMAT = "MMM.dd HH:mm"
+private const val DATE_FORMAT = "MM.dd HH:mm"
 
 class ProductFragment : CheckListFragment() {
     companion object {
@@ -63,31 +65,31 @@ class ProductFragment : CheckListFragment() {
 
     override fun onStart() {
         super.onStart()
-        val textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
+        binding.searchBar.searchEditView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 viewModel.setQuery(p0.toString())
             }
 
-            override fun afterTextChanged(p0: Editable?) {
-            }
-
-        }
-        binding.searchBar.searchEditView.addTextChangedListener(textWatcher)
+            override fun afterTextChanged(p0: Editable?) {}
+        })
     }
 
 
     private inner class ProductHolder(itemView: View) : ViewHolderGeneral<Product>(itemView) {
         private lateinit var item: Product
-        override fun onBind(item: Product) {
-            super.onBind(item)
+
+        fun onBind(item: Product) {
             this.item = item
-            checkBox.isChecked = when (item.status) {
-                0 -> false
-                1 -> true
-                else -> throw IndexOutOfBoundsException()
+            checkBox.apply {
+                isChecked = when (item.status) {
+                    0 -> false
+                    1 -> true
+                    else -> throw IndexOutOfBoundsException()
+                }
+                setOnClickListener {
+                    viewModel.setCheckBox(item.id, isChecked)
+                }
             }
             nameTextView.text = item.name
             categoryTextView.text = item.category
@@ -97,7 +99,19 @@ class ProductFragment : CheckListFragment() {
         }
     }
 
-    private inner class ProductListAdapter() : ListAdapterGeneral<Product, ProductHolder>(
+    private inner class ProductListAdapter() : ListAdapterGeneral<Product>(
         diffUtilProduct
-    )
+    ) {
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int
+        ): ViewHolderGeneral<Product> {
+            val view = super.onCreateViewHolder(parent, viewType).itemView
+            return ProductHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolderGeneral<Product>, position: Int) {
+            (holder as ProductHolder).onBind(getItem(position))
+        }
+    }
 }

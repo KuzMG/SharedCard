@@ -5,9 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.map
 import androidx.lifecycle.switchMap
-import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.sharedcard.SharedCardApp
@@ -16,16 +14,14 @@ import com.example.sharedcard.repository.ProductRepository
 import com.example.sharedcard.repository.QueryPreferences
 
 class ProductViewModel private constructor(
-    private val productRepository: ProductRepository,
-    queryPreferences: QueryPreferences
+    private val productRepository: ProductRepository, queryPreferences: QueryPreferences
 ) : ViewModel() {
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val app = this[APPLICATION_KEY] as SharedCardApp
                 ProductViewModel(
-                    app.getProductRepository(),
-                    app.getQueryPreferences()
+                    app.getProductRepository(), app.getQueryPreferences()
                 )
             }
         }
@@ -37,15 +33,20 @@ class ProductViewModel private constructor(
 
     init {
         accountId = queryPreferences.accountId
+        mutableSearch.value = ""
         productItemLiveData = mutableSearch.switchMap { query ->
             if (query.isBlank()) {
-                productRepository.getAllCheck(accountId)
+                productRepository.getAllCheck()
             } else {
-                productRepository.getAllQuery(accountId, query)
+                productRepository.getAllQuery(query = query + "%")
             }
         }
     }
 
+    fun setCheckBox(id: Long, isChecked: Boolean) {
+        val status = if (isChecked) 1 else 0
+        productRepository.setStatus(id, status)
+    }
 
     fun setQuery(query: String) {
         mutableSearch.value = query

@@ -12,7 +12,7 @@ data class Product(
     val category: String,
     private val count: Int,
     private val metric: String,
-    val creator: String,
+    val creator: String? = null,
     private val dateFirst: Long
 ) {
     val quantity: String

@@ -38,13 +38,16 @@ class TargetFragment: CheckListFragment() {
 
     private inner class TargetHolder(itemView: View) : ViewHolderGeneral<TargetEntity>(itemView) {
         private lateinit var check: TargetEntity
-        override fun onBind(check: TargetEntity) {
-            super.onBind(check)
+        fun onBind(check: TargetEntity) {
             this.check = check
         }
     }
 
-    private inner class TargetListAdapter() : ListAdapterGeneral<TargetEntity, TargetHolder>(
+    private inner class TargetListAdapter() : ListAdapterGeneral<TargetEntity>(
         diffUtilTarget
-    )
+    ) {
+
+        override fun onBindViewHolder(holder: ViewHolderGeneral<TargetEntity>, position: Int) {
+        }
+    }
 }
