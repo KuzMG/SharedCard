@@ -38,7 +38,7 @@ class ProductViewModel private constructor(
             if (query.isBlank()) {
                 productRepository.getAllCheck()
             } else {
-                productRepository.getAllQuery(query = query + "%")
+                productRepository.getAllQuery(query = "$query%")
             }
         }
     }

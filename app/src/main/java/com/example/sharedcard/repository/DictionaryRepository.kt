@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.sharedcard.database.AppDatabase
 
-class DictionaryRepository private constructor(private val database: AppDatabase) {
-    val shopProductDao = database.shopProductDao()
-    val categoryProductDao = database.categoryProductDao()
-    val metricDao = database.metricDao()
-    val shopTargetDao = database.shopTargetDao()
-    val categoryTargetDao = database.categoryTargetDao()
-    val currencyDao= database.currencyDao()
+class DictionaryRepository private constructor(database: AppDatabase) {
+    private val shopProductDao = database.shopProductDao()
+    private val categoryProductDao = database.categoryProductDao()
+    private val metricDao = database.metricDao()
+    private val shopTargetDao = database.shopTargetDao()
+    private val categoryTargetDao = database.categoryTargetDao()
+    private val currencyDao= database.currencyDao()
 
     fun getAllShopsProduct(): LiveData<List<String>> = shopProductDao.getAll().map { list ->
         list.map { shop ->

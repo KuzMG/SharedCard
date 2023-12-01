@@ -7,17 +7,16 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.sharedcard.R
 
 open class ViewHolderGeneral<T>(itemView: View) : ViewHolder(itemView) {
-    protected val checkBox = itemView.findViewById<CheckBox>(R.id.checkbox)
-    protected val nameTextView = itemView.findViewById<TextView>(R.id.name_item)
-    protected val categoryTextView = itemView.findViewById<TextView>(R.id.category_item)
-    protected val userTextView = itemView.findViewById<TextView>(R.id.user_item)
-    protected val quantityPriceTextView = itemView.findViewById<TextView>(R.id.item_quantity_or_price)
-    protected val dateTextView = itemView.findViewById<TextView>(R.id.item_date)
+    protected val checkBox: CheckBox = itemView.findViewById(R.id.checkbox)
+    protected val nameTextView: TextView = itemView.findViewById(R.id.name_item)
+    protected val categoryTextView: TextView = itemView.findViewById(R.id.category_item)
+    protected val userTextView: TextView = itemView.findViewById(R.id.user_item)
+    protected val quantityPriceTextView: TextView = itemView.findViewById(R.id.item_quantity_or_price)
+    protected val dateTextView: TextView = itemView.findViewById(R.id.item_date)
 }
 
 abstract class ListAdapterGeneral<T>(diffUtil: DiffUtil.ItemCallback<T>) :

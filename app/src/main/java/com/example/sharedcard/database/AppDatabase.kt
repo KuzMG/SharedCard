@@ -25,11 +25,10 @@ import com.example.sharedcard.database.type_converter.DateConverter
 import com.project.shared_card.database.dao.categories_target.CategoryTargetEntity
 import com.project.shared_card.database.dao.category_product.CategoryProductEntity
 import com.project.shared_card.database.dao.group_users.GroupUsersEntity
-import com.project.shared_card.database.dao.product.ProductEntity
+import com.example.sharedcard.database.entity.product.ProductEntity
 import com.project.shared_card.database.dao.shop_product.ShopProductEntity
 import com.project.shared_card.database.dao.shop_target.ShopTargetEntity
 import com.project.shared_card.database.dao.target.TargetEntity
-import kotlinx.coroutines.newSingleThreadContext
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 

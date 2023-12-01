@@ -1,10 +1,7 @@
 package com.example.sharedcard.repository
 
-import android.content.Context
-import androidx.room.Room
 import com.example.sharedcard.database.AppDatabase
-import com.project.shared_card.database.dao.product.ProductEntity
-import retrofit2.http.Query
+import com.example.sharedcard.database.entity.product.ProductEntity
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 

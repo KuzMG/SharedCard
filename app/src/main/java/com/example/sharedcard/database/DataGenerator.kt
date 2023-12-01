@@ -6,10 +6,9 @@ import com.project.shared_card.database.dao.categories_target.CategoryTargetEnti
 import com.project.shared_card.database.dao.category_product.CategoryProductEntity
 import com.project.shared_card.database.dao.shop_product.ShopProductEntity
 import com.project.shared_card.database.dao.shop_target.ShopTargetEntity
-import java.util.Arrays
 
 object DataGenerator {
-    fun getMetric() = Arrays.asList(
+    fun getMetric(): List<MetricEntity> = listOf(
         MetricEntity(name = "шт"),
         MetricEntity(name = "кг"),
         MetricEntity(name = "г"),
@@ -17,7 +16,7 @@ object DataGenerator {
         MetricEntity(name = "мл")
     )
 
-    fun getCurrency() = Arrays.asList(
+    fun getCurrency(): List<CurrencyEntity> = listOf(
         CurrencyEntity(name = "₽"),
         CurrencyEntity(name = "$"),
         CurrencyEntity(name = "€"),
@@ -26,7 +25,7 @@ object DataGenerator {
         CurrencyEntity(name = "₸")
     )
 
-    fun getShopProduct() = Arrays.asList(
+    fun getShopProduct(): List<ShopProductEntity> = listOf(
         ShopProductEntity(name = "Аптека"),
         ShopProductEntity(name = "Азбука вкуса"),
         ShopProductEntity(name = "Ашан"),
@@ -47,7 +46,7 @@ object DataGenerator {
         ShopProductEntity(name = "Другое")
     )
 
-    fun getShopTarget() = Arrays.asList(
+    fun getShopTarget(): List<ShopTargetEntity> = listOf(
         ShopTargetEntity(name = "Автотовары"),
         ShopTargetEntity(name = "Автоцентр"),
         ShopTargetEntity(name = "Гипермаркет"),
@@ -73,7 +72,7 @@ object DataGenerator {
         ShopTargetEntity(name = "Электротовары")
     )
 
-    fun getCategoryProduct() = Arrays.asList(
+    fun getCategoryProduct(): List<CategoryProductEntity> = listOf(
         CategoryProductEntity(name = "Алкоголь"),
         CategoryProductEntity(name = "Бытовые товары"),
         CategoryProductEntity(name = "Готовая еда"),
@@ -100,7 +99,7 @@ object DataGenerator {
     )
 
 
-    fun getCategoryTarget() = Arrays.asList(
+    fun getCategoryTarget(): List<CategoryTargetEntity> = listOf(
         CategoryTargetEntity(name = "Быт"),
         CategoryTargetEntity(name = "Дом"),
         CategoryTargetEntity(name = "Досуг"),

@@ -4,24 +4,14 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.example.sharedcard.R
 import com.example.sharedcard.database.entity.product.Product
 import com.example.sharedcard.ui.check.check_list.CheckListFragment
 import com.example.sharedcard.ui.check.check_list.ListAdapterGeneral
 import com.example.sharedcard.ui.check.check_list.ViewHolderGeneral
-import com.project.shared_card.database.dao.product.ProductEntity
 
 private const val DATE_FORMAT = "MM.dd HH:mm"
 
@@ -99,7 +89,7 @@ class ProductFragment : CheckListFragment() {
         }
     }
 
-    private inner class ProductListAdapter() : ListAdapterGeneral<Product>(
+    private inner class ProductListAdapter : ListAdapterGeneral<Product>(
         diffUtilProduct
     ) {
         override fun onCreateViewHolder(

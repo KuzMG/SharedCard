@@ -1,4 +1,4 @@
-package com.project.shared_card.database.dao.product
+package com.example.sharedcard.database.entity.product
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -8,7 +8,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.sharedcard.SharedCardApp
 import com.example.sharedcard.repository.DictionaryRepository
 import com.example.sharedcard.repository.ProductRepository
-import com.project.shared_card.database.dao.product.ProductEntity
+import com.example.sharedcard.database.entity.product.ProductEntity
 
 class AddProductViewModel(
     private val dictionaryRepository: DictionaryRepository,

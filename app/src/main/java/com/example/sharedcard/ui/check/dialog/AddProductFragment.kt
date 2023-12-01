@@ -1,7 +1,7 @@
 package com.example.sharedcard.ui.check.dialog
 
 
-import android.app.Dialog
+
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -24,11 +24,7 @@ class AddProductFragment : DialogFragment() {
         AddProductViewModel.Factory
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-//        dialog.window!!.setBackgroundDrawableResource(R.drawable.dialog_background)
-        return dialog
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModel.page = requireArguments().getInt(KEY_PAGE)
@@ -39,7 +35,7 @@ class AddProductFragment : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding =
             DataBindingUtil.inflate(
                 inflater,
@@ -47,7 +43,7 @@ class AddProductFragment : DialogFragment() {
                 container,
                 false
             )
-        return binding.getRoot()
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

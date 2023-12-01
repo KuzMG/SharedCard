@@ -1,6 +1,6 @@
 package com.example.sharedcard.retrofit.api
 
-import com.project.shared_card.database.dao.product.ProductEntity
+import com.example.sharedcard.database.entity.product.ProductEntity
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
