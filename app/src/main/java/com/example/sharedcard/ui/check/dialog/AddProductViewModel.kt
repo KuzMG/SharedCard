@@ -9,10 +9,13 @@ import com.example.sharedcard.SharedCardApp
 import com.example.sharedcard.repository.DictionaryRepository
 import com.example.sharedcard.repository.ProductRepository
 import com.example.sharedcard.database.entity.product.ProductEntity
+import com.example.sharedcard.repository.TargetRepository
+import com.project.shared_card.database.dao.target.TargetEntity
 
 class AddProductViewModel(
     private val dictionaryRepository: DictionaryRepository,
-    private val productRepository: ProductRepository
+    private val productRepository: ProductRepository,
+    private val targetRepository: TargetRepository
 ) : ViewModel() {
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
@@ -20,7 +23,8 @@ class AddProductViewModel(
                 val app = this[APPLICATION_KEY] as SharedCardApp
                 AddProductViewModel(
                     app.getDictionaryRepository(),
-                    app.getProductRepository()
+                    app.getProductRepository(),
+                    app.getTargetRepository()
                 )
             }
         }
@@ -58,7 +62,13 @@ class AddProductViewModel(
             }
 
             1 -> {
-
+                val target = TargetEntity(
+                    name = name,
+                    idCategory = category,
+                    firstPrice = count,
+                    idCurrency = metric
+                )
+                targetRepository.add(target)
             }
         }
     }

@@ -4,14 +4,18 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
+import com.example.sharedcard.R
 import com.example.sharedcard.database.entity.product.Product
 import com.example.sharedcard.ui.check.check_list.CheckListFragment
 import com.example.sharedcard.ui.check.check_list.ListAdapterGeneral
 import com.example.sharedcard.ui.check.check_list.ViewHolderGeneral
+
 
 private const val DATE_FORMAT = "MM.dd HH:mm"
 
@@ -33,9 +37,7 @@ class ProductFragment : CheckListFragment() {
 
     private lateinit var localDateFormat: String
     private val productListAdapter = ProductListAdapter()
-    private val viewModel by viewModels<ProductViewModel> {
-        ProductViewModel.Factory
-    }
+    private val viewModel by viewModels<ProductViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +65,41 @@ class ProductFragment : CheckListFragment() {
 
             override fun afterTextChanged(p0: Editable?) {}
         })
+
+        binding.searchBar.buttonSort.setOnClickListener { v ->
+            showPopupMenu(v)
+        }
+    }
+
+
+    private fun showPopupMenu(v: View) {
+        val popupMenu = PopupMenu(requireContext(), v)
+        popupMenu.inflate(R.menu.popup_menu)
+        popupMenu
+            .setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
+                override fun onMenuItemClick(item: MenuItem): Boolean {
+                    when (item.itemId) {
+                        R.id.sort_by_date -> {
+                            productListAdapter.sorting(1)
+                        }
+
+                        R.id.sort_by_product -> {
+                            productListAdapter.sorting(2)
+                        }
+
+                        R.id.sort_by_category -> {
+                            productListAdapter.sorting(3)
+                        }
+
+                        R.id.sort_by_user -> {
+                            productListAdapter.sorting(4)
+                        }
+                    }
+                    return true
+                }
+
+            })
+        popupMenu.show()
     }
 
 
@@ -102,6 +139,49 @@ class ProductFragment : CheckListFragment() {
 
         override fun onBindViewHolder(holder: ViewHolderGeneral<Product>, position: Int) {
             (holder as ProductHolder).onBind(getItem(position))
+        }
+
+        private var flag1 = false
+        private var flag2 = false
+        private var flag3 = false
+        private var flag4 = false
+        fun sorting(fieldSorting: Int) {
+            val list = when (fieldSorting) {
+                1 -> {
+                    flag1 = !flag1
+                    if (flag1)
+                        currentList.sortedBy { it.date }
+                    else
+                        currentList.sortedByDescending { it.date }
+                }
+
+                2 -> {
+                    flag2 = !flag2
+                    if (flag2)
+                        currentList.sortedBy { it.name }
+                    else
+                        currentList.sortedByDescending { it.name }
+                }
+
+                3 -> {
+                    flag3 = !flag3
+                    if (flag3)
+                        currentList.sortedBy { it.category }
+                    else
+                        currentList.sortedByDescending { it.category }
+                }
+
+                4 -> {
+                    flag4 = !flag4
+                    if (flag4)
+                        currentList.sortedBy { it.creator }
+                    else
+                        currentList.sortedByDescending { it.creator }
+                }
+
+                else -> throw IndexOutOfBoundsException()
+            }
+            submitList(list.sortedBy { it.status })
         }
     }
 }

@@ -20,9 +20,16 @@ class ProductRepository private constructor(database: AppDatabase) {
 
     private val productDao = database.productDao()
 
-    fun getAllCheck(id: Long = 0) = productDao.getAllForCheck(id)
+    fun getAllCheck(
+        id: Long = 0
+    ) = productDao.getAllForCheck(id)
 
-    fun getAllQuery(id: Long = 0, query: String) = productDao.getAllForCheckQuery(id,query)
+
+    fun getAllQuery(
+        id: Long = 0,
+        query: String
+    ) = productDao.getAllForCheckQuery(id, "$query%")
+
 
     fun add(product: ProductEntity) {
         executor.execute {
@@ -30,9 +37,9 @@ class ProductRepository private constructor(database: AppDatabase) {
         }
     }
 
-    fun setStatus(id: Long,status: Int){
-      executor.execute{
-          productDao.uprateStatus(id,status)
-      }
+    fun setStatus(id: Long, status: Int) {
+        executor.execute {
+            productDao.uprateStatus(id, status)
+        }
     }
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.sharedcard.R
 import com.example.sharedcard.databinding.FragmentCheckBinding
@@ -32,8 +33,8 @@ class CheckFragment : Fragment() {
             false
         )
         binding.apply {
-            checkPager.adapter = CheckListAdapter(this@CheckFragment)
-
+            checkPager.adapter = CheckListAdapter(requireActivity())
+            checkPager.offscreenPageLimit = 2
             TabLayoutMediator(checkTab, checkPager) { tab, position ->
                 tab.text = when (position) {
                     0 -> getString(R.string.tab_product)
@@ -41,6 +42,7 @@ class CheckFragment : Fragment() {
                     else -> throw IndexOutOfBoundsException()
                 }
             }.attach()
+
         }
         return binding.root
     }
@@ -53,7 +55,7 @@ class CheckFragment : Fragment() {
         }
     }
 
-    class CheckListAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+    class CheckListAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
         override fun getItemCount(): Int = 2
 
         override fun createFragment(position: Int): Fragment {
