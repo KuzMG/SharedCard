@@ -17,4 +17,8 @@
     <string name="dialog_add">Добавить</string>
 
     <string name="search_bar_product">\uf002 Введите продукт</string>
+    <string name="sorting_by_date">по дате</string>
+    <string name="sorting_by_name">по названию</string>
+    <string name="sorting_by_category">по категории</string>
+    <string name="sorting_by_user">по пользователю</string>
 </resources>
