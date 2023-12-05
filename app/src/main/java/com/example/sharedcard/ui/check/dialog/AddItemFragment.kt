@@ -15,20 +15,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
-import com.example.sharedcard.databinding.DialogFragmentCreateCheckBinding
+import com.example.sharedcard.databinding.DialogFragmentAddItemBinding
 
 
-class AddProductFragment : DialogFragment() {
-    private lateinit var binding: DialogFragmentCreateCheckBinding
-    private val viewModel: AddProductViewModel by viewModels {
-        AddProductViewModel.Factory
-    }
+class AddItemFragment : DialogFragment() {
+    private lateinit var binding: DialogFragmentAddItemBinding
+    private val viewModel: AddItemViewModel by viewModels()
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        viewModel.page = requireArguments().getInt(KEY_PAGE)
         super.onCreate(savedInstanceState)
+        viewModel.page = requireArguments().getInt(KEY_PAGE)
     }
 
     override fun onCreateView(
@@ -39,7 +37,7 @@ class AddProductFragment : DialogFragment() {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-                R.layout.dialog_fragment_create_check,
+                R.layout.dialog_fragment_add_item,
                 container,
                 false
             )
@@ -51,16 +49,16 @@ class AddProductFragment : DialogFragment() {
         when (viewModel.page) {
             0 -> {
                 binding.dialogAddTextView.text = getString(R.string.dialog_add_product)
-                binding.dialogNameEditText.hint = getString(R.string.dialog_text_hint_porduct)
+                binding.dialogNameEditText.hint = getString(R.string.dialog_add_text_hint_porduct)
                 binding.dialogCountEditView.hint =
-                    getString(R.string.dialog_text_hint_count)
+                    getString(R.string.dialog_add_text_hint_count)
             }
 
             1 -> {
                 binding.dialogAddTextView.text = getString(R.string.dialog_add_target)
-                binding.dialogNameEditText.hint = getString(R.string.dialog_text_hint_target)
+                binding.dialogNameEditText.hint = getString(R.string.dialog_add_text_hint_target)
                 binding.dialogCountEditView.hint =
-                    getString(R.string.dialog_text_hint_price)
+                    getString(R.string.dialog_add_text_hint_price)
             }
         }
         viewModel.getCategory().observe(this) { categories ->
@@ -120,8 +118,8 @@ class AddProductFragment : DialogFragment() {
 
     companion object {
         const val KEY_PAGE = "page"
-        fun newInstance(page: Int): AddProductFragment {
-            val dialog = AddProductFragment()
+        fun newInstance(page: Int): AddItemFragment {
+            val dialog = AddItemFragment()
             val args = Bundle()
             args.putInt(KEY_PAGE, page)
             dialog.arguments = args

@@ -21,8 +21,10 @@ data class TargetEntity(
     val firstPrice: Int,
     @field:ColumnInfo(name = "last_price")
     val lastPrice: Int? = null,
-    @field:ColumnInfo(name = "id_currency")
-    val idCurrency: Long,
+    @field:ColumnInfo(name = "id_currency_first")
+    val idCurrencyFirst: Long,
+    @field:ColumnInfo(name = "id_currency_last")
+    val idCurrencyLast: Long? = null,
     @field:ColumnInfo(name = "id_user_creator")
     val idCreator: Long? = null,
     @field:ColumnInfo(name = "id_user_buyer")

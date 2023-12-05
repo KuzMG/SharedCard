@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/dialog_background">
+
+        <TextView
+            android:id="@+id/dialog_to_history_text_view"
+            style="@style/TextViewLight"
+            tools:text="@string/dialog_to_history_product"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textSize="20sp"/>
+
+        <Spinner
+            android:id="@+id/dialog_to_history_shop_spinner"
+            style="@style/TextViewLight"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/dialog_spinner"
+            android:dropDownVerticalOffset="35dp"
+            android:padding="5dp" />
+
+        <LinearLayout
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/dialog_to_history_edit_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/search_bar"
+                android:inputType="number"
+                android:padding="5dp"
+                android:hint="@string/dialog_to_history_price" />
+
+            <Spinner
+                android:id="@+id/dialog_to_history_currency_spinner"
+                style="@style/TextViewLight"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/dialog_spinner"
+                android:dropDownVerticalOffset="35dp"
+                android:popupBackground="@color/light_green_2" />
+
+        </LinearLayout>
+        
+        <Button
+            android:id="@+id/dialog_to_history_add_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/dialog_to_history_button"
+            android:textColor="@color/light_green_2" />
+    </LinearLayout>
+</layout>

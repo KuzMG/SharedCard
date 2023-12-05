@@ -2,6 +2,7 @@ package com.example.sharedcard.repository
 
 import com.example.sharedcard.database.AppDatabase
 import com.project.shared_card.database.dao.target.TargetEntity
+import java.util.Date
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -40,6 +41,18 @@ class TargetRepository private constructor(database: AppDatabase) {
     fun setStatus(id: Long, status: Int) {
         executor.execute {
             targetDao.uprateStatus(id, status)
+        }
+    }
+
+    fun delete(id: Long){
+        executor.execute{
+            targetDao.delete(id)
+        }
+    }
+
+    fun toHistory(id: Long, idShop: Long, price: Int, idCurrency: Long, idUser: Long? = null) {
+        executor.execute {
+            targetDao.toHistory(id,idShop,price,idCurrency,idUser, Date().time)
         }
     }
 }

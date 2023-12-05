@@ -10,11 +10,18 @@
 
     <string name="dialog_add_product">Добавить продукт</string>
     <string name="dialog_add_target">Добавить цель</string>
-    <string name="dialog_text_hint_porduct">Название товара</string>
-    <string name="dialog_text_hint_target">Название цели</string>
-    <string name="dialog_text_hint_count">Кол-во</string>
-    <string name="dialog_text_hint_price">Цена</string>
+    <string name="dialog_add_text_hint_porduct">Название товара</string>
+    <string name="dialog_add_text_hint_target">Название цели</string>
+    <string name="dialog_add_text_hint_count">Кол-во</string>
+    <string name="dialog_add_text_hint_price">Цена</string>
     <string name="dialog_add">Добавить</string>
+
+    <string name="dialog_delete">Вы уверены, что хотите удалить %1$s?</string>
+
+    <string name="dialog_to_history_price">Цена</string>
+    <string name="dialog_to_history_button">В Архив</string>
+    <string name="dialog_to_history_product">Продукт %1$s</string>
+    <string name="dialog_to_history_target">Цель %1$s</string>
 
     <string name="search_bar_product">\uf002 Введите продукт</string>
     <string name="sorting_by_date">по дате</string>

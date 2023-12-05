@@ -10,11 +10,16 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.example.sharedcard.R
 import com.example.sharedcard.database.entity.product.Product
 import com.example.sharedcard.ui.check.check_list.CheckListFragment
+import com.example.sharedcard.ui.check.check_list.CustomSwipeCallback
 import com.example.sharedcard.ui.check.check_list.ListAdapterGeneral
 import com.example.sharedcard.ui.check.check_list.ViewHolderGeneral
+import com.example.sharedcard.ui.check.dialog.DeleteItemFragment
+import com.example.sharedcard.ui.check.dialog.ToHistoryFragment
 
 
 private const val DATE_FORMAT = "MM.dd HH:mm"
@@ -69,6 +74,30 @@ class ProductFragment : CheckListFragment() {
         binding.searchBar.buttonSort.setOnClickListener { v ->
             showPopupMenu(v)
         }
+        val itemTouchHelper = ItemTouchHelper(object : CustomSwipeCallback() {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val product = (viewHolder as ProductHolder).item
+                when (direction) {
+                    ItemTouchHelper.LEFT -> {
+                        DeleteItemFragment.apply {
+                            newInstance(0, product.id, product.name)
+                                .show(childFragmentManager, DIALOG_DELETE)
+                        }
+
+                    }
+
+                    ItemTouchHelper.RIGHT -> {
+                        ToHistoryFragment.apply {
+                            newInstance(0, product.id, product.name)
+                                .show(childFragmentManager, DIALOG_TO_HISTORY)
+                        }
+                    }
+                }
+                productListAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+            }
+
+        })
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
     }
 
 
@@ -104,7 +133,7 @@ class ProductFragment : CheckListFragment() {
 
 
     private inner class ProductHolder(itemView: View) : ViewHolderGeneral<Product>(itemView) {
-        private lateinit var item: Product
+        lateinit var item: Product
 
         fun onBind(item: Product) {
             this.item = item

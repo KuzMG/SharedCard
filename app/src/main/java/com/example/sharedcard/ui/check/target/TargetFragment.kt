@@ -10,14 +10,20 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.example.sharedcard.R
 import com.example.sharedcard.database.entity.target.Target
 import com.example.sharedcard.ui.check.check_list.CheckListFragment
+import com.example.sharedcard.ui.check.check_list.CustomSwipeCallback
 import com.example.sharedcard.ui.check.check_list.ListAdapterGeneral
 import com.example.sharedcard.ui.check.check_list.ViewHolderGeneral
+import com.example.sharedcard.ui.check.dialog.DeleteItemFragment
+import com.example.sharedcard.ui.check.dialog.ToHistoryFragment
 
 private const val DATE_FORMAT = "MM.dd HH:mm"
-class TargetFragment: CheckListFragment() {
+
+class TargetFragment : CheckListFragment() {
     companion object {
         private val diffUtilTarget = object : DiffUtil.ItemCallback<Target>() {
             override fun areItemsTheSame(oldItem: Target, newItem: Target): Boolean {
@@ -33,6 +39,7 @@ class TargetFragment: CheckListFragment() {
 
         }
     }
+
     private lateinit var localDateFormat: String
     private val targetListAdapter = TargetListAdapter()
     private val viewModel by viewModels<TargetViewModel>()
@@ -48,7 +55,7 @@ class TargetFragment: CheckListFragment() {
         binding.apply {
             recyclerView.adapter = targetListAdapter
         }
-        viewModel.targetItemLiveData.observe(viewLifecycleOwner) {targets ->
+        viewModel.targetItemLiveData.observe(viewLifecycleOwner) { targets ->
             targetListAdapter.submitList(targets)
         }
     }
@@ -67,6 +74,30 @@ class TargetFragment: CheckListFragment() {
         binding.searchBar.buttonSort.setOnClickListener { v ->
             showPopupMenu(v)
         }
+        val itemTouchHelper = ItemTouchHelper(object : CustomSwipeCallback() {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val target = (viewHolder as TargetHolder).item
+                when (direction) {
+                    ItemTouchHelper.LEFT -> {
+                        DeleteItemFragment.apply {
+                            newInstance(1, target.id, target.name)
+                                .show(childFragmentManager, DIALOG_DELETE)
+                        }
+
+                    }
+
+                    ItemTouchHelper.RIGHT -> {
+                        ToHistoryFragment.apply {
+                            newInstance(1,target.id,target.name)
+                                .show(childFragmentManager, DIALOG_TO_HISTORY)
+                        }
+                    }
+                }
+                targetListAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+            }
+
+        })
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
     }
 
     private fun showPopupMenu(v: View) {
@@ -100,7 +131,7 @@ class TargetFragment: CheckListFragment() {
     }
 
     private inner class TargetHolder(itemView: View) : ViewHolderGeneral<Target>(itemView) {
-        private lateinit var item: Target
+        lateinit var item: Target
         fun onBind(item: Target) {
             this.item = item
             checkBox.apply {

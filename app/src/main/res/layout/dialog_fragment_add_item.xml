@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
@@ -28,7 +27,7 @@
             android:inputType="text"
             android:padding="5dp"
             android:textSize="18sp"
-            tools:hint="@string/dialog_text_hint_porduct" />
+            tools:hint="@string/dialog_add_text_hint_porduct" />
 
         <Spinner
             android:id="@+id/dialog_category_spinner"
@@ -56,7 +55,7 @@
                 android:background="@drawable/search_bar"
                 android:inputType="number"
                 android:padding="5dp"
-                tools:hint="@string/dialog_text_hint_count" />
+                tools:hint="@string/dialog_add_text_hint_count" />
 
             <Spinner
                 android:id="@+id/dialog_metric_spinner"

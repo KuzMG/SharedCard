@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.sharedcard.R
 import com.example.sharedcard.databinding.FragmentCheckBinding
-import com.example.sharedcard.ui.check.dialog.AddProductFragment
+import com.example.sharedcard.ui.check.dialog.AddItemFragment
 import com.example.sharedcard.ui.check.product.ProductFragment
 import com.example.sharedcard.ui.check.target.TargetFragment
 import com.google.android.material.tabs.TabLayoutMediator
@@ -50,7 +50,7 @@ class CheckFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         binding.newItemButton.setOnClickListener {
-            AddProductFragment.newInstance(binding.checkPager.currentItem)
+            AddItemFragment.newInstance(binding.checkPager.currentItem)
                 .show(parentFragmentManager, DIALOG_ADD)
         }
     }
