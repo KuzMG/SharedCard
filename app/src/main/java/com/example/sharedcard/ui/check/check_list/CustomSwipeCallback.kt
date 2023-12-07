@@ -41,8 +41,8 @@ abstract class CustomSwipeCallback : ItemTouchHelper.Callback() {
             actionState,
             isCurrentlyActive
         )
-            .addSwipeLeftActionIcon(R.drawable.swipe_delete)
-            .addSwipeRightActionIcon(R.drawable.swipe_story)
+            .addSwipeLeftActionIcon(R.drawable.swipe_delete_icon)
+            .addSwipeRightActionIcon(R.drawable.swipe_story_icon)
             .create()
             .decorate()
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)

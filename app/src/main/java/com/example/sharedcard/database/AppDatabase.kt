@@ -13,6 +13,7 @@ import com.example.sharedcard.database.entity.currency.CurrencyEntity
 import com.example.sharedcard.database.entity.gpoup_users.GroupUsersDao
 import com.example.sharedcard.database.entity.group.GroupDao
 import com.example.sharedcard.database.entity.group.GroupEntity
+import com.example.sharedcard.database.entity.history.HistoryDao
 import com.example.sharedcard.database.entity.metric.MetricDao
 import com.example.sharedcard.database.entity.metric.MetricEntity
 import com.example.sharedcard.database.entity.product.ProductDao
@@ -51,6 +52,7 @@ import java.util.concurrent.Executors
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
+    abstract fun historyDao() : HistoryDao
     abstract fun categoryProductDao(): CategoryProductDao
     abstract fun groupDao(): GroupDao
     abstract fun groupUsersDao(): GroupUsersDao

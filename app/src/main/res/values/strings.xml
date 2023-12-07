@@ -1,13 +1,33 @@
 <resources>
     <string name="app_name">SharedCard</string>
+
+    <!--    Создание аккаунта-->
     <string name="choose_an_avatar_for_myself">Выберите аватарку</string>
     <string name="enter_your_name">Введите ваше имя</string>
     <string name="create_account">Продолжить</string>
-    <string name="search">поиск</string>
 
+    <!--    <string name="search">поиск</string>-->
+    <!--   toolbar -->
+    <string name="check">Чек</string>
+    <string name="statistic">Статистика</string>
+    <string name="history">История</string>
+    <string name="group">Профиль</string>
+
+<!--    Группы в профиле-->
+    <string name="group_label">Группы</string>
+
+    <!--   страницы в чеке -->
     <string name="tab_product">продукты</string>
     <string name="tab_target">цели</string>
 
+    <!--    поисковая строка-->
+    <string name="search_bar">\uf002 Введите название</string>
+    <string name="sorting_by_date">по дате</string>
+    <string name="sorting_by_name">по названию</string>
+    <string name="sorting_by_category">по категории</string>
+    <string name="sorting_by_user">по пользователю</string>
+
+    <!--   диалог добавление -->
     <string name="dialog_add_product">Добавить продукт</string>
     <string name="dialog_add_target">Добавить цель</string>
     <string name="dialog_add_text_hint_porduct">Название товара</string>
@@ -16,16 +36,14 @@
     <string name="dialog_add_text_hint_price">Цена</string>
     <string name="dialog_add">Добавить</string>
 
+    <!--   диалог удалени -->
     <string name="dialog_delete">Вы уверены, что хотите удалить %1$s?</string>
 
+    <!--   диалог добавления в историю -->
     <string name="dialog_to_history_price">Цена</string>
     <string name="dialog_to_history_button">В Архив</string>
     <string name="dialog_to_history_product">Продукт %1$s</string>
     <string name="dialog_to_history_target">Цель %1$s</string>
+    <string name="group_create_account">Создать аккаунт</string>
 
-    <string name="search_bar_product">\uf002 Введите продукт</string>
-    <string name="sorting_by_date">по дате</string>
-    <string name="sorting_by_name">по названию</string>
-    <string name="sorting_by_category">по категории</string>
-    <string name="sorting_by_user">по пользователю</string>
 </resources>

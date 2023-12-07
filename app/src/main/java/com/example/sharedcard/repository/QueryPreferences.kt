@@ -3,18 +3,28 @@ package com.example.sharedcard.repository
 import android.content.Context
 import androidx.core.content.edit
 
-private const val PREF_MY_ACCOUNT = "account"
+private const val PREF_USER = "user"
+private const val PREF_GROUP = "group"
 private const val PREF_NAME = "CONFIG"
 
 class QueryPreferences private constructor(context: Context) {
     private val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
-    var accountId: Long
+    var userId: Long
         get() = prefs
-            .getLong(PREF_MY_ACCOUNT, 0)
+            .getLong(PREF_USER, 0)
         set(value) {
             prefs.edit {
-                putLong(PREF_MY_ACCOUNT, value)
+                putLong(PREF_USER, value)
+            }
+        }
+
+    var groupId: Long
+        get() = prefs
+            .getLong(PREF_GROUP, 0)
+        set(value) {
+            prefs.edit {
+                putLong(PREF_GROUP, value)
             }
         }
 

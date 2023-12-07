@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.sharedcard.R
 import com.example.sharedcard.databinding.FragmentCheckBinding
+import com.example.sharedcard.ui.MainActivity
 import com.example.sharedcard.ui.check.dialog.AddItemFragment
 import com.example.sharedcard.ui.check.product.ProductFragment
 import com.example.sharedcard.ui.check.target.TargetFragment
@@ -44,6 +45,7 @@ class CheckFragment : Fragment() {
             }.attach()
 
         }
+        (requireActivity() as MainActivity).setToolbar(R.string.check)
         return binding.root
     }
 

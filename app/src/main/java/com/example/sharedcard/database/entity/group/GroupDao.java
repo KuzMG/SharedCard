@@ -15,10 +15,10 @@ public interface GroupDao {
     void createGroup(GroupEntity group);
     @Insert
     void createGroups(List<GroupEntity> groups);
-    @Query("SELECT * FROM `group` where id>0")
+    @Query("SELECT * FROM `group` where id_group>0")
     LiveData<List<GroupEntity>> getALLGroup();
 
-    @Query("select * from `group` where id=:id")
+    @Query("select * from `group` where id_group=:id")
     LiveData<GroupEntity> getGroupById(Long id);
     @Update
     void update(GroupEntity entity);

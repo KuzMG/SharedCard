@@ -132,7 +132,7 @@ class ProductFragment : CheckListFragment() {
     }
 
 
-    private inner class ProductHolder(itemView: View) : ViewHolderGeneral<Product>(itemView) {
+    private inner class ProductHolder(itemView: View) : ViewHolderGeneral(itemView) {
         lateinit var item: Product
 
         fun onBind(item: Product) {
@@ -161,12 +161,12 @@ class ProductFragment : CheckListFragment() {
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
-        ): ViewHolderGeneral<Product> {
+        ): ViewHolderGeneral {
             val view = super.onCreateViewHolder(parent, viewType).itemView
             return ProductHolder(view)
         }
 
-        override fun onBindViewHolder(holder: ViewHolderGeneral<Product>, position: Int) {
+        override fun onBindViewHolder(holder: ViewHolderGeneral, position: Int) {
             (holder as ProductHolder).onBind(getItem(position))
         }
 

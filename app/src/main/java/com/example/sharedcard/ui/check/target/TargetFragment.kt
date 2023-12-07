@@ -130,7 +130,7 @@ class TargetFragment : CheckListFragment() {
         popupMenu.show()
     }
 
-    private inner class TargetHolder(itemView: View) : ViewHolderGeneral<Target>(itemView) {
+    private inner class TargetHolder(itemView: View) : ViewHolderGeneral(itemView) {
         lateinit var item: Target
         fun onBind(item: Target) {
             this.item = item
@@ -159,12 +159,12 @@ class TargetFragment : CheckListFragment() {
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
-        ): ViewHolderGeneral<Target> {
+        ): ViewHolderGeneral {
             val view = super.onCreateViewHolder(parent, viewType).itemView
             return TargetHolder(view)
         }
 
-        override fun onBindViewHolder(holder: ViewHolderGeneral<Target>, position: Int) {
+        override fun onBindViewHolder(holder: ViewHolderGeneral, position: Int) {
             (holder as TargetHolder).onBind(getItem(position))
         }
 

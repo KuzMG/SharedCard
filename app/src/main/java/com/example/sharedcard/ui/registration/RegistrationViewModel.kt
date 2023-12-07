@@ -5,11 +5,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.ViewModelStore
-import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.sharedcard.SharedCardApp
 import com.example.sharedcard.database.entity.user.UserEntity
 import com.example.sharedcard.repository.PhotoPicker
 import com.example.sharedcard.repository.QueryPreferences
@@ -29,17 +24,7 @@ class RegistrationViewModel(
     private val queryPreferences: QueryPreferences,
     private val photoPicker: PhotoPicker
 ) : ViewModel() {
-    companion object {
-        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-                val app = checkNotNull(extras[APPLICATION_KEY]) as SharedCardApp
-                return RegistrationViewModel(
-                    app.getQueryPreferences(),
-                    app.getPhotoPicker()
-                ) as T
-            }
-        }
-    }
+
 
 
     private val userApi = SharedCardService.getInstance().create(UserApi::class.java)
@@ -51,12 +36,11 @@ class RegistrationViewModel(
     val user = UserEntity()
     var widthPhotoView = 0
     var heightPhotoView = 0
-
     val savePhotoLiveData: LiveData<Bitmap>
         get() = savePhotoMutableLiveData
 
     init {
-        val accountId = queryPreferences.accountId
+        val accountId = queryPreferences.userId
         if (accountId == 0L) {
             getUserId()
         } else {
@@ -79,7 +63,7 @@ class RegistrationViewModel(
         userApi.addUser(user).enqueue(object : Callback<Long> {
             override fun onResponse(call: Call<Long>, response: Response<Long>) {
                 val id = response.body() ?: throw Exception()
-                queryPreferences.accountId = id
+                queryPreferences.userId = id
                 user.id = id
                 photoFile = photoPicker.getUserAvatarFile(user)
                 Log.i(TAG, "user is created")

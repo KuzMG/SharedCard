@@ -1,13 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.group.GroupFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="flag"
+            type="Boolean" />
+    </data>
 
-    <TextView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="match_parent">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/group_create_account"
+            app:visible="@{!flag}">
 
-</FrameLayout>
+        </Button>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:visible="@{flag}">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/group_head_card_view"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_margin="5dp"
+                    app:cardCornerRadius="70dp"
+                    app:cardElevation="2dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/group_user_image_View"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/group_user_name_text_view"
+                    style="@style/TextViewLight"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/group_head_card_view"
+                    app:layout_constraintRight_toLeftOf="@+id/group_user_edit_button"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/group_user_edit_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/group_edit_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/group_user_change_button"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <ImageButton
+                    android:id="@+id/group_user_change_button"
+                    android:layout_width="40dp"
+                    android:layout_height="45dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/group_user_change_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextViewLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/group_label"
+                    android:textSize="25sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/group_local_button"
+                    android:layout_width="40dp"
+                    android:layout_height="45dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/group_local_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/group_join_button"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <ImageButton
+                    android:id="@+id/group_join_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/group_join_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/group_create_button"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/group_create_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/group_add_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ExpandableListView
+                android:id="@+id/group_expandable_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indicatorLeft="200dp"/>
+        </LinearLayout>
+    </FrameLayout>
+</layout>

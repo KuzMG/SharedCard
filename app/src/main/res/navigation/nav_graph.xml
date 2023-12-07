@@ -22,7 +22,7 @@
         tools:layout="@layout/fragment_statistic" />
     <fragment
         android:id="@+id/storyFragment"
-        android:name="com.example.sharedcard.ui.story.StoryFragment"
+        android:name="com.example.sharedcard.ui.history.HistoryFragment"
         android:label="fragment_story"
         tools:layout="@layout/fragment_story" />
 </navigation>

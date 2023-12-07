@@ -1,13 +1,14 @@
 package com.example.sharedcard.database.entity.group
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Ignore
 
 @Entity(
     tableName = "group",
-    primaryKeys = ["id"]
+    primaryKeys = ["id_group"]
 )
 data class GroupEntity(
+    @ColumnInfo("id_group")
     val id: Long,
     val name: String
 ) {

@@ -1,7 +1,7 @@
 package com.example.sharedcard.database.entity.user
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 @Entity(
@@ -9,6 +9,7 @@ import androidx.room.PrimaryKey
 )
 data class UserEntity(
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo("id_user")
     var id: Long = 0,
     var name: String = "",
 ) {

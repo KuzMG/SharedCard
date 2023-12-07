@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:background="@drawable/search_bar"
-            tools:hint="@string/search_bar_product"
+            android:hint="@string/search_bar"
             android:inputType="text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

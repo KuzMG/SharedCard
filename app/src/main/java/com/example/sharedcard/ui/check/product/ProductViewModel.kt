@@ -16,7 +16,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     private val mutableSearch = MutableLiveData<String>()
 
     init {
-        accountId = (application as SharedCardApp).getQueryPreferences().accountId
+        accountId = (application as SharedCardApp).getQueryPreferences().userId
         productRepository = application.getProductRepository()
         mutableSearch.value = ""
         productItemLiveData = mutableSearch.switchMap { query ->

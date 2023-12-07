@@ -7,12 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.sharedcard.R
+import com.example.sharedcard.ui.MainActivity
 
 class StatisticFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = StatisticFragment()
-    }
 
     private lateinit var viewModel: StatisticViewModel
 
@@ -20,13 +18,9 @@ class StatisticFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (requireActivity() as MainActivity).setToolbar(R.string.statistic)
         return inflater.inflate(R.layout.fragment_statistic, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(StatisticViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
 }

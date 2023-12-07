@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.sharedcard.R
-import com.example.sharedcard.databinding.FragmentCheckListBinding
+import com.example.sharedcard.databinding.FragmentListBinding
 
 open class CheckListFragment : Fragment() {
 
-    protected lateinit var binding: FragmentCheckListBinding
+    protected lateinit var binding: FragmentListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,7 +19,7 @@ open class CheckListFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_check_list,
+            R.layout.fragment_list,
             container,
             false
         )

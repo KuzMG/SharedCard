@@ -11,7 +11,7 @@ interface ProductDao {
         "select product.id,product.name,status,c.name as category,count,m.name as metric,u.name as creator,date_first as dateFirst from product " +
                 "join category_product as c on id_category = c.id " +
                 "join metric as m on id_metric = m.id " +
-                "left join user as u on id_user_creator = u.id " +
+                "left join user as u on id_user_creator = u.id_user " +
                 "where product.id_group = :id and status != 2 " +
                 "order by status, date_first desc"
     )
@@ -21,14 +21,12 @@ interface ProductDao {
         "select product.id,product.name,status,c.name as category,count,m.name as metric,u.name as creator,date_first as dateFirst from product " +
                 "join category_product as c on id_category = c.id " +
                 "join metric as m on id_metric = m.id " +
-                "left join user as u on id_user_creator = u.id  " +
+                "left join user as u on id_user_creator = u.id_user  " +
                 "where product.id_group = :id and status != 2 and product.name like :query " +
                 "order by status,date_first desc"
     )
     fun getAllForCheckQuery(id: Long, query: String): LiveData<List<Product>>
 
-    @Query("select * from product where id_group = :id and status = 2")
-    fun getAllForHistory(id: Long): LiveData<List<ProductEntity>>
 
     @Query("delete from product where id = :id")
     fun delete(id: Long)
@@ -45,8 +43,8 @@ interface ProductDao {
                 "id_shop = :idShop, " +
                 "price = :price, " +
                 "id_currency = :currency, " +
-                "id_user_creator = :idUser, " +
-                "date_first = :dataFirst " +
+                "id_user_buyer = :idUser, " +
+                "date_last = :dataLast " +
                 "where id=:id"
     )
     fun toHistory(
@@ -55,7 +53,7 @@ interface ProductDao {
         price: Int,
         currency: Long,
         idUser: Long?,
-        dataFirst: Long
+        dataLast: Long
     )
 
 }
