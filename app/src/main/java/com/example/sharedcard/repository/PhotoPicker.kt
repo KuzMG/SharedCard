@@ -1,9 +1,12 @@
 package com.example.sharedcard.repository
 
 import android.content.Context
+import android.graphics.Bitmap
 import com.example.sharedcard.database.entity.group.GroupEntity
 import com.example.sharedcard.database.entity.user.UserEntity
+import kotlinx.coroutines.Deferred
 import java.io.File
+import java.io.FileOutputStream
 
 
 class PhotoPicker private constructor(context: Context) {
@@ -25,6 +28,13 @@ class PhotoPicker private constructor(context: Context) {
             imagePath.mkdir()
         }
         return File(imagePath, group.photoFileName)
+    }
+
+    fun savePhoto(bitmap: Bitmap,photoFile: File){
+        val stream = FileOutputStream(photoFile)
+        stream.use {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+        }
     }
 
     companion object {

@@ -1,11 +1,10 @@
 package com.example.sharedcard.database
 
+import com.example.sharedcard.database.entity.category.CategoryEntity
 import com.example.sharedcard.database.entity.currency.CurrencyEntity
 import com.example.sharedcard.database.entity.metric.MetricEntity
-import com.project.shared_card.database.dao.categories_target.CategoryTargetEntity
-import com.project.shared_card.database.dao.category_product.CategoryProductEntity
-import com.project.shared_card.database.dao.shop_product.ShopProductEntity
-import com.project.shared_card.database.dao.shop_target.ShopTargetEntity
+import com.example.sharedcard.database.entity.product.ProductEntity
+import com.example.sharedcard.database.entity.shop.ShopEntity
 
 object DataGenerator {
     fun getMetric(): List<MetricEntity> = listOf(
@@ -25,94 +24,77 @@ object DataGenerator {
         CurrencyEntity(name = "₸")
     )
 
-    fun getShopProduct(): List<ShopProductEntity> = listOf(
-        ShopProductEntity(name = "Аптека"),
-        ShopProductEntity(name = "Азбука вкуса"),
-        ShopProductEntity(name = "Ашан"),
-        ShopProductEntity(name = "Бристоль"),
-        ShopProductEntity(name = "Виктория"),
-        ShopProductEntity(name = "Вкусвилл"),
-        ShopProductEntity(name = "Красное и белое"),
-        ShopProductEntity(name = "Лента"),
-        ShopProductEntity(name = "Магнит"),
-        ShopProductEntity(name = "Окей"),
-        ShopProductEntity(name = "Перекрёсток"),
-        ShopProductEntity(name = "Пятерочка"),
-        ShopProductEntity(name = "Продуктовый"),
-        ShopProductEntity(name = "Рынок"),
-        ShopProductEntity(name = "Самокат"),
-        ShopProductEntity(name = "Спортпит"),
-        ShopProductEntity(name = "Фикспрайс"),
-        ShopProductEntity(name = "Другое")
+    fun getShopProduct(): List<ShopEntity> = listOf(
+        ShopEntity(name = "Аптека"),
+        ShopEntity(name = "Азбука вкуса"),
+        ShopEntity(name = "Ашан"),
+        ShopEntity(name = "Бристоль"),
+        ShopEntity(name = "Виктория"),
+        ShopEntity(name = "Вкусвилл"),
+        ShopEntity(name = "Красное и белое"),
+        ShopEntity(name = "Лента"),
+        ShopEntity(name = "Магнит"),
+        ShopEntity(name = "Окей"),
+        ShopEntity(name = "Перекрёсток"),
+        ShopEntity(name = "Пятерочка"),
+        ShopEntity(name = "Продуктовый"),
+        ShopEntity(name = "Рынок"),
+        ShopEntity(name = "Самокат"),
+        ShopEntity(name = "Спортпит"),
+        ShopEntity(name = "Фикспрайс"),
+        ShopEntity(name = "Другое")
     )
 
-    fun getShopTarget(): List<ShopTargetEntity> = listOf(
-        ShopTargetEntity(name = "Автотовары"),
-        ShopTargetEntity(name = "Автоцентр"),
-        ShopTargetEntity(name = "Гипермаркет"),
-        ShopTargetEntity(name = "Детские товары"),
-        ShopTargetEntity(name = "Зоомагазин"),
-        ShopTargetEntity(name = "Интернет-магазин"),
-        ShopTargetEntity(name = "Книжный магазин"),
-        ShopTargetEntity(name = "Магазин канцтоваров"),
-        ShopTargetEntity(name = "Магазин одежды"),
-        ShopTargetEntity(name = "Мебельный"),
-        ShopTargetEntity(name = "Музыкальный магазин"),
-        ShopTargetEntity(name = "Онлайн площадка"),
-        ShopTargetEntity(name = "Продовольственный"),
-        ShopTargetEntity(name = "Рынок"),
-        ShopTargetEntity(name = "Сексшоп"),
-        ShopTargetEntity(name = "Спецмагазин"),
-        ShopTargetEntity(name = "Строительные товары"),
-        ShopTargetEntity(name = "Супермаркет"),
-        ShopTargetEntity(name = "Художественный магазин"),
-        ShopTargetEntity(name = "Цветочный магазин"),
-        ShopTargetEntity(name = "Церковный магазин"),
-        ShopTargetEntity(name = "Хобби-гипермаркет"),
-        ShopTargetEntity(name = "Электротовары")
+    fun getProducts(): List<ProductEntity> = listOf(
+        ProductEntity(1,"гречка",3.3,12.6,57.1,308,5),
+        ProductEntity(2,"овсянка",6.1,12.3,59.5,68,5),
+        ProductEntity(3,"рис",2.6,7.5,62.3,303,5),
+        ProductEntity(4,"кукурузная крупа",1.2,8.3,71.0,328,5),
+        ProductEntity(5,"пшеничная крупа",2.0,11.2,65.7,342,5),
+        ProductEntity(6,"манная крупа",1.0,10.3,70.6,333,5),
+        ProductEntity(7,"булгур",1.5,15.0,14.1,85,5)
     )
 
-    fun getCategoryProduct(): List<CategoryProductEntity> = listOf(
-        CategoryProductEntity(name = "Алкоголь"),
-        CategoryProductEntity(name = "Бытовые товары"),
-        CategoryProductEntity(name = "Готовая еда"),
-        CategoryProductEntity(name = "Грибы"),
-        CategoryProductEntity(name = "Зелень"),
-        CategoryProductEntity(name = "Крупы"),
-        CategoryProductEntity(name = "Лекарство"),
-        CategoryProductEntity(name = "Масло"),
-        CategoryProductEntity(name = "Молочные продукты"),
-        CategoryProductEntity(name = "Морепродукты"),
-        CategoryProductEntity(name = "Мясо"),
-        CategoryProductEntity(name = "Напитки"),
-        CategoryProductEntity(name = "Овощи"),
-        CategoryProductEntity(name = "Орехи"),
-        CategoryProductEntity(name = "Полуфабрикаты"),
-        CategoryProductEntity(name = "Рыба"),
-        CategoryProductEntity(name = "Сладости"),
-        CategoryProductEntity(name = "Снеки"),
-        CategoryProductEntity(name = "Фрукты"),
-        CategoryProductEntity(name = "Химия"),
-        CategoryProductEntity(name = "Хлебобулочные изделия"),
-        CategoryProductEntity(name = "Яичные продукты"),
-        CategoryProductEntity(name = "Другое")
+    fun getCategoryProduct(): List<CategoryEntity> = listOf(
+        CategoryEntity(name = "Алкоголь"),
+        CategoryEntity(name = "Готовая еда"),
+        CategoryEntity(name = "Грибы"),
+        CategoryEntity(name = "Зелень"),
+        CategoryEntity(name = "Крупы"),
+        CategoryEntity(name = "Масло"),
+        CategoryEntity(name = "Молочные продукты"),
+        CategoryEntity(name = "Морепродукты"),
+        CategoryEntity(name = "Мясо"),
+        CategoryEntity(name = "Напитки"),
+        CategoryEntity(name = "Овощи"),
+        CategoryEntity(name = "Орехи"),
+        CategoryEntity(name = "Полуфабрикаты"),
+        CategoryEntity(name = "Рыба"),
+        CategoryEntity(name = "Сладости"),
+        CategoryEntity(name = "Снеки"),
+        CategoryEntity(name = "Фрукты"),
+        CategoryEntity(name = "Химия"),
+        CategoryEntity(name = "Хлебобулочные изделия"),
+        CategoryEntity(name = "Яичные продукты"),
+        CategoryEntity(name = "Лекарство"),
+        CategoryEntity(name = "Бытовые товары")
     )
-
-
-    fun getCategoryTarget(): List<CategoryTargetEntity> = listOf(
-        CategoryTargetEntity(name = "Быт"),
-        CategoryTargetEntity(name = "Дом"),
-        CategoryTargetEntity(name = "Досуг"),
-        CategoryTargetEntity(name = "Здоровье"),
-        CategoryTargetEntity(name = "Мебель"),
-        CategoryTargetEntity(name = "Одежда"),
-        CategoryTargetEntity(name = "Подарок"),
-        CategoryTargetEntity(name = "Продукты"),
-        CategoryTargetEntity(name = "Путешествие"),
-        CategoryTargetEntity(name = "Спорт"),
-        CategoryTargetEntity(name = "Транспорт"),
-        CategoryTargetEntity(name = "Творчество"),
-        CategoryTargetEntity(name = "Электроника"),
-        CategoryTargetEntity(name = "Другое")
-    )
+//
+//
+//    fun getCategoryTarget(): List<CategoryTargetEntity> = listOf(
+//        CategoryTargetEntity(name = "Быт"),
+//        CategoryTargetEntity(name = "Дом"),
+//        CategoryTargetEntity(name = "Досуг"),
+//        CategoryTargetEntity(name = "Здоровье"),
+//        CategoryTargetEntity(name = "Мебель"),
+//        CategoryTargetEntity(name = "Одежда"),
+//        CategoryTargetEntity(name = "Подарок"),
+//        CategoryTargetEntity(name = "Продукты"),
+//        CategoryTargetEntity(name = "Путешествие"),
+//        CategoryTargetEntity(name = "Спорт"),
+//        CategoryTargetEntity(name = "Транспорт"),
+//        CategoryTargetEntity(name = "Творчество"),
+//        CategoryTargetEntity(name = "Электроника"),
+//        CategoryTargetEntity(name = "Другое")
+//    )
 }

@@ -5,6 +5,9 @@
         android:icon="@drawable/bottom_navigation_icon_group"
         android:title="" />
     <item
+        android:id="@+id/manualFragment"
+        android:title="" />
+    <item
         android:id="@+id/checkFragment"
         android:icon="@drawable/bottom_navigation_icon_check"
         android:title="" />

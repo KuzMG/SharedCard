@@ -6,8 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.sharedcard.database.entity.category.product.CategoryProductDao
-import com.example.sharedcard.database.entity.category.target.CategoryTargetDao
+import com.example.sharedcard.database.entity.category.CategoryDao
+import com.example.sharedcard.database.entity.category.CategoryEntity
+import com.example.sharedcard.database.entity.check.CheckDao
+import com.example.sharedcard.database.entity.check.CheckEntity
+import com.example.sharedcard.database.entity.check_product.CheckProduct
 import com.example.sharedcard.database.entity.currency.CurrencyDao
 import com.example.sharedcard.database.entity.currency.CurrencyEntity
 import com.example.sharedcard.database.entity.gpoup_users.GroupUsersDao
@@ -17,18 +20,17 @@ import com.example.sharedcard.database.entity.history.HistoryDao
 import com.example.sharedcard.database.entity.metric.MetricDao
 import com.example.sharedcard.database.entity.metric.MetricEntity
 import com.example.sharedcard.database.entity.product.ProductDao
-import com.example.sharedcard.database.entity.shop.product.ShopProductDao
-import com.example.sharedcard.database.entity.shop.target.ShopTargetDao
+import com.example.sharedcard.database.entity.product.ProductEntity
+import com.example.sharedcard.database.entity.recipe.RecipeEntity
+import com.example.sharedcard.database.entity.recipe_product.RecipeProductEntity
+import com.example.sharedcard.database.entity.shop.ShopDao
+import com.example.sharedcard.database.entity.shop.ShopEntity
 import com.example.sharedcard.database.entity.target.TargetDao
+import com.example.sharedcard.database.entity.user.UserAccountEntity
 import com.example.sharedcard.database.entity.user.UserDao
 import com.example.sharedcard.database.entity.user.UserEntity
 import com.example.sharedcard.database.type_converter.DateConverter
-import com.project.shared_card.database.dao.categories_target.CategoryTargetEntity
-import com.project.shared_card.database.dao.category_product.CategoryProductEntity
 import com.project.shared_card.database.dao.group_users.GroupUsersEntity
-import com.example.sharedcard.database.entity.product.ProductEntity
-import com.project.shared_card.database.dao.shop_product.ShopProductEntity
-import com.project.shared_card.database.dao.shop_target.ShopTargetEntity
 import com.project.shared_card.database.dao.target.TargetEntity
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
@@ -37,32 +39,34 @@ import java.util.concurrent.Executors
 @Database(
     version = 1,
     entities = [
-        CategoryProductEntity::class,
-        CategoryTargetEntity::class,
+        CategoryEntity::class,
+        CheckEntity::class,
+        CheckProduct::class,
         CurrencyEntity::class,
-        ProductEntity::class,
-        TargetEntity::class,
-        GroupEntity::class,
         GroupUsersEntity::class,
+        GroupEntity::class,
         MetricEntity::class,
+        ProductEntity::class,
+        RecipeEntity::class,
+        RecipeProductEntity::class,
+        ShopEntity::class,
+        TargetEntity::class,
         UserEntity::class,
-        ShopProductEntity::class,
-        ShopTargetEntity::class]
+        UserAccountEntity::class,
+    ]
 )
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
-
-    abstract fun historyDao() : HistoryDao
-    abstract fun categoryProductDao(): CategoryProductDao
+    abstract fun productDao(): ProductDao
+    abstract fun historyDao(): HistoryDao
+    abstract fun categoryDao(): CategoryDao
     abstract fun groupDao(): GroupDao
     abstract fun groupUsersDao(): GroupUsersDao
     abstract fun userDao(): UserDao
     abstract fun metricDao(): MetricDao
-    abstract fun shopProductDao(): ShopProductDao
-    abstract fun shopTargetDao(): ShopTargetDao
-    abstract fun productDao(): ProductDao
+    abstract fun shopDao(): ShopDao
+    abstract fun checkDao(): CheckDao
     abstract fun targetDao(): TargetDao
-    abstract fun categoryTargetDao(): CategoryTargetDao
     abstract fun currencyDao(): CurrencyDao
 
 
@@ -79,20 +83,18 @@ abstract class AppDatabase : RoomDatabase() {
                             super.onCreate(db)
                             executor.execute {
                                 val database = getInstance(context)
-                                val categoryProduct = DataGenerator.getCategoryProduct()
-                                val categoryTarget = DataGenerator.getCategoryTarget()
-                                val shopProduct = DataGenerator.getShopProduct()
-                                val shopTarget = DataGenerator.getShopTarget()
+                                val category = DataGenerator.getCategoryProduct()
+                                val shop = DataGenerator.getShopProduct()
                                 val currency = DataGenerator.getCurrency()
                                 val metric = DataGenerator.getMetric()
+                                val product = DataGenerator.getProducts()
                                 insertData(
                                     database,
-                                    categoryTarget,
-                                    categoryProduct,
-                                    shopProduct,
-                                    shopTarget,
+                                    category,
+                                    shop,
                                     currency,
-                                    metric
+                                    metric,
+                                    product
                                 )
                             }
 
@@ -106,21 +108,19 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun insertData(
             database: AppDatabase,
-            categoryTarget: List<CategoryTargetEntity>,
-            categoryProduct: List<CategoryProductEntity>,
-            shopProduct: List<ShopProductEntity>,
-            shopTarget: List<ShopTargetEntity>,
+            category: List<CategoryEntity>,
+            shopProduct: List<ShopEntity>,
             currency: List<CurrencyEntity>,
-            metric: List<MetricEntity>
+            metric: List<MetricEntity>,
+            product: List<ProductEntity>
         ) {
             database.apply {
                 runInTransaction {
-                    categoryTargetDao().add(categoryTarget)
-                    categoryProductDao().add(categoryProduct)
-                    shopProductDao().add(shopProduct)
-                    shopTargetDao().add(shopTarget)
+                    categoryDao().add(category)
+                    shopDao().add(shopProduct)
                     currencyDao().add(currency)
                     metricDao().add(metric)
+                    productDao().add(product)
                 }
             }
         }

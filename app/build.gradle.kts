@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -5,6 +7,7 @@ plugins {
 }
 
 android {
+
     namespace = "com.example.sharedcard"
     compileSdk = 34
 
@@ -39,6 +42,7 @@ android {
     }
 }
 
+
 dependencies {
 
     implementation("androidx.core:core-ktx:1.9.0")
@@ -52,6 +56,14 @@ dependencies {
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+    
+    implementation("com.squareup.picasso:picasso:2.8")
+
+    val mail_version = "1.6.0"
+    implementation("com.sun.mail:android-mail:$mail_version")
+    implementation("com.sun.mail:android-activation:$mail_version")
 
     val retrofit_version = "2.9.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofit_version")

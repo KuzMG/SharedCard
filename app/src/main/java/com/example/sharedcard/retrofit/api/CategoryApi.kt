@@ -1,14 +1,10 @@
 package com.example.sharedcard.retrofit.api
 
-import com.project.shared_card.database.dao.categories_target.CategoryTargetEntity
-import com.project.shared_card.database.dao.category_product.CategoryProductEntity
+import com.example.sharedcard.database.entity.category.CategoryEntity
 import retrofit2.Call
 import retrofit2.http.GET
 
 interface CategoryApi {
     @GET("/category/product/get_all")
-    fun allCategoryProduct(): Call<List<CategoryProductEntity>>
-
-    @GET("/category/target/get_all")
-    fun allCategoryTarget(): Call<List<CategoryTargetEntity>>
+    fun allCategoryProduct(): Call<List<CategoryEntity>>
 }

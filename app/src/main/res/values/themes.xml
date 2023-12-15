@@ -28,7 +28,6 @@
 
 
 
-
         <!--        <item name="colorPrimaryVariant">@color/light_green_2</item>-->
         <item name="colorOnPrimary">@color/light_green_2</item>
         <!--        <item name="colorSecondary">@color/dark_green</item>-->

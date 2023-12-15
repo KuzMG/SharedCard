@@ -1,13 +1,25 @@
 <resources>
     <string name="app_name">SharedCard</string>
 
-    <!--    Создание аккаунта-->
+    <!--    Регистрация/Аутентификация в аккаунт-->
+    <string name="forgot_password">забыли пароль?</string>
     <string name="choose_an_avatar_for_myself">Выберите аватарку</string>
-    <string name="enter_your_name">Введите ваше имя</string>
-    <string name="create_account">Продолжить</string>
+    <string name="enter_your_name">введите ваше имя</string>
+    <string name="enter_your_login">введите логин</string>
+    <string name="enter_code">код подтверждения</string>
+    <string name="enter_your_password">введите пароль</string>
+    <string name="sign_up">Создать</string>
+    <string name="sign_in">Войти</string>
+    <string name="create_account">Создать аккаунт</string>
+    <string name="enter_email">введите Email</string>
+    <string name="create_password">придумайте пароль</string>
+    <string name="repeat_password">повторите пароль</string>
+    <string name="send_code">отправить код</string>
+    <string name="change_password">изменить пароль</string>
 
-    <!--    <string name="search">поиск</string>-->
+
     <!--   toolbar -->
+    <string name="manual">справочник</string>
     <string name="check">Чек</string>
     <string name="statistic">Статистика</string>
     <string name="history">История</string>
@@ -15,10 +27,15 @@
 
 <!--    Группы в профиле-->
     <string name="group_label">Группы</string>
-
+    
+    
+    <!--   ЧЕК -->
     <!--   страницы в чеке -->
     <string name="tab_product">продукты</string>
     <string name="tab_target">цели</string>
+    <!--   кнопки -->
+    <string name="add_product_by_search">\uf002 поиск</string>
+    
 
     <!--    поисковая строка-->
     <string name="search_bar">\uf002 Введите название</string>
@@ -44,6 +61,12 @@
     <string name="dialog_to_history_button">В Архив</string>
     <string name="dialog_to_history_product">Продукт %1$s</string>
     <string name="dialog_to_history_target">Цель %1$s</string>
-    <string name="group_create_account">Создать аккаунт</string>
 
+    <!--   ячейка продукта -->
+    <string name="list_item_product_protein">Белки: %1$s</string>
+    <string name="list_item_product_fat">Жиры: %1$s</string>
+    <string name="list_item_product_carb">Углеводы: %1$s</string>
+    <string name="list_item_product_calorie">Калории: %1$s</string>
+    <string name="list_item_product_kj">кДж: %1$s</string>
+    <string name="recipe">рецепты</string>
 </resources>

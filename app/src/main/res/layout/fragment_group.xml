@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/group_create_account"
+            android:text=""
             app:visible="@{!flag}">
 
         </Button>
@@ -136,7 +136,7 @@
                 android:id="@+id/group_expandable_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:indicatorLeft="200dp"/>
+                android:indicatorLeft="200dp" />
         </LinearLayout>
     </FrameLayout>
 </layout>

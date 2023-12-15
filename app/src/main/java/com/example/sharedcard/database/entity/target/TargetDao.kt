@@ -9,7 +9,7 @@ import com.project.shared_card.database.dao.target.TargetEntity
 @Dao
 interface TargetDao {
     @Query("select target.id,target.name,status,c.name as category,first_price as price,cur.name as currency,u.name as creator,date_first as dateFirst from target " +
-            "join category_target as c on id_category = c.id " +
+            "join category as c on id_category = c.id " +
             "join currency as cur on id_currency_first = cur.id " +
             "left join user as u on id_user_creator = u.id_user " +
             "where target.id_group = :id and status != 2 " +
@@ -17,7 +17,7 @@ interface TargetDao {
     fun getAllForCheck(id: Long): LiveData<List<Target>>
 
     @Query("select target.id,target.name,status,c.name as category,first_price as price,cur.name as currency,u.name as creator,date_first as dateFirst from target " +
-            "join category_target as c on id_category = c.id " +
+            "join category as c on id_category = c.id " +
             "join currency as cur on id_currency_first = cur.id " +
             "left join user as u on id_user_creator = u.id_user " +
             "where target.id_group = :id and status != 2 and target.name like :query " +

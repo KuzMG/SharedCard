@@ -29,16 +29,7 @@
             android:textSize="18sp"
             tools:hint="@string/dialog_add_text_hint_porduct" />
 
-        <Spinner
-            android:id="@+id/dialog_category_spinner"
-            style="@style/TextViewLight"
-            android:layout_width="240dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@drawable/dialog_spinner"
-            android:dropDownVerticalOffset="35dp"
-            android:padding="5dp"
-            android:popupBackground="@color/light_green_2" />
+
 
         <LinearLayout
             android:layout_width="240dp"
@@ -69,6 +60,11 @@
                 android:popupBackground="@color/light_green_2" />
 
         </LinearLayout>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="комментарий"
+            android:background="@drawable/search_bar"/>
 
         <Button
             android:id="@+id/dialog_add_button"

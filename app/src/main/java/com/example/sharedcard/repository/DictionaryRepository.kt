@@ -3,26 +3,20 @@ package com.example.sharedcard.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.sharedcard.database.AppDatabase
+import com.example.sharedcard.database.entity.category.CategoryEntity
+import com.example.sharedcard.database.entity.shop.ShopEntity
 
 class DictionaryRepository private constructor(database: AppDatabase) {
-    private val shopProductDao = database.shopProductDao()
-    private val categoryProductDao = database.categoryProductDao()
+    private val shopDao = database.shopDao()
+    private val categoryDao = database.categoryDao()
     private val metricDao = database.metricDao()
-    private val shopTargetDao = database.shopTargetDao()
-    private val categoryTargetDao = database.categoryTargetDao()
     private val currencyDao= database.currencyDao()
+    private val productDao = database.productDao()
 
-    fun getAllShopsProduct(): LiveData<List<String>> = shopProductDao.getAll().map { list ->
-        list.map { shop ->
-            shop.name
-        }
-    }
+    fun getAllShopsProduct(): LiveData<List<ShopEntity>> = shopDao.getAll()
 
-    fun getAllCategoriesProduct(): LiveData<List<String>> = categoryProductDao.getAll().map { list ->
-        list.map { category ->
-            category.name
-        }
-    }
+    fun getAllCategories(): LiveData<List<CategoryEntity>> = categoryDao.getAll()
+
 
     fun getAllMetrics(): LiveData<List<String>> = metricDao.getAll().map { list ->
         list.map { metric ->
@@ -30,23 +24,16 @@ class DictionaryRepository private constructor(database: AppDatabase) {
         }
     }
 
-    fun getAllShopsTarget(): LiveData<List<String>> = shopTargetDao.getAll().map { list ->
-        list.map { shop ->
-            shop.name
-        }
-    }
-
-    fun getAllCategoriesTarget(): LiveData<List<String>> = categoryTargetDao.getAll().map { list ->
-        list.map { category ->
-            category.name
-        }
-    }
 
     fun getAllCurrency(): LiveData<List<String>> = currencyDao.getAll().map { list ->
         list.map { currency ->
             currency.name
         }
     }
+
+    fun getProductById(id: Long) = productDao.getAllById(id)
+
+    fun getProductByQuery(query: String) = productDao.getAllByQuery("$query%")
 
     companion object {
         private var nRepository: DictionaryRepository? = null
