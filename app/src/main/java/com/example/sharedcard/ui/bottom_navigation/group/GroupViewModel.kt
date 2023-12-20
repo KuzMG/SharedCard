@@ -52,6 +52,5 @@ class GroupViewModel(application: Application) : AndroidViewModel(application) {
 //        )
 //        groupUsersRepository.createGroupUsers(groups)
 //    }
-    fun getUser() = groupUsersRepository.getUser(userId)
     fun getGroups() = groupUsersRepository.getAllGroup(userId)
 }

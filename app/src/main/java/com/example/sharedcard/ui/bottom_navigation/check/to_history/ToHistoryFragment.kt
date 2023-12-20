@@ -1,4 +1,4 @@
-package com.example.sharedcard.ui.bottom_navigation.check.dialog
+package com.example.sharedcard.ui.bottom_navigation.check.to_history
 
 import android.os.Bundle
 import android.text.Editable
@@ -9,11 +9,19 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import android.widget.BaseAdapter
+import android.widget.Filter
+import android.widget.Filterable
+import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
+import com.example.sharedcard.database.entity.product.ProductEntity
+import com.example.sharedcard.database.entity.shop.ShopEntity
 import com.example.sharedcard.databinding.DialogFragmentToHistoryBinding
+import com.example.sharedcard.ui.bottom_navigation.check.array_adapter.ShopArrayAdapter
 
 class ToHistoryFragment : DialogFragment() {
 
@@ -48,14 +56,10 @@ class ToHistoryFragment : DialogFragment() {
             1 -> getString(R.string.dialog_to_history_target, viewModel.name)
             else -> throw IndexOutOfBoundsException()
         }
-//
-//        viewModel.getShop().observe(this) { shops ->
-//            binding.dialogToHistoryShopSpinner.adapter = ArrayAdapter(
-//                requireContext(),
-//                android.R.layout.simple_spinner_dropdown_item,
-//                shops
-//            )
-//        }
+
+        viewModel.getShop().observe(this) { shops ->
+            binding.dialogToHistoryShopSpinner.adapter = ShopArrayAdapter(shops)
+        }
 
         viewModel.getCurrency().observe(this) { currencies ->
             binding.dialogToHistoryCurrencySpinner.adapter = ArrayAdapter(
@@ -80,7 +84,7 @@ class ToHistoryFragment : DialogFragment() {
         binding.dialogToHistoryShopSpinner.onItemSelectedListener =
             object : OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    viewModel.shop = p3 + 1
+                    viewModel.shop = p3
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -114,4 +118,5 @@ class ToHistoryFragment : DialogFragment() {
             return dialog
         }
     }
+
 }

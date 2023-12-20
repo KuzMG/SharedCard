@@ -10,6 +10,9 @@ interface CategoryDao {
     @Insert
     fun add(entity: List<CategoryEntity>)
 
-    @Query("Select * from category")
-    fun getAll(): LiveData<List<CategoryEntity>>
+    @Query("Select * from category where status = 1")
+    fun getAllProduct(): LiveData<List<CategoryEntity>>
+
+    @Query("Select * from category where status = 0")
+    fun getAllTarget(): LiveData<List<CategoryEntity>>
 }

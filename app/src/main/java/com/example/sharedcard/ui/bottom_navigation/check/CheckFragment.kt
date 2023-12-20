@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.sharedcard.R
 import com.example.sharedcard.databinding.FragmentCheckBinding
-import com.example.sharedcard.ui.bottom_navigation.check.add_item.AddItemFragment
+import com.example.sharedcard.ui.bottom_navigation.check.add_check.AddCheckFragment
+import com.example.sharedcard.ui.bottom_navigation.check.add_target.AddTargetFragment
 import com.example.sharedcard.ui.bottom_navigation.check.product.ProductFragment
 import com.example.sharedcard.ui.bottom_navigation.check.target.TargetFragment
 import com.google.android.material.tabs.TabLayoutMediator
@@ -40,6 +40,7 @@ class CheckFragment : Fragment() {
                     requireActivity()
                 )
             checkPager.offscreenPageLimit = 2
+            checkPager.isUserInputEnabled = false
             TabLayoutMediator(checkTab, checkPager) { tab, position ->
                 tab.text = when (position) {
                     0 -> getString(R.string.tab_product)
@@ -56,14 +57,20 @@ class CheckFragment : Fragment() {
         super.onStart()
 
         binding.searchButton.setOnClickListener {
-            AddItemFragment.newInstance(binding.checkPager.currentItem)
-                .show(
+            when (binding.checkPager.currentItem) {
+                0 -> AddCheckFragment()
+                    .show(
+                        parentFragmentManager,
+                        DIALOG_ADD
+                    )
+                1 -> AddTargetFragment().show(
                     parentFragmentManager,
                     DIALOG_ADD
                 )
+            }
+
         }
     }
-
 
 
     class CheckListAdapter(fragmentActivity: FragmentActivity) :

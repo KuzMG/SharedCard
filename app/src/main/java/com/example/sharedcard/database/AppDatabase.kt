@@ -10,13 +10,11 @@ import com.example.sharedcard.database.entity.category.CategoryDao
 import com.example.sharedcard.database.entity.category.CategoryEntity
 import com.example.sharedcard.database.entity.check.CheckDao
 import com.example.sharedcard.database.entity.check.CheckEntity
-import com.example.sharedcard.database.entity.check_product.CheckProduct
 import com.example.sharedcard.database.entity.currency.CurrencyDao
 import com.example.sharedcard.database.entity.currency.CurrencyEntity
 import com.example.sharedcard.database.entity.gpoup_users.GroupUsersDao
 import com.example.sharedcard.database.entity.group.GroupDao
 import com.example.sharedcard.database.entity.group.GroupEntity
-import com.example.sharedcard.database.entity.history.HistoryDao
 import com.example.sharedcard.database.entity.metric.MetricDao
 import com.example.sharedcard.database.entity.metric.MetricEntity
 import com.example.sharedcard.database.entity.product.ProductDao
@@ -41,7 +39,6 @@ import java.util.concurrent.Executors
     entities = [
         CategoryEntity::class,
         CheckEntity::class,
-        CheckProduct::class,
         CurrencyEntity::class,
         GroupUsersEntity::class,
         GroupEntity::class,
@@ -58,7 +55,6 @@ import java.util.concurrent.Executors
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
-    abstract fun historyDao(): HistoryDao
     abstract fun categoryDao(): CategoryDao
     abstract fun groupDao(): GroupDao
     abstract fun groupUsersDao(): GroupUsersDao

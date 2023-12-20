@@ -8,18 +8,20 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.sharedcard.R
 import com.example.sharedcard.database.entity.target.Target
+import com.example.sharedcard.databinding.ListItemTargetBinding
 import com.example.sharedcard.ui.bottom_navigation.check.check_list.CheckListFragment
 import com.example.sharedcard.ui.bottom_navigation.check.check_list.CustomSwipeCallback
-import com.example.sharedcard.ui.bottom_navigation.check.check_list.ListAdapterGeneral
-import com.example.sharedcard.ui.bottom_navigation.check.check_list.ViewHolderGeneral
-import com.example.sharedcard.ui.bottom_navigation.check.dialog.DeleteItemFragment
-import com.example.sharedcard.ui.bottom_navigation.check.dialog.ToHistoryFragment
+import com.example.sharedcard.ui.bottom_navigation.check.delete_item.DeleteItemFragment
+import com.example.sharedcard.ui.bottom_navigation.check.to_history.ToHistoryFragment
 
 private const val DATE_FORMAT = "MM.dd HH:mm"
 
@@ -76,24 +78,28 @@ class TargetFragment : CheckListFragment() {
         }
         val itemTouchHelper = ItemTouchHelper(object : CustomSwipeCallback() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val target = (viewHolder as TargetHolder).item
+                val target = (viewHolder as TargetHolder).target
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
-                        DeleteItemFragment.apply {
-                            newInstance(1, target.id, target.name)
-                                .show(childFragmentManager, DIALOG_DELETE)
+                        if(viewModel.quickDelete){
+                            viewModel.deleteTarget(target.id)
+                        } else {
+                            DeleteItemFragment.apply {
+                                newInstance(1, target.id, target.name)
+                                    .show(childFragmentManager, DIALOG_DELETE)
+                            }
+                            targetListAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
                         }
-
                     }
 
                     ItemTouchHelper.RIGHT -> {
                         ToHistoryFragment.apply {
-                            newInstance(1,target.id,target.name)
+                            newInstance(1, target.id, target.name)
                                 .show(childFragmentManager, DIALOG_TO_HISTORY)
                         }
+                        targetListAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
                     }
                 }
-                targetListAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
             }
 
         })
@@ -102,7 +108,7 @@ class TargetFragment : CheckListFragment() {
 
     private fun showPopupMenu(v: View) {
         val popupMenu = PopupMenu(requireContext(), v)
-        popupMenu.inflate(R.menu.popup_menu)
+        popupMenu.inflate(R.menu.popup_menu_check)
         popupMenu
             .setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
                 override fun onMenuItemClick(item: MenuItem): Boolean {
@@ -130,42 +136,48 @@ class TargetFragment : CheckListFragment() {
         popupMenu.show()
     }
 
-    private inner class TargetHolder(itemView: View) : ViewHolderGeneral(itemView) {
-        lateinit var item: Target
-        fun onBind(item: Target) {
-            this.item = item
-            checkBox.apply {
-                isChecked = when (item.status) {
-                    0 -> false
-                    1 -> true
-                    else -> throw IndexOutOfBoundsException()
-                }
-                setOnClickListener {
-                    viewModel.setCheckBox(item.id, isChecked)
-                }
+    private inner class TargetHolder(private val binding: ListItemTargetBinding) :
+        ViewHolder(binding.root),View.OnClickListener {
+        lateinit var target: Target
+        fun onBind(target: Target) {
+            this.target = target
+            binding.apply {
+                this.target = target
+                categoryTextView.text = getString(R.string.category, target.category)
+                if(target.price>0)
+                    priceTextView.text = target.priceList
+                dateTextView.text = DateFormat.format(localDateFormat, target.date)
+                infoImageButton.setOnClickListener(this@TargetHolder)
             }
-            nameTextView.text = item.name
-            categoryTextView.text = item.category
-            quantityPriceTextView.text = item.priceList
-            userTextView.text = item.creator
-            dateTextView.text = DateFormat.format(localDateFormat, item.date)
+        }
+
+        override fun onClick(v: View?) {
+            if(binding.info.visibility == View.GONE) {
+                binding.info.visibility = View.VISIBLE
+            } else {
+                binding.info.visibility = View.GONE
+            }
         }
     }
 
-    private inner class TargetListAdapter() : ListAdapterGeneral<Target>(
+    private inner class TargetListAdapter() : ListAdapter<Target, TargetHolder>(
         diffUtilTarget
     ) {
 
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
-        ): ViewHolderGeneral {
-            val view = super.onCreateViewHolder(parent, viewType).itemView
-            return TargetHolder(view)
-        }
+        ) = TargetHolder(
+            DataBindingUtil.inflate(
+                layoutInflater,
+                R.layout.list_item_target,
+                parent,
+                false
+            )
+        )
 
-        override fun onBindViewHolder(holder: ViewHolderGeneral, position: Int) {
-            (holder as TargetHolder).onBind(getItem(position))
+        override fun onBindViewHolder(holder: TargetHolder, position: Int) {
+            holder.onBind(getItem(position))
         }
 
         private var flag1 = false
@@ -208,7 +220,7 @@ class TargetFragment : CheckListFragment() {
 
                 else -> throw IndexOutOfBoundsException()
             }
-            submitList(list.sortedBy { it.status })
+            submitList(list)
         }
     }
 }

@@ -12,7 +12,7 @@ data class TargetEntity(
     val name: String,
     val status: Int = 0,
     @field:ColumnInfo(name = "id_group")
-    val idGroup: Long = 0,
+    val idGroup: Long,
     @field:ColumnInfo(name = "id_category")
     val idCategory: Long,
     @field:ColumnInfo(name = "id_shop")
@@ -26,7 +26,7 @@ data class TargetEntity(
     @field:ColumnInfo(name = "id_currency_last")
     val idCurrencyLast: Long? = null,
     @field:ColumnInfo(name = "id_user_creator")
-    val idCreator: Long? = null,
+    val idCreator: Long,
     @field:ColumnInfo(name = "id_user_buyer")
     val idBuyer: Long? = null,
     @field:ColumnInfo(name = "date_first")

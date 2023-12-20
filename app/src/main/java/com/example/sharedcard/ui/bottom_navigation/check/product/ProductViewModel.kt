@@ -8,22 +8,28 @@ import androidx.lifecycle.switchMap
 import com.example.sharedcard.SharedCardApp
 import com.example.sharedcard.database.entity.check.Check
 import com.example.sharedcard.repository.CheckRepository
+import com.example.sharedcard.repository.QueryPreferences
 
 class ProductViewModel(application: Application) : AndroidViewModel(application) {
     private val checkRepository: CheckRepository
-    private val accountId: Long
+    private val queryPreferences: QueryPreferences
+    private val userId: Long
+        get() = queryPreferences.userId
+    private val groupId: Long
+        get() = queryPreferences.groupId
+    val quickDelete: Boolean
+        get() = queryPreferences.quickDelete
     val checkItemLiveData: LiveData<List<Check>>
     private val mutableSearch = MutableLiveData<String>()
-
     init {
-        accountId = (application as SharedCardApp).getQueryPreferences().userId
+        queryPreferences = (application as SharedCardApp).getQueryPreferences()
         checkRepository = application.getProductRepository()
         mutableSearch.value = ""
         checkItemLiveData = mutableSearch.switchMap { query ->
             if (query.isBlank()) {
-                checkRepository.getAllCheck()
+                checkRepository.getAllCheck(groupId)
             } else {
-                checkRepository.getAllQuery(query = query)
+                checkRepository.getAllQuery(groupId,query)
             }
         }
     }
@@ -36,5 +42,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     fun setQuery(query: String) {
         mutableSearch.value = query
     }
-
+    fun deleteCheck(id: Long) {
+        checkRepository.delete(id)
+    }
 }

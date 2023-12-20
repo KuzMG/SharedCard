@@ -10,6 +10,9 @@ interface ShopDao {
     @Insert
     fun add(entity: List<ShopEntity>)
 
-    @Query("select * from shop")
-    fun getAll(): LiveData<List<ShopEntity>>
+    @Query("select * from shop where status = 1")
+    fun getAllProduct(): LiveData<List<ShopEntity>>
+
+    @Query("select * from shop where status = 0")
+    fun getAllTarget(): LiveData<List<ShopEntity>>
 }

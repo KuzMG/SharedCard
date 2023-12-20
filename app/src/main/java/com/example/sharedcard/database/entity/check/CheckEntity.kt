@@ -10,13 +10,12 @@ data class CheckEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo("id_check")
     val idCheck: Long? = null,
-    @field:ColumnInfo("id_product_thing")
-    val idProductThing: Long,
-    val flag: Boolean,
+    @field:ColumnInfo("id_product")
+    val idProduct: Long,
     val description: String,
     val status: Int = 0,
     @field:ColumnInfo("id_group")
-    val idGroup: Long = 0,
+    val idGroup: Long,
     @field:ColumnInfo("id_shop")
     val idShop: Long? = null,
     val price: Int = 0,
@@ -26,7 +25,7 @@ data class CheckEntity(
     @field:ColumnInfo("id_currency")
     val idCurrency: Long? = null,
     @field:ColumnInfo("id_user_creator")
-    val idCreator: Long? = null,
+    val idCreator: Long,
     @field:ColumnInfo("id_user_buyer")
     val idBuyer: Long? = null,
     @field:ColumnInfo(name = "date_first")

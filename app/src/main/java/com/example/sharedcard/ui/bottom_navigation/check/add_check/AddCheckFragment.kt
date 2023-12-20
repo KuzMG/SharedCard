@@ -1,5 +1,4 @@
-package com.example.sharedcard.ui.bottom_navigation.check.add_item
-
+package com.example.sharedcard.ui.bottom_navigation.check.add_check
 
 
 import android.os.Bundle
@@ -11,23 +10,25 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import android.widget.BaseAdapter
+import android.widget.Filter
+import android.widget.Filterable
+import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
-import com.example.sharedcard.databinding.DialogFragmentAddItemBinding
+import com.example.sharedcard.database.entity.product.ProductEntity
+import com.example.sharedcard.databinding.DialogFragmentAddCheckBinding
+import com.example.sharedcard.ui.bottom_navigation.check.array_adapter.ProductArrayAdapter
 
 
-class AddItemFragment : DialogFragment() {
-    private lateinit var binding: DialogFragmentAddItemBinding
-    private val viewModel: AddItemViewModel by viewModels()
+class AddCheckFragment : DialogFragment() {
+    private lateinit var binding: DialogFragmentAddCheckBinding
+    private val viewModel: AddCheckViewModel by viewModels()
 
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.page = requireArguments().getInt(KEY_PAGE)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +38,7 @@ class AddItemFragment : DialogFragment() {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-                R.layout.dialog_fragment_add_item,
+                R.layout.dialog_fragment_add_check,
                 container,
                 false
             )
@@ -46,28 +47,6 @@ class AddItemFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        when (viewModel.page) {
-            0 -> {
-                binding.dialogAddTextView.text = getString(R.string.dialog_add_product)
-                binding.dialogNameEditText.hint = getString(R.string.dialog_add_text_hint_porduct)
-                binding.dialogCountEditView.hint =
-                    getString(R.string.dialog_add_text_hint_count)
-            }
-
-            1 -> {
-                binding.dialogAddTextView.text = getString(R.string.dialog_add_target)
-                binding.dialogNameEditText.hint = getString(R.string.dialog_add_text_hint_target)
-                binding.dialogCountEditView.hint =
-                    getString(R.string.dialog_add_text_hint_price)
-            }
-        }
-//        viewModel.getCategory().observe(this) { categories ->
-//            binding.dialogCategorySpinner.adapter = ArrayAdapter(
-//                requireContext(),
-//                android.R.layout.simple_spinner_dropdown_item,
-//                categories
-//            )
-//        }
         viewModel.getMetric().observe(this) { metric ->
             binding.dialogMetricSpinner.adapter = ArrayAdapter(
                 requireContext(),
@@ -83,7 +62,14 @@ class AddItemFragment : DialogFragment() {
         binding.dialogNameEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                viewModel.name = p0.toString()
+                viewModel.getProducts(p0.toString()).observe(viewLifecycleOwner) { products ->
+                    if(products.size == 1 && products[0].name == p0.toString()){
+                        viewModel.product = products[0]
+                    } else{
+                        viewModel.product = null
+                    }
+                    binding.dialogNameEditText.setAdapter(ProductArrayAdapter(products))
+                }
             }
 
             override fun afterTextChanged(p0: Editable?) {}
@@ -91,32 +77,37 @@ class AddItemFragment : DialogFragment() {
         binding.dialogCountEditView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                viewModel.count = p0.toString().toInt()
+                 viewModel.count = when(p0.toString()){
+                    "" -> 1
+                    else -> p0.toString().toInt()
+                }
             }
 
             override fun afterTextChanged(p0: Editable?) {}
         })
         binding.dialogMetricSpinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                viewModel.metric = p3+1
+                viewModel.metric = p3 + 1
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
-//        binding.dialogAddButton.setOnClickListener {
-//            viewModel.add()
-//            dismiss()
-//        }
-    }
+        binding.dialogDescriptionEditView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                viewModel.description = p0.toString()
+            }
 
-    companion object {
-        const val KEY_PAGE = "page"
-        fun newInstance(page: Int): AddItemFragment {
-            val dialog = AddItemFragment()
-            val args = Bundle()
-            args.putInt(KEY_PAGE, page)
-            dialog.arguments = args
-            return dialog
+            override fun afterTextChanged(p0: Editable?) {}
+        })
+        binding.dialogAddButton.setOnClickListener {
+            when(viewModel.check()){
+                1 -> Toast.makeText(requireContext(),"Некорректное имя продукта!",Toast.LENGTH_SHORT).show()
+                2 -> {
+                    viewModel.add()
+                    dismiss()
+                }
+            }
         }
     }
 }

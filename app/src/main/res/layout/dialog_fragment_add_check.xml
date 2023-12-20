@@ -16,18 +16,19 @@
             android:layout_margin="5dp"
             android:textSize="20sp"
             android:layout_gravity="center_horizontal"
-            tools:text="@string/dialog_add_product" />
+            android:text="@string/dialog_add_product" />
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
             android:id="@+id/dialog_name_edit_text"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:hint="@string/dialog_add_text_hint_porduct"
+            android:completionThreshold="1"
             android:background="@drawable/search_bar"
             android:inputType="text"
             android:padding="5dp"
-            android:textSize="18sp"
-            tools:hint="@string/dialog_add_text_hint_porduct" />
+            android:textSize="18sp" />
 
 
 
@@ -46,7 +47,7 @@
                 android:background="@drawable/search_bar"
                 android:inputType="number"
                 android:padding="5dp"
-                tools:hint="@string/dialog_add_text_hint_count" />
+                android:hint="@string/dialog_add_text_hint_count" />
 
             <Spinner
                 android:id="@+id/dialog_metric_spinner"
@@ -60,11 +61,13 @@
                 android:popupBackground="@color/light_green_2" />
 
         </LinearLayout>
+
         <EditText
+            android:id="@+id/dialog_description_edit_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="комментарий"
-            android:background="@drawable/search_bar"/>
+            android:background="@drawable/search_bar"
+            android:hint="@string/dialog_add_item_comment" />
 
         <Button
             android:id="@+id/dialog_add_button"

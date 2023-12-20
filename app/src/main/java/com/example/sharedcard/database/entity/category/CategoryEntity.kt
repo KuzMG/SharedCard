@@ -3,9 +3,13 @@ package com.example.sharedcard.database.entity.category
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "category")
+@Entity(
+    tableName = "category",
+    primaryKeys = arrayOf("id")
+)
 class CategoryEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
-    val name: String
+    val id: Long,
+    val name: String,
+    val name_en: String,
+    val status: Boolean
 )

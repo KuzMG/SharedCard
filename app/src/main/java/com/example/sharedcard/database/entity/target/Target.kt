@@ -5,11 +5,10 @@ import java.util.Date
 data class Target(
     val id: Long,
     val name: String,
-    val status: Int,
     val category: String,
-    private val price: Int,
+    val price: Int,
     private val currency: String,
-    val creator: String? = null,
+    val creator: String,
     private val dateFirst: Long
 ) {
     val priceList: String

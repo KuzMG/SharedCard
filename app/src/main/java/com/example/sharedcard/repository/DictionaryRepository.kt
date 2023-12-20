@@ -13,10 +13,10 @@ class DictionaryRepository private constructor(database: AppDatabase) {
     private val currencyDao= database.currencyDao()
     private val productDao = database.productDao()
 
-    fun getAllShopsProduct(): LiveData<List<ShopEntity>> = shopDao.getAll()
-
-    fun getAllCategories(): LiveData<List<CategoryEntity>> = categoryDao.getAll()
-
+    fun getAllShopsProduct(): LiveData<List<ShopEntity>> = shopDao.getAllProduct()
+    fun getAllShopsTarget(): LiveData<List<ShopEntity>> = shopDao.getAllTarget()
+    fun getAllCategoriesProduct(): LiveData<List<CategoryEntity>> = categoryDao.getAllProduct()
+    fun getAllCategoriesTarget(): LiveData<List<CategoryEntity>> = categoryDao.getAllTarget()
 
     fun getAllMetrics(): LiveData<List<String>> = metricDao.getAll().map { list ->
         list.map { metric ->
@@ -33,7 +33,7 @@ class DictionaryRepository private constructor(database: AppDatabase) {
 
     fun getProductById(id: Long) = productDao.getAllById(id)
 
-    fun getProductByQuery(query: String) = productDao.getAllByQuery("$query%")
+    fun getProductByQuery(query: String) = productDao.getAllByQuery("%$query%")
 
     companion object {
         private var nRepository: DictionaryRepository? = null

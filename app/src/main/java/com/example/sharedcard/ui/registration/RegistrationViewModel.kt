@@ -66,7 +66,11 @@ class RegistrationViewModel(
     }
 
     fun create(){
-
+        queryPreferences.apply {
+            userId = 1
+            groupId =1
+            isLocal = true
+        }
     }
 
 //    private fun getUserId() {

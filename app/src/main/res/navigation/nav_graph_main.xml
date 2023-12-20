@@ -21,7 +21,11 @@
         android:id="@+id/navigationFragment"
         android:name="com.example.sharedcard.ui.bottom_navigation.NavigationFragment"
         android:label="NavigationFragment"
-        tools:layout="@layout/fragment_navigation"/>
+        tools:layout="@layout/fragment_navigation">
+        <action
+            android:id="@+id/action_navigationFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/authorizationFragment"
         android:name="com.example.sharedcard.ui.authorization.AuthorizationFragment"
@@ -44,4 +48,9 @@
         android:name="com.example.sharedcard.ui.change_password.ChangePasswordFragment"
         android:label="ChangePasswordFragment"
         tools:layout="@layout/fragment_change_password"/>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.sharedcard.ui.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

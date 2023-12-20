@@ -4,10 +4,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "metric"
+    tableName = "metric",
+    primaryKeys = arrayOf("id")
 )
 data class MetricEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
-    val name: String
+    val id: Long,
+    val name: String,
+    val name_en: String
 )

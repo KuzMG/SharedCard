@@ -22,14 +22,24 @@ class CheckRepository private constructor(database: AppDatabase) {
     private val checkDao = database.checkDao()
 
     fun getAllCheck(
-        id: Long = 0
+        id: Long
     ) = checkDao.getAllForCheck(id)
 
 
     fun getAllQuery(
-        id: Long = 0,
+        id: Long,
         query: String
     ) = checkDao.getAllForCheckQuery(id, "$query%")
+
+    fun getAllHistory(
+        id: Long
+    ) = checkDao.getAllForHistory(id)
+
+
+    fun getAllHistoryQuery(
+        id: Long,
+        query: String
+    ) = checkDao.getAllForHistoryQuery(id, "$query%")
 
 
     fun add(product: CheckEntity) {
@@ -50,7 +60,7 @@ class CheckRepository private constructor(database: AppDatabase) {
         }
     }
 
-    fun toHistory(id: Long, idShop: Long, price: Int, idCurrency: Long, idUser: Long? = null) {
+    fun toHistory(id: Long, idShop: Long, price: Int, idCurrency: Long, idUser: Long) {
         executor.execute {
             checkDao.toHistory(id,idShop,price,idCurrency,idUser, Date().time)
         }

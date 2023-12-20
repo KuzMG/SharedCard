@@ -4,11 +4,12 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "product")
+@Entity(tableName = "product",
+    primaryKeys = arrayOf("id"))
 data class ProductEntity(
-    @PrimaryKey(autoGenerate = true)
     val id: Long,
     val name: String,
+    val name_en: String,
     val fat: Double?,
     val protein: Double?,
     val carb: Double?,

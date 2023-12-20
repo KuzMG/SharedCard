@@ -8,18 +8,20 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.sharedcard.R
 import com.example.sharedcard.database.entity.check.Check
+import com.example.sharedcard.databinding.ListItemCheckBinding
 import com.example.sharedcard.ui.bottom_navigation.check.check_list.CheckListFragment
 import com.example.sharedcard.ui.bottom_navigation.check.check_list.CustomSwipeCallback
-import com.example.sharedcard.ui.bottom_navigation.check.check_list.ListAdapterGeneral
-import com.example.sharedcard.ui.bottom_navigation.check.check_list.ViewHolderGeneral
-import com.example.sharedcard.ui.bottom_navigation.check.dialog.DeleteItemFragment
-import com.example.sharedcard.ui.bottom_navigation.check.dialog.ToHistoryFragment
+import com.example.sharedcard.ui.bottom_navigation.check.delete_item.DeleteItemFragment
+import com.example.sharedcard.ui.bottom_navigation.check.to_history.ToHistoryFragment
 
 
 private const val DATE_FORMAT = "MM.dd HH:mm"
@@ -76,14 +78,18 @@ class ProductFragment : CheckListFragment() {
         }
         val itemTouchHelper = ItemTouchHelper(object : CustomSwipeCallback() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val product = (viewHolder as ProductHolder).item
+                val product = (viewHolder as ProductHolder).check
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
-                        DeleteItemFragment.apply {
-                            newInstance(0, product.id, product.name)
-                                .show(childFragmentManager, DIALOG_DELETE)
+                        if(viewModel.quickDelete){
+                            viewModel.deleteCheck(product.id)
+                        } else {
+                            DeleteItemFragment.apply {
+                                newInstance(0, product.id, product.name)
+                                    .show(childFragmentManager, DIALOG_DELETE)
+                            }
+                            productListAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
                         }
-
                     }
 
                     ItemTouchHelper.RIGHT -> {
@@ -91,9 +97,10 @@ class ProductFragment : CheckListFragment() {
                             newInstance(0, product.id, product.name)
                                 .show(childFragmentManager, DIALOG_TO_HISTORY)
                         }
+                        productListAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
                     }
                 }
-                productListAdapter.notifyItemChanged(viewHolder.absoluteAdapterPosition)
+
             }
 
         })
@@ -103,7 +110,7 @@ class ProductFragment : CheckListFragment() {
 
     private fun showPopupMenu(v: View) {
         val popupMenu = PopupMenu(requireContext(), v)
-        popupMenu.inflate(R.menu.popup_menu)
+        popupMenu.inflate(R.menu.popup_menu_check)
         popupMenu
             .setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
                 override fun onMenuItemClick(item: MenuItem): Boolean {
@@ -132,42 +139,47 @@ class ProductFragment : CheckListFragment() {
     }
 
 
-    private inner class ProductHolder(itemView: View) : ViewHolderGeneral(itemView) {
-        lateinit var item: Check
+    private inner class ProductHolder(val binding: ListItemCheckBinding) :
+        ViewHolder(binding.root),View.OnClickListener {
+        lateinit var check: Check
 
-        fun onBind(item: Check) {
-            this.item = item
-            checkBox.apply {
-                isChecked = when (item.status) {
-                    0 -> false
-                    1 -> true
-                    else -> throw IndexOutOfBoundsException()
+        fun onBind(check: Check) {
+            this.check = check
+            binding.apply {
+                this.check = check
+                categoryTextView.text = getString(R.string.category, check.category)
+                dateTextView.text = DateFormat.format(localDateFormat, check.date)
+                checkBox.setOnClickListener {
+                        viewModel.setCheckBox(check.id, checkBox.isChecked)
+                        binding.info.visibility = View.GONE
                 }
-                setOnClickListener {
-                    viewModel.setCheckBox(item.id, isChecked)
-                }
+                infoImageButton.setOnClickListener(this@ProductHolder)
             }
-            nameTextView.text = item.name
-            categoryTextView.text = item.category
-            quantityPriceTextView.text = item.quantity
-            userTextView.text = item.user
-            dateTextView.text = DateFormat.format(localDateFormat, item.date)
+        }
+
+        override fun onClick(v: View?) {
+            if(binding.info.visibility == View.GONE) {
+                binding.info.visibility = View.VISIBLE
+            } else {
+                binding.info.visibility = View.GONE
+            }
         }
     }
 
-    private inner class ProductListAdapter : ListAdapterGeneral<Check>(
+    private inner class ProductListAdapter() : ListAdapter<Check, ProductHolder>(
         diffUtilCheck
     ) {
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
-        ): ViewHolderGeneral {
-            val view = super.onCreateViewHolder(parent, viewType).itemView
-            return ProductHolder(view)
-        }
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ProductHolder(
+            DataBindingUtil.inflate(
+                layoutInflater,
+                R.layout.list_item_check,
+                parent,
+                false
+            )
+        )
 
-        override fun onBindViewHolder(holder: ViewHolderGeneral, position: Int) {
-            (holder as ProductHolder).onBind(getItem(position))
+        override fun onBindViewHolder(holder: ProductHolder, position: Int) {
+            holder.onBind(getItem(position))
         }
 
         private var flag1 = false

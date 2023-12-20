@@ -12,15 +12,19 @@ data class Check(
     private val count: Int,
     private val metric: String,
     val user: String,
+    val idUser: Long,
+    val description: String,
     @ColumnInfo("date_first")
     private val dateFirst: Long,
-    val calory: Int?,
-    val fat: Int?,
-    val carb: Int?,
-    val protein: Int?
+    val calorie: Int?,
+    val fat: Double?,
+    val carb: Double?,
+    val protein: Double?
 ) {
     val quantity: String
         get() = "$count $metric"
+    val pfc: String
+        get() = "$calorie/$protein/$fat/$carb"
     val date: Date
         get() = Date(dateFirst)
 }

@@ -11,10 +11,11 @@ import com.example.sharedcard.R
 import com.example.sharedcard.SharedCardApp
 import com.example.sharedcard.databinding.ActivityMainBinding
 import com.example.sharedcard.ui.authorization.AuthorizationFragment
+import com.example.sharedcard.ui.bottom_navigation.NavigationFragment
 import com.example.sharedcard.ui.change_password.ChangePasswordFragment
 import com.example.sharedcard.ui.registration.RegistrationFragment
 
-class MainActivity : AppCompatActivity(), AuthorizationFragment.Callbacks, RegistrationFragment.Callbacks , ChangePasswordFragment.Callbacks{
+class MainActivity : AppCompatActivity(), AuthorizationFragment.Callbacks, RegistrationFragment.Callbacks , ChangePasswordFragment.Callbacks, NavigationFragment.Callbacks{
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var navHostFragment: NavHostFragment
@@ -58,5 +59,9 @@ class MainActivity : AppCompatActivity(), AuthorizationFragment.Callbacks, Regis
 
     override fun onChangePasswordToAuthorizationFragment() {
         navController.popBackStack()
+    }
+
+    override fun onNavigationToSettingsFragment() {
+        navController.navigate(R.id.action_navigationFragment_to_settingsFragment)
     }
 }

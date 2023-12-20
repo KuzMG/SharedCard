@@ -48,9 +48,6 @@ class GroupFragment : Fragment() {
 //        viewModel.createUser()
 //        viewModel.createGroupUsers()
 
-        viewModel.getUser().observe(viewLifecycleOwner) { user ->
-            binding.groupUserNameTextView.text = user.name
-        }
         viewModel.getGroups().observe(viewLifecycleOwner) { groups ->
             expandableListAdapter.submitData(groups)
         }

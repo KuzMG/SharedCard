@@ -3,9 +3,15 @@ package com.example.sharedcard.ui.bottom_navigation
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
@@ -16,9 +22,11 @@ import com.example.sharedcard.ui.MainActivity
 import com.example.sharedcard.ui.bottom_navigation.check.CheckFragment
 
 class NavigationFragment : Fragment() {
-    private lateinit var binding: FragmentNavigationBinding
+    interface Callbacks {
+        fun onNavigationToSettingsFragment()
+    }
 
-    private lateinit var viewModel: NavigationViewModel
+    private lateinit var binding: FragmentNavigationBinding
     private lateinit var navController: NavController
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +46,28 @@ class NavigationFragment : Fragment() {
 
         binding.bottomNavigation.setupWithNavController(navController)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object: MenuProvider{
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.settings_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.settings -> {
+                        (requireActivity() as MainActivity).onNavigationToSettingsFragment()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+
+        }, viewLifecycleOwner, Lifecycle.State.CREATED)
     }
 
     override fun onStart() {

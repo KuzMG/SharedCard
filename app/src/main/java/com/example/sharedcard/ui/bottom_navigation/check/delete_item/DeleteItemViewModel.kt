@@ -1,4 +1,4 @@
-package com.example.sharedcard.ui.bottom_navigation.check.dialog
+package com.example.sharedcard.ui.bottom_navigation.check.delete_item
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

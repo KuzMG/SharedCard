@@ -27,8 +27,8 @@
 
 <!--    Группы в профиле-->
     <string name="group_label">Группы</string>
-    
-    
+
+
     <!--   ЧЕК -->
     <!--   страницы в чеке -->
     <string name="tab_product">продукты</string>
@@ -52,6 +52,7 @@
     <string name="dialog_add_text_hint_count">Кол-во</string>
     <string name="dialog_add_text_hint_price">Цена</string>
     <string name="dialog_add">Добавить</string>
+    <string name="dialog_add_item_comment">комментарий</string>
 
     <!--   диалог удалени -->
     <string name="dialog_delete">Вы уверены, что хотите удалить %1$s?</string>
@@ -62,11 +63,18 @@
     <string name="dialog_to_history_product">Продукт %1$s</string>
     <string name="dialog_to_history_target">Цель %1$s</string>
 
+
+
     <!--   ячейка продукта -->
-    <string name="list_item_product_protein">Белки: %1$s</string>
-    <string name="list_item_product_fat">Жиры: %1$s</string>
-    <string name="list_item_product_carb">Углеводы: %1$s</string>
-    <string name="list_item_product_calorie">Калории: %1$s</string>
-    <string name="list_item_product_kj">кДж: %1$s</string>
     <string name="recipe">рецепты</string>
+    <string name="pfc">к/б/ж/у</string>
+
+    <string name="category">Категория: %1$s</string>
+    <string name="shop">Магазин: %1$s</string>
+    <string name="first_price">Изначальная цена: %1$s</string>
+
+
+    <!--    Настройки-->
+    <string name="settings">Настройки</string>
+    <string name="settings_delete_swipe">быстрое удаление</string>
 </resources>

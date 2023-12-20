@@ -22,15 +22,23 @@ class TargetRepository private constructor(database: AppDatabase) {
     private val targetDao = database.targetDao()
 
     fun getAllCheck(
-        id: Long = 0
+        id: Long
     ) = targetDao.getAllForCheck(id)
 
 
     fun getAllQuery(
-        id: Long = 0,
+        id: Long,
         query: String
     ) = targetDao.getAllForCheckQuery(id, "$query%")
 
+    fun getAllHistory(
+        id: Long
+    ) = targetDao.getAllForHistory(id)
+
+    fun getAllHistoryQuery(
+        id: Long,
+        query: String
+    ) = targetDao.getAllForHistoryQuery(id, "$query%")
 
     fun add(target: TargetEntity) {
         executor.execute {
@@ -44,15 +52,15 @@ class TargetRepository private constructor(database: AppDatabase) {
         }
     }
 
-    fun delete(id: Long){
-        executor.execute{
+    fun delete(id: Long) {
+        executor.execute {
             targetDao.delete(id)
         }
     }
 
-    fun toHistory(id: Long, idShop: Long, price: Int, idCurrency: Long, idUser: Long? = null) {
+    fun toHistory(id: Long, idShop: Long, price: Int, idCurrency: Long, idUser: Long) {
         executor.execute {
-            targetDao.toHistory(id,idShop,price,idCurrency,idUser, Date().time)
+            targetDao.toHistory(id, idShop, price, idCurrency, idUser, Date().time)
         }
     }
 }

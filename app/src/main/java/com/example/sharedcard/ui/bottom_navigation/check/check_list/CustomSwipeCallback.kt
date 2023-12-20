@@ -18,9 +18,9 @@ abstract class CustomSwipeCallback : ItemTouchHelper.Callback() {
         target: RecyclerView.ViewHolder
     ) = false
 
-    override fun getSwipeVelocityThreshold(defaultValue: Float) = defaultValue / 5
-
-    override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder) = 0.1f
+//    override fun getSwipeVelocityThreshold(defaultValue: Float) = defaultValue / 5
+//
+//    override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder) = 0.1f
 
 
     override fun onChildDraw(

@@ -11,6 +11,6 @@ class ManualViewModel(application: Application) : AndroidViewModel(application) 
         dictionaryRepository = (application as SharedCardApp).getDictionaryRepository()
     }
 
-    fun getCategories() = dictionaryRepository.getAllCategories()
+    fun getCategories() = dictionaryRepository.getAllCategoriesProduct()
 
 }
