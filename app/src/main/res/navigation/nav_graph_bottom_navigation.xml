@@ -22,11 +22,6 @@
             android:label="fragment_statistic"
             tools:layout="@layout/fragment_statistic" />
         <fragment
-            android:id="@+id/groupFragment"
-            android:name="com.example.sharedcard.ui.bottom_navigation.group.GroupFragment"
-            android:label="fragment_group"
-            tools:layout="@layout/fragment_group" />
-        <fragment
             android:id="@+id/productListFragment"
             android:name="com.example.sharedcard.ui.bottom_navigation.manual.product_list.ProductListFragment"
             android:label="ProductListFragment"
@@ -44,4 +39,9 @@
                     android:id="@+id/action_manualFragment_to_productListFragment"
                     app:destination="@id/productListFragment" />
         </fragment>
+        <fragment
+            android:id="@+id/groupFragment"
+            android:name="com.example.sharedcard.ui.bottom_navigation.group.GroupFragment"
+            android:label="GroupFragment"
+            tools:layout="@layout/fragment_group"/>
 </navigation>

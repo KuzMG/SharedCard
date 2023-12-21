@@ -3,6 +3,7 @@ package com.example.sharedcard.repository
 import com.example.sharedcard.database.AppDatabase
 import com.project.shared_card.database.dao.target.TargetEntity
 import java.util.Date
+import java.util.UUID
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -22,21 +23,21 @@ class TargetRepository private constructor(database: AppDatabase) {
     private val targetDao = database.targetDao()
 
     fun getAllCheck(
-        id: Long
+        id: UUID
     ) = targetDao.getAllForCheck(id)
 
 
     fun getAllQuery(
-        id: Long,
+        id: UUID,
         query: String
     ) = targetDao.getAllForCheckQuery(id, "$query%")
 
     fun getAllHistory(
-        id: Long
+        id: UUID
     ) = targetDao.getAllForHistory(id)
 
     fun getAllHistoryQuery(
-        id: Long,
+        id: UUID,
         query: String
     ) = targetDao.getAllForHistoryQuery(id, "$query%")
 
@@ -46,19 +47,19 @@ class TargetRepository private constructor(database: AppDatabase) {
         }
     }
 
-    fun setStatus(id: Long, status: Int) {
+    fun setStatus(id: UUID, status: Int) {
         executor.execute {
             targetDao.uprateStatus(id, status)
         }
     }
 
-    fun delete(id: Long) {
+    fun delete(id: UUID) {
         executor.execute {
             targetDao.delete(id)
         }
     }
 
-    fun toHistory(id: Long, idShop: Long, price: Int, idCurrency: Long, idUser: Long) {
+    fun toHistory(id: UUID, idShop: Long, price: Int, idCurrency: Long, idUser: UUID) {
         executor.execute {
             targetDao.toHistory(id, idShop, price, idCurrency, idUser, Date().time)
         }

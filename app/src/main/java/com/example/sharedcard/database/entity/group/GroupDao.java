@@ -8,6 +8,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import java.util.List;
+import java.util.UUID;
 
 @Dao
 public interface GroupDao {
@@ -15,11 +16,10 @@ public interface GroupDao {
     void createGroup(GroupEntity group);
     @Insert
     void createGroups(List<GroupEntity> groups);
-    @Query("SELECT * FROM `group` where id_group>0")
-    LiveData<List<GroupEntity>> getALLGroup();
+
 
     @Query("select * from `group` where id_group=:id")
-    LiveData<GroupEntity> getGroupById(Long id);
+    LiveData<GroupEntity> getGroup(UUID id);
     @Update
     void update(GroupEntity entity);
 }

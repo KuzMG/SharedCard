@@ -4,15 +4,16 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
+import java.util.UUID
 
 @Entity(tableName = "target")
 data class TargetEntity(
-    @field:PrimaryKey(autoGenerate = true)
-    val id: Long? = null,
+    @field:PrimaryKey()
+    val id: UUID = UUID.randomUUID(),
     val name: String,
     val status: Int = 0,
     @field:ColumnInfo(name = "id_group")
-    val idGroup: Long,
+    val idGroup: UUID,
     @field:ColumnInfo(name = "id_category")
     val idCategory: Long,
     @field:ColumnInfo(name = "id_shop")
@@ -26,9 +27,9 @@ data class TargetEntity(
     @field:ColumnInfo(name = "id_currency_last")
     val idCurrencyLast: Long? = null,
     @field:ColumnInfo(name = "id_user_creator")
-    val idCreator: Long,
+    val idCreator: UUID,
     @field:ColumnInfo(name = "id_user_buyer")
-    val idBuyer: Long? = null,
+    val idBuyer: UUID? = null,
     @field:ColumnInfo(name = "date_first")
     val dateFirst: Long = Date().time,
     @field:ColumnInfo(name = "date_last")

@@ -55,15 +55,20 @@
     <string name="dialog_add_item_comment">комментарий</string>
 
     <!--   диалог удалени -->
-    <string name="dialog_delete">Вы уверены, что хотите удалить %1$s?</string>
-
+    <string name="dialog_delete_item">Вы уверены, что хотите удалить %1$s?</string>
+    <string name="dialog_delete_group">Вы уверены, что хотите удалить группу %1$s?</string>
     <!--   диалог добавления в историю -->
     <string name="dialog_to_history_price">Цена</string>
     <string name="dialog_to_history_button">В Архив</string>
     <string name="dialog_to_history_product">Продукт %1$s</string>
     <string name="dialog_to_history_target">Цель %1$s</string>
 
-
+    <!--   диалог группы -->
+    <string name="dialog_edit_group_name">Название группы</string>
+    <string name="dialog_edit_button">Изменить</string>
+    <string name="dialog_create_group_button">Создать</string>
+    <string name="dialog_join_group_token">Введите токен</string>
+    <string name="dialog_join_group_button">Присоединиться</string>
 
     <!--   ячейка продукта -->
     <string name="recipe">рецепты</string>
@@ -77,4 +82,7 @@
     <!--    Настройки-->
     <string name="settings">Настройки</string>
     <string name="settings_delete_swipe">быстрое удаление</string>
+
+
+
 </resources>

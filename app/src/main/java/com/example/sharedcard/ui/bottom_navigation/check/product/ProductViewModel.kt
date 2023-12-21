@@ -9,13 +9,12 @@ import com.example.sharedcard.SharedCardApp
 import com.example.sharedcard.database.entity.check.Check
 import com.example.sharedcard.repository.CheckRepository
 import com.example.sharedcard.repository.QueryPreferences
+import java.util.UUID
 
 class ProductViewModel(application: Application) : AndroidViewModel(application) {
     private val checkRepository: CheckRepository
     private val queryPreferences: QueryPreferences
-    private val userId: Long
-        get() = queryPreferences.userId
-    private val groupId: Long
+    private val groupId: UUID
         get() = queryPreferences.groupId
     val quickDelete: Boolean
         get() = queryPreferences.quickDelete
@@ -34,7 +33,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun setCheckBox(id: Long, isChecked: Boolean) {
+    fun setCheckBox(id: UUID, isChecked: Boolean) {
         val status = if (isChecked) 1 else 0
         checkRepository.setStatus(id, status)
     }
@@ -42,7 +41,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     fun setQuery(query: String) {
         mutableSearch.value = query
     }
-    fun deleteCheck(id: Long) {
+    fun deleteCheck(id: UUID) {
         checkRepository.delete(id)
     }
 }

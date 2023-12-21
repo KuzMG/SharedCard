@@ -14,12 +14,22 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.NavigationUiSaveStateControl
 import androidx.navigation.ui.setupWithNavController
 import com.example.sharedcard.R
 import com.example.sharedcard.databinding.FragmentNavigationBinding
 import com.example.sharedcard.ui.MainActivity
 import com.example.sharedcard.ui.bottom_navigation.check.CheckFragment
+import com.example.sharedcard.ui.bottom_navigation.group.GroupFragment
+import com.example.sharedcard.ui.bottom_navigation.history.HistoryFragment
+import com.example.sharedcard.ui.bottom_navigation.manual.ManualFragment
+import com.example.sharedcard.ui.bottom_navigation.statistic.StatisticFragment
+import com.example.sharedcard.ui.bottom_navigation.statistic.StatisticViewModel
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class NavigationFragment : Fragment() {
     interface Callbacks {
@@ -38,12 +48,12 @@ class NavigationFragment : Fragment() {
             container,
             false
         )
+        binding.bottomNavigation.selectedItemId = R.id.checkFragment
 
 
         val navHostFragment =
             childFragmentManager.findFragmentById(R.id.nav_host_fragment_bottom_navigation) as NavHostFragment
         navController = navHostFragment.navController
-
         binding.bottomNavigation.setupWithNavController(navController)
         return binding.root
     }
@@ -72,6 +82,8 @@ class NavigationFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+
+
         navController.addOnDestinationChangedListener(object :
             NavController.OnDestinationChangedListener {
             override fun onDestinationChanged(

@@ -10,26 +10,23 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import android.widget.BaseAdapter
-import android.widget.Filter
-import android.widget.Filterable
-import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
-import com.example.sharedcard.database.entity.product.ProductEntity
-import com.example.sharedcard.databinding.DialogFragmentAddCheckBinding
-import com.example.sharedcard.databinding.DialogFragmentAddTargetBinding
+import com.example.sharedcard.databinding.FragmentAddTargetBinding
 import com.example.sharedcard.ui.bottom_navigation.check.array_adapter.CategoryArrayAdapter
 
 
 class AddTargetFragment : DialogFragment() {
-    private lateinit var binding: DialogFragmentAddTargetBinding
+
+    private lateinit var binding: FragmentAddTargetBinding
     private val viewModel: AddTargetViewModel by viewModels()
 
-
+    companion object{
+        const val DIALOG_ADD = "dialogAdd"
+    }
 
 
     override fun onCreateView(
@@ -40,7 +37,7 @@ class AddTargetFragment : DialogFragment() {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-                R.layout.dialog_fragment_add_target,
+                R.layout.fragment_add_target,
                 container,
                 false
             )

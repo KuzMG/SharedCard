@@ -16,11 +16,11 @@ import com.example.sharedcard.ui.bottom_navigation.check.product.ProductFragment
 import com.example.sharedcard.ui.bottom_navigation.check.target.TargetFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
-private const val DIALOG_ADD = "dialogAdd"
+
 
 class CheckFragment : Fragment() {
 
-    //    private val viewModel: CheckViewModel by viewModels()
+
     private lateinit var binding: FragmentCheckBinding
 
 
@@ -58,14 +58,13 @@ class CheckFragment : Fragment() {
 
         binding.searchButton.setOnClickListener {
             when (binding.checkPager.currentItem) {
-                0 -> AddCheckFragment()
-                    .show(
+                0 -> AddCheckFragment().show(
                         parentFragmentManager,
-                        DIALOG_ADD
+                        AddCheckFragment.DIALOG_ADD
                     )
                 1 -> AddTargetFragment().show(
                     parentFragmentManager,
-                    DIALOG_ADD
+                    AddTargetFragment.DIALOG_ADD
                 )
             }
 

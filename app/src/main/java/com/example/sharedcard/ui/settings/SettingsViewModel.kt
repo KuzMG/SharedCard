@@ -7,11 +7,12 @@ import androidx.lifecycle.ViewModel
 import com.example.sharedcard.SharedCardApp
 import com.example.sharedcard.repository.GroupUsersRepository
 import com.example.sharedcard.repository.QueryPreferences
+import java.util.UUID
 
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
     private val queryPreferences: QueryPreferences
     private val groupUsersRepository: GroupUsersRepository
-    private val userId: Long
+    private val userId: UUID
     var quickDelete: Boolean
         get() = queryPreferences.quickDelete
         set(value){

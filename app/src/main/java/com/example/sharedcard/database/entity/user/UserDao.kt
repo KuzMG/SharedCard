@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import java.util.UUID
 
 @Dao
 interface UserDao {
@@ -15,7 +16,7 @@ interface UserDao {
     @Insert
     fun createUsers(users: List<UserEntity>)
     @Query("select * from user where id_user = :id")
-    fun get(id: Long): LiveData<UserEntity>
+    fun get(id: UUID): LiveData<UserEntity>
     @Update
     fun update(entity: UserEntity)
 

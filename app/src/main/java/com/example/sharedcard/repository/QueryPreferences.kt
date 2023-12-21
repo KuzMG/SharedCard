@@ -2,6 +2,7 @@ package com.example.sharedcard.repository
 
 import android.content.Context
 import androidx.core.content.edit
+import java.util.UUID
 
 private const val PREF_USER = "user"
 private const val PREF_GROUP = "group"
@@ -12,21 +13,21 @@ private const val PREF_QUICK_DELETE = "quick_delete"
 class QueryPreferences private constructor(context: Context) {
     private val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
-    var userId: Long
-        get() = prefs
-            .getLong(PREF_USER, 0)
+    var userId: UUID
+        get() = UUID.fromString(prefs
+            .getString(PREF_USER, "00000000-0000-0000-0000-000000000000"))
         set(value) {
             prefs.edit {
-                putLong(PREF_USER, value)
+                putString(PREF_USER, value.toString())
             }
         }
 
-    var groupId: Long
-        get() = prefs
-            .getLong(PREF_GROUP, 0)
+    var groupId: UUID
+        get() = UUID.fromString(prefs
+            .getString(PREF_GROUP, "00000000-0000-0000-0000-000000000000"))
         set(value) {
             prefs.edit {
-                putLong(PREF_GROUP, value)
+                putString(PREF_GROUP, value.toString())
             }
         }
 

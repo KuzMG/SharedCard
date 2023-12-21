@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/green">
+
+
+        <EditText
+            android:id="@+id/dialog_to_history_edit_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/search_bar"
+            android:inputType="text"
+            android:hint="@string/dialog_edit_group_name" />
+
+        <Button
+            android:id="@+id/dialog_to_history_add_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/dialog_create_group_button"
+            android:textColor="@color/light_green_2" />
+    </LinearLayout>
+</layout>

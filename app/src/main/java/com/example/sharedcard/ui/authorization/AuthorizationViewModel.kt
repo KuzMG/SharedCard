@@ -30,13 +30,15 @@ class AuthorizationViewModel(application: Application) : AndroidViewModel(applic
     }
 
     fun signIn(){
+        val group = GroupEntity(name = "")
+        val user = UserEntity(name = "Михаил")
         queryPreferences.apply {
-            userId = 1
-            groupId =1
+            userId = user.id
+            groupId =group.id
             isLocal = true
         }
-        groupUsersRepository.createGroup(arrayListOf(GroupEntity(1,"")))
-        groupUsersRepository.createUsers(arrayListOf(UserEntity(1,"Михаил")))
-        groupUsersRepository.createGroupUsers(arrayListOf(GroupUsersEntity(1,1,true)))
+        groupUsersRepository.createGroup(arrayListOf(group))
+        groupUsersRepository.createUsers(arrayListOf(user))
+        groupUsersRepository.createGroupUsers(arrayListOf(GroupUsersEntity(user.id,group.id,true)))
     }
 }

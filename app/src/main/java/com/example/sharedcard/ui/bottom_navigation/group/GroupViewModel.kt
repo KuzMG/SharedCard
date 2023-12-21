@@ -4,16 +4,20 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.example.sharedcard.SharedCardApp
 import com.example.sharedcard.repository.GroupUsersRepository
+import com.example.sharedcard.repository.QueryPreferences
+import java.util.UUID
 
 class GroupViewModel(application: Application) : AndroidViewModel(application) {
+    private val queryPreferences: QueryPreferences
     private val groupUsersRepository: GroupUsersRepository
-    val userId: Long
-    private val groupId: Long
+    val userId: UUID
+        get() = queryPreferences.userId
+    private val groupId: UUID
+        get() = queryPreferences.groupId
 
     init {
-        (application as SharedCardApp).apply {
-            userId = 4// getQueryPreferences().userId
-            groupId = getQueryPreferences().groupId
+       (application as SharedCardApp).apply {
+            queryPreferences = getQueryPreferences()
             groupUsersRepository = getGroupUsersRepository()
         }
     }
@@ -52,5 +56,5 @@ class GroupViewModel(application: Application) : AndroidViewModel(application) {
 //        )
 //        groupUsersRepository.createGroupUsers(groups)
 //    }
-    fun getGroups() = groupUsersRepository.getAllGroup(userId)
+    fun getGroups() = groupUsersRepository.getAllGroups(userId)
 }

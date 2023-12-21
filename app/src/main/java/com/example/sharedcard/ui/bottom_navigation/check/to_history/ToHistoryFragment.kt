@@ -9,28 +9,22 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import android.widget.BaseAdapter
-import android.widget.Filter
-import android.widget.Filterable
-import android.widget.TextView
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
-import com.example.sharedcard.database.entity.product.ProductEntity
-import com.example.sharedcard.database.entity.shop.ShopEntity
-import com.example.sharedcard.databinding.DialogFragmentToHistoryBinding
+import com.example.sharedcard.databinding.FragmentToHistoryBinding
 import com.example.sharedcard.ui.bottom_navigation.check.array_adapter.ShopArrayAdapter
+import java.util.UUID
 
 class ToHistoryFragment : DialogFragment() {
 
-    private lateinit var binding: DialogFragmentToHistoryBinding
+    private lateinit var binding: FragmentToHistoryBinding
     private val viewModel: ToHistoryViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModel.page = arguments?.getInt(KEY_PAGE)!!
         viewModel.name = arguments?.getString(KEY_NAME)!!
-        viewModel.id = arguments?.getLong(KEY_ID)!!
+        viewModel.id = UUID.fromString(arguments?.getString(KEY_ID)!!)
         super.onCreate(savedInstanceState)
     }
 
@@ -41,7 +35,7 @@ class ToHistoryFragment : DialogFragment() {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-                R.layout.dialog_fragment_to_history,
+                R.layout.fragment_to_history,
                 container,
                 false
             )
@@ -108,11 +102,11 @@ class ToHistoryFragment : DialogFragment() {
         const val KEY_ID = "id"
         const val KEY_NAME = "name"
         const val DIALOG_TO_HISTORY = "dialogToHistory"
-        fun newInstance(page: Int, id: Long, name: String): ToHistoryFragment {
+        fun newInstance(page: Int, id: UUID, name: String): ToHistoryFragment {
             val dialog = ToHistoryFragment()
             val args = Bundle()
             args.putInt(KEY_PAGE, page)
-            args.putLong(KEY_ID, id)
+            args.putString(KEY_ID, id.toString())
             args.putString(KEY_NAME, name)
             dialog.arguments = args
             return dialog

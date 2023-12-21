@@ -9,6 +9,7 @@ import com.example.sharedcard.repository.DictionaryRepository
 import com.example.sharedcard.repository.CheckRepository
 import com.example.sharedcard.repository.QueryPreferences
 import com.example.sharedcard.repository.TargetRepository
+import java.util.UUID
 
 class AddCheckViewModel(
     application: Application
@@ -16,9 +17,9 @@ class AddCheckViewModel(
     private val queryPreferences: QueryPreferences
     private val dictionaryRepository: DictionaryRepository
     private val checkRepository: CheckRepository
-    private val idGroup: Long
+    private val idGroup: UUID
         get() = queryPreferences.groupId
-    private val idUser: Long
+    private val idUser: UUID
         get() = queryPreferences.userId
     private val isLocal: Boolean
         get() = queryPreferences.isLocal
@@ -49,7 +50,7 @@ class AddCheckViewModel(
             idMetric = metric,
             count = count,
             idCreator = idUser,
-            idGroup = idUser
+            idGroup = idGroup
         )
         if (isLocal) {
             checkRepository.add(check)

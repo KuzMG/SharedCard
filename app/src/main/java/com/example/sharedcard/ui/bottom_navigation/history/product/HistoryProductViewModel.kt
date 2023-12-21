@@ -8,19 +8,20 @@ import androidx.lifecycle.switchMap
 import com.example.sharedcard.SharedCardApp
 import com.example.sharedcard.database.entity.check.CheckHistory
 import com.example.sharedcard.repository.CheckRepository
+import com.example.sharedcard.repository.QueryPreferences
+import java.util.UUID
 
 class HistoryProductViewModel(application: Application) : AndroidViewModel(application) {
     private val checkRepository: CheckRepository
-    private val userId: Long
-    private val groupId: Long
+    private val queryPreferences: QueryPreferences
+
+    private val groupId: UUID
+        get() = queryPreferences.groupId
     val historyItemLiveData: LiveData<List<CheckHistory>>
     private val mutableSearch = MutableLiveData<String>()
 
     init {
-        (application as SharedCardApp).getQueryPreferences().apply {
-            this@HistoryProductViewModel.userId = userId
-            this@HistoryProductViewModel.groupId = groupId
-        }
+        queryPreferences = (application as SharedCardApp).getQueryPreferences()
         checkRepository = application.getProductRepository()
         mutableSearch.value = ""
         historyItemLiveData = mutableSearch.switchMap { query ->

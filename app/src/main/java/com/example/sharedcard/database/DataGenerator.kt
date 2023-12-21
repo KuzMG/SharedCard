@@ -15,12 +15,12 @@ object DataGenerator {
         MetricEntity(5,"мл",""))
 
     fun getCurrency(): List<CurrencyEntity> = listOf(
-        CurrencyEntity(1,"₽"),
-        CurrencyEntity(2,"$"),
-        CurrencyEntity(3,"€"),
-        CurrencyEntity(4,"₤"),
-        CurrencyEntity(5,"₴"),
-        CurrencyEntity(6,"₸")
+        CurrencyEntity("RUS","₽"),
+        CurrencyEntity("USD","$"),
+        CurrencyEntity("EUR","€"),
+        CurrencyEntity("TRY","₤"),
+        CurrencyEntity("UAH","₴"),
+        CurrencyEntity("KZT","₸")
     )
 
     fun getShopProduct(): List<ShopEntity> = listOf(

@@ -8,6 +8,7 @@ import com.example.sharedcard.repository.DictionaryRepository
 import com.example.sharedcard.repository.QueryPreferences
 import com.example.sharedcard.repository.TargetRepository
 import com.project.shared_card.database.dao.target.TargetEntity
+import java.util.UUID
 
 class AddTargetViewModel(
     application: Application
@@ -15,9 +16,9 @@ class AddTargetViewModel(
     private val queryPreferences: QueryPreferences
     private val dictionaryRepository: DictionaryRepository
     private val targetRepository: TargetRepository
-    private val idGroup: Long
+    private val idGroup: UUID
         get() = queryPreferences.groupId
-    private val idUser: Long
+    private val idUser: UUID
         get() = queryPreferences.userId
     private val isLocal: Boolean
         get() = queryPreferences.isLocal

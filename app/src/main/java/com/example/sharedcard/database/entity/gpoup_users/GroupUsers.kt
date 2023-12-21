@@ -5,6 +5,7 @@ import androidx.room.Relation
 import com.example.sharedcard.database.entity.group.GroupEntity
 import com.example.sharedcard.database.entity.user.UserEntity
 import com.project.shared_card.database.dao.group_users.GroupUsersEntity
+import java.util.UUID
 
 data class GroupUsers(
     @Embedded
@@ -18,7 +19,7 @@ data class GroupUsers(
 )
 
 data class UserEntityWithStatus(
-    private val id_user: Long,
+    private val id_user: UUID,
     val status: Boolean,
     @Relation(
         parentColumn = "id_user",

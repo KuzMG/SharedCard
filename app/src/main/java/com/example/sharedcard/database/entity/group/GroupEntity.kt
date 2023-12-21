@@ -2,6 +2,7 @@ package com.example.sharedcard.database.entity.group
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import java.util.UUID
 
 @Entity(
     tableName = "group",
@@ -9,7 +10,7 @@ import androidx.room.Entity
 )
 data class GroupEntity(
     @ColumnInfo("id_group")
-    val id: Long,
+    val id: UUID = UUID.randomUUID(),
     val name: String
 ) {
     val photoFileName

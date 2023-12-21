@@ -4,6 +4,7 @@ import com.example.sharedcard.database.AppDatabase
 import com.example.sharedcard.database.entity.group.GroupEntity
 import com.example.sharedcard.database.entity.user.UserEntity
 import com.project.shared_card.database.dao.group_users.GroupUsersEntity
+import java.util.UUID
 import java.util.concurrent.Executors
 
 class GroupUsersRepository private constructor(database: AppDatabase){
@@ -26,8 +27,13 @@ class GroupUsersRepository private constructor(database: AppDatabase){
             groupUsersDao.createGroups(groupUsers)
         }
     }
-    fun getUser(id: Long) = userDao.get(id)
-    fun getAllGroup(id: Long) = groupUsersDao.allGroup(id)
+    fun getUser(id: UUID) = userDao.get(id)
+    fun getGroup(id: UUID) = groupDao.getGroup(id)
+    fun getAllGroups(id: UUID) = groupUsersDao.allGroup(id)
+
+    fun deleteGroup(id: UUID){
+
+    }
     companion object {
         private var nRepository: GroupUsersRepository? = null
         fun getInstance(database: AppDatabase): GroupUsersRepository {

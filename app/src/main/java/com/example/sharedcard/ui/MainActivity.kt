@@ -14,6 +14,7 @@ import com.example.sharedcard.ui.authorization.AuthorizationFragment
 import com.example.sharedcard.ui.bottom_navigation.NavigationFragment
 import com.example.sharedcard.ui.change_password.ChangePasswordFragment
 import com.example.sharedcard.ui.registration.RegistrationFragment
+import java.util.UUID
 
 class MainActivity : AppCompatActivity(), AuthorizationFragment.Callbacks, RegistrationFragment.Callbacks , ChangePasswordFragment.Callbacks, NavigationFragment.Callbacks{
     private lateinit var binding: ActivityMainBinding
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity(), AuthorizationFragment.Callbacks, Regis
         val graph = navController.navInflater.inflate(R.navigation.nav_graph_main)
 
         val userId = (application as SharedCardApp).getQueryPreferences().userId
-        if (userId == 0L) {
+        if (userId == UUID.fromString("00000000-0000-0000-0000-000000000000")) {
             graph.setStartDestination(R.id.authorizationFragment)
         } else {
             graph.setStartDestination(R.id.navigationFragment)

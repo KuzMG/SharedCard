@@ -2,17 +2,18 @@ package com.example.sharedcard.database.entity.check
 
 import androidx.room.ColumnInfo
 import java.util.Date
+import java.util.UUID
 
 data class Check(
     @ColumnInfo("id_check")
-    val id: Long,
+    val id: UUID,
     val name: String,
     val status: Int,
     val category: String,
     private val count: Int,
     private val metric: String,
     val user: String,
-    val idUser: Long,
+    val idUser: UUID,
     val description: String,
     @ColumnInfo("date_first")
     private val dateFirst: Long,

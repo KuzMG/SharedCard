@@ -82,7 +82,7 @@
                     android:id="@+id/user_name_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{target.creator}"
+                    android:text="@{target.user}"
                     tools:text="Михаил"
                     android:layout_margin="5dp"
                     android:layout_gravity="center_vertical"

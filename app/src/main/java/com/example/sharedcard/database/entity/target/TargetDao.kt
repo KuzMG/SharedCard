@@ -5,52 +5,53 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.project.shared_card.database.dao.target.TargetEntity
+import java.util.UUID
 
 @Dao
 interface TargetDao {
-    @Query("select target.id,target.name,c.name as category,first_price as price,cur.name as currency,u.name as creator,date_first as dateFirst from target " +
+    @Query("select target.id,target.name,c.name as category,first_price as price,cur.name as currency,u.name as user,u.id_user,date_first as dateFirst from target " +
             "join category as c on id_category = c.id " +
-            "join currency as cur on id_currency_first = cur.id " +
+            "join currency as cur on id_currency_first = cur.code " +
             "join user as u on id_user_creator = u.id_user " +
             "where target.id_group = :id and target.status = 0 " +
             "order by date_first desc")
-    fun getAllForCheck(id: Long): LiveData<List<Target>>
+    fun getAllForCheck(id: UUID): LiveData<List<Target>>
 
-    @Query("select target.id,target.name,c.name as category,first_price as price,cur.name as currency,u.name as creator,date_first as dateFirst from target " +
+    @Query("select target.id,target.name,c.name as category,first_price as price,cur.name as currency,u.name as user,u.id_user,date_first as dateFirst from target " +
             "join category as c on id_category = c.id " +
-            "join currency as cur on id_currency_first = cur.id " +
+            "join currency as cur on id_currency_first = cur.code " +
             "left join user as u on id_user_creator = u.id_user " +
             "where target.id_group = :id and target.status = 0 and target.name like :query " +
             "order by date_first desc")
-    fun getAllForCheckQuery(id: Long, query: String): LiveData<List<Target>>
+    fun getAllForCheckQuery(id: UUID, query: String): LiveData<List<Target>>
 
-    @Query("select target.id,target.name,c.name as category,first_price,curF.name as currencyFirst,last_price,curL.name as currencyLast,u.name as user,sh.name as shop,date_last as dateLast from target " +
+    @Query("select target.id,target.name,c.name as category,first_price,curF.name as currencyFirst,last_price,curL.name as currencyLast,u.name as user,u.id_user,sh.name as shop,date_last as dateLast from target " +
             "join category as c on id_category = c.id " +
             "join shop as sh on id_shop = sh.id " +
-            "join currency as curF on id_currency_first = curF.id " +
-            "join currency as curL on id_currency_last = curL.id " +
+            "join currency as curF on id_currency_first = curF.code " +
+            "join currency as curL on id_currency_last = curL.code " +
             "join user as u on id_user_buyer = u.id_user " +
             "where target.id_group = :id and target.status = 1 " +
             "order by date_first desc")
-    fun getAllForHistory(id: Long): LiveData<List<TargetHistory>>
+    fun getAllForHistory(id: UUID): LiveData<List<TargetHistory>>
 
-    @Query("select target.id,target.name,c.name as category,first_price,curF.name as currencyFirst,last_price,curL.name as currencyLast,u.name as user,sh.name as shop,date_last as dateLast from target " +
+    @Query("select target.id,target.name,c.name as category,first_price,curF.name as currencyFirst,last_price,curL.name as currencyLast,u.name as user,u.id_user,sh.name as shop,date_last as dateLast from target " +
             "join category as c on id_category = c.id " +
             "join shop as sh on id_shop = sh.id " +
-            "join currency as curF on id_currency_first = curF.id " +
-            "join currency as curL on id_currency_last = curL.id " +
+            "join currency as curF on id_currency_first = curF.code " +
+            "join currency as curL on id_currency_last = curL.code " +
             "join user as u on id_user_buyer = u.id_user " +
             "where target.id_group = :id and target.status = 1 and target.name like :query " +
             "order by date_first desc")
-    fun getAllForHistoryQuery(id: Long, query: String): LiveData<List<TargetHistory>>
+    fun getAllForHistoryQuery(id: UUID, query: String): LiveData<List<TargetHistory>>
 
     @Insert
     fun add(target: TargetEntity)
     @Query("update target set status = :status where id=:id")
-    fun uprateStatus(id: Long, status: Int)
+    fun uprateStatus(id: UUID, status: Int)
 
     @Query("delete from target where id = :id")
-    fun delete(id: Long)
+    fun delete(id: UUID)
 
     @Query(
         "update target set " +
@@ -63,11 +64,11 @@ interface TargetDao {
                 "where id = :id"
     )
     fun toHistory(
-        id: Long,
+        id: UUID,
         idShop: Long,
         price: Int,
         currency: Long,
-        idUser: Long?,
+        idUser: UUID,
         dataLast: Long
     )
 }

@@ -3,15 +3,16 @@ package com.example.sharedcard.database.entity.user
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.UUID
 
 @Entity(
     tableName = "user"
 )
 data class UserEntity(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
     @ColumnInfo("id_user")
-    var id: Long = 0,
-    var name: String = "",
+    var id: UUID = UUID.randomUUID(),
+    var name: String,
 ) {
     val photoFileName
         get() = "IMG_$id.jpg"

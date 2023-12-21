@@ -9,20 +9,20 @@ import com.example.sharedcard.SharedCardApp
 import com.example.sharedcard.database.entity.check.CheckHistory
 import com.example.sharedcard.database.entity.target.TargetHistory
 import com.example.sharedcard.repository.CheckRepository
+import com.example.sharedcard.repository.QueryPreferences
 import com.example.sharedcard.repository.TargetRepository
+import java.util.UUID
 
 class HistoryTargetViewModel(application: Application) : AndroidViewModel(application) {
     private val targetRepository: TargetRepository
-    private val userId: Long
-    private val groupId: Long
+    private val queryPreferences: QueryPreferences
+    private val groupId: UUID
+        get() = queryPreferences.groupId
     val historyItemLiveData: LiveData<List<TargetHistory>>
     private val mutableSearch = MutableLiveData<String>()
 
     init {
-        (application as SharedCardApp).getQueryPreferences().apply {
-            this@HistoryTargetViewModel.userId = userId
-            this@HistoryTargetViewModel.groupId = groupId
-        }
+        queryPreferences = (application as SharedCardApp).getQueryPreferences()
         targetRepository = application.getTargetRepository()
         mutableSearch.value = ""
         historyItemLiveData = mutableSearch.switchMap { query ->

@@ -24,7 +24,6 @@ import com.example.sharedcard.database.entity.recipe_product.RecipeProductEntity
 import com.example.sharedcard.database.entity.shop.ShopDao
 import com.example.sharedcard.database.entity.shop.ShopEntity
 import com.example.sharedcard.database.entity.target.TargetDao
-import com.example.sharedcard.database.entity.user.UserAccountEntity
 import com.example.sharedcard.database.entity.user.UserDao
 import com.example.sharedcard.database.entity.user.UserEntity
 import com.example.sharedcard.database.type_converter.DateConverter
@@ -48,8 +47,7 @@ import java.util.concurrent.Executors
         RecipeProductEntity::class,
         ShopEntity::class,
         TargetEntity::class,
-        UserEntity::class,
-        UserAccountEntity::class,
+        UserEntity::class
     ]
 )
 @TypeConverters(DateConverter::class)

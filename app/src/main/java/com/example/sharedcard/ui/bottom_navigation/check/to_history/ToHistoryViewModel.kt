@@ -7,6 +7,7 @@ import com.example.sharedcard.repository.DictionaryRepository
 import com.example.sharedcard.repository.CheckRepository
 import com.example.sharedcard.repository.QueryPreferences
 import com.example.sharedcard.repository.TargetRepository
+import java.util.UUID
 
 class ToHistoryViewModel(application: Application) : AndroidViewModel(application) {
     private val queryPreferences: QueryPreferences
@@ -18,15 +19,17 @@ class ToHistoryViewModel(application: Application) : AndroidViewModel(applicatio
     var name = ""
     var shop = 0L
     var price = 0
-    var id = 0L
-    private val idUser: Long
+    var id = UUID.fromString("00000000-0000-0000-0000-000000000000")
+    private val idUser: UUID
         get() = queryPreferences.userId
 
     init {
-        dictionaryRepository = (application as SharedCardApp).getDictionaryRepository()
-        checkRepository = application.getProductRepository()
-        targetRepository = application.getTargetRepository()
-        queryPreferences = application.getQueryPreferences()
+        (application as SharedCardApp).apply {
+            dictionaryRepository = getDictionaryRepository()
+            checkRepository = getProductRepository()
+            targetRepository = getTargetRepository()
+            queryPreferences = getQueryPreferences()
+        }
     }
 
     var currency = 0L
@@ -42,8 +45,8 @@ class ToHistoryViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun toHistory() {
         when (page) {
-            0 -> checkRepository.toHistory(id, shop, price, currency,idUser)
-            1 -> targetRepository.toHistory(id,shop,price,currency,idUser)
+            0 -> checkRepository.toHistory(id, shop, price, currency, idUser)
+            1 -> targetRepository.toHistory(id, shop, price, currency, idUser)
         }
 
     }

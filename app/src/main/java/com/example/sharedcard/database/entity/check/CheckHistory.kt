@@ -2,10 +2,11 @@ package com.example.sharedcard.database.entity.check
 
 import androidx.room.ColumnInfo
 import java.util.Date
+import java.util.UUID
 
 data class CheckHistory(
     @ColumnInfo("id_check")
-    val id: Long,
+    val id: UUID,
     val name: String,
     val category: String,
     val shop: String,
@@ -14,7 +15,7 @@ data class CheckHistory(
     private val count: Int,
     private val metric: String,
     val user: String,
-    val idUser: Long,
+    val idUser: UUID,
     @ColumnInfo("date_last")
     private val dateLast: Long,
     val calorie: Int?,

@@ -9,13 +9,14 @@ import com.example.sharedcard.SharedCardApp
 import com.example.sharedcard.database.entity.target.Target
 import com.example.sharedcard.repository.QueryPreferences
 import com.example.sharedcard.repository.TargetRepository
+import java.util.UUID
 
 class TargetViewModel(application: Application) : AndroidViewModel(application) {
     private val queryPreferences: QueryPreferences
     private val targetRepository: TargetRepository
-    private val userId: Long
+    private val userId: UUID
         get() = queryPreferences.userId
-    private val groupId: Long
+    private val groupId: UUID
         get() = queryPreferences.groupId
     val quickDelete: Boolean
         get() = queryPreferences.quickDelete
@@ -35,7 +36,7 @@ class TargetViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun deleteTarget(id: Long) {
+    fun deleteTarget(id: UUID) {
         targetRepository.delete(id)
     }
     fun setQuery(query: String) {

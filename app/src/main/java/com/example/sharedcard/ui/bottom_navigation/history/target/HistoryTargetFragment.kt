@@ -107,7 +107,7 @@ class HistoryTargetFragment : CheckListFragment() {
                 if(target.priceFirst>0)
                     firstPriceTextView.text = getString(R.string.first_price,target.priceListFirst)
                 if(target.priceLast>0)
-                lastPriceTextView.text =  target.priceListLast
+                    lastPriceTextView.text =  target.priceListLast
                 dateTextView.text = DateFormat.format(localDateFormat, target.date)
                 infoImageButton.setOnClickListener(this@TargetHolder)
             }

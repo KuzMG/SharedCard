@@ -213,9 +213,9 @@ class TargetFragment : CheckListFragment() {
                 4 -> {
                     flag4 = !flag4
                     if (flag4)
-                        currentList.sortedBy { it.creator }
+                        currentList.sortedBy { it.user }
                     else
-                        currentList.sortedByDescending { it.creator }
+                        currentList.sortedByDescending { it.user }
                 }
 
                 else -> throw IndexOutOfBoundsException()
