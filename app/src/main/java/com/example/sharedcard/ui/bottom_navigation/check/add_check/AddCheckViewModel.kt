@@ -8,7 +8,6 @@ import com.example.sharedcard.database.entity.product.ProductEntity
 import com.example.sharedcard.repository.DictionaryRepository
 import com.example.sharedcard.repository.CheckRepository
 import com.example.sharedcard.repository.QueryPreferences
-import com.example.sharedcard.repository.TargetRepository
 import java.util.UUID
 
 class AddCheckViewModel(
@@ -30,7 +29,7 @@ class AddCheckViewModel(
 
     init {
         dictionaryRepository = (application as SharedCardApp).getDictionaryRepository()
-        checkRepository = application.getProductRepository()
+        checkRepository = application.getCheckRepository()
         queryPreferences = application.getQueryPreferences()
     }
 

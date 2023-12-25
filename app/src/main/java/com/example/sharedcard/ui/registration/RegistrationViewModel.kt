@@ -1,21 +1,14 @@
 package com.example.sharedcard.ui.registration
 
 import android.app.Application
-import android.graphics.Bitmap
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.sharedcard.SharedCardApp
-import com.example.sharedcard.database.entity.user.UserEntity
 import com.example.sharedcard.email.EmailMessage
-import com.example.sharedcard.repository.PhotoPicker
 import com.example.sharedcard.repository.QueryPreferences
-import com.example.sharedcard.util.getScaledBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 import kotlin.random.Random
 
 private const val TAG = "RegistrationViewModel"

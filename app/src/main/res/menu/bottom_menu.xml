@@ -6,6 +6,7 @@
         android:title="" />
     <item
         android:id="@+id/manualFragment"
+        android:icon="@drawable/bottom_navigation_icon_manual"
         android:title="" />
     <item
         android:id="@+id/checkFragment"

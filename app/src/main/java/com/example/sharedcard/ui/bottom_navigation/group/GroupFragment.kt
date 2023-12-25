@@ -19,8 +19,10 @@ class GroupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_group, container, false)
-
-        binding.groupViewPager2.adapter = GroupStateAdapter(requireActivity())
+        binding.groupViewPager2.apply {
+            adapter = GroupStateAdapter(requireActivity())
+            isUserInputEnabled = false
+        }
         return binding.root
     }
 

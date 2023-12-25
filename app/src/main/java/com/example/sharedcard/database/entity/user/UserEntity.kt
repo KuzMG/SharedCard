@@ -11,9 +11,10 @@ import java.util.UUID
 data class UserEntity(
     @PrimaryKey()
     @ColumnInfo("id_user")
-    var id: UUID = UUID.randomUUID(),
-    var name: String,
-) {
-    val photoFileName
-        get() = "IMG_$id.jpg"
-}
+    val id: UUID = UUID.randomUUID(),
+    val email: String,
+    val name: String,
+    val weight: Int?,
+    val height: Int?,
+    val age: Int?
+)

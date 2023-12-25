@@ -8,6 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import java.util.UUID
 
 interface GroupApi {
     @POST("/group/save")
@@ -19,6 +20,6 @@ interface GroupApi {
     @PUT("/group/update_name")
     fun updateName(@Body name: String): Call<*>
 
-    @PUT("/group/update_photo")
-    fun updatePhoto(@Body photo: ByteArray): Call<*>
+    @POST("/groups/update_photo/{id}")
+    fun updatePhoto(@Path("id") id: UUID, @Body photo: ByteArray)  : Call<Boolean>
 }

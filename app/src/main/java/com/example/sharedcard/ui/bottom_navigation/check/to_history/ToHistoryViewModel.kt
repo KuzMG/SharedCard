@@ -26,7 +26,7 @@ class ToHistoryViewModel(application: Application) : AndroidViewModel(applicatio
     init {
         (application as SharedCardApp).apply {
             dictionaryRepository = getDictionaryRepository()
-            checkRepository = getProductRepository()
+            checkRepository = getCheckRepository()
             targetRepository = getTargetRepository()
             queryPreferences = getQueryPreferences()
         }

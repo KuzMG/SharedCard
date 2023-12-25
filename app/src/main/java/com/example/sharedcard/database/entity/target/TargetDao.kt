@@ -11,7 +11,7 @@ import java.util.UUID
 interface TargetDao {
     @Query("select target.id,target.name,c.name as category,first_price as price,cur.name as currency,u.name as user,u.id_user,date_first as dateFirst from target " +
             "join category as c on id_category = c.id " +
-            "join currency as cur on id_currency_first = cur.code " +
+            "join currency as cur on id_currency_first = cur.id " +
             "join user as u on id_user_creator = u.id_user " +
             "where target.id_group = :id and target.status = 0 " +
             "order by date_first desc")
@@ -19,8 +19,8 @@ interface TargetDao {
 
     @Query("select target.id,target.name,c.name as category,first_price as price,cur.name as currency,u.name as user,u.id_user,date_first as dateFirst from target " +
             "join category as c on id_category = c.id " +
-            "join currency as cur on id_currency_first = cur.code " +
-            "left join user as u on id_user_creator = u.id_user " +
+            "join currency as cur on id_currency_first = cur.id " +
+            "join user as u on id_user_creator = u.id_user " +
             "where target.id_group = :id and target.status = 0 and target.name like :query " +
             "order by date_first desc")
     fun getAllForCheckQuery(id: UUID, query: String): LiveData<List<Target>>
@@ -28,8 +28,8 @@ interface TargetDao {
     @Query("select target.id,target.name,c.name as category,first_price,curF.name as currencyFirst,last_price,curL.name as currencyLast,u.name as user,u.id_user,sh.name as shop,date_last as dateLast from target " +
             "join category as c on id_category = c.id " +
             "join shop as sh on id_shop = sh.id " +
-            "join currency as curF on id_currency_first = curF.code " +
-            "join currency as curL on id_currency_last = curL.code " +
+            "join currency as curF on id_currency_first = curF.id " +
+            "join currency as curL on id_currency_last = curL.id " +
             "join user as u on id_user_buyer = u.id_user " +
             "where target.id_group = :id and target.status = 1 " +
             "order by date_first desc")
@@ -38,8 +38,8 @@ interface TargetDao {
     @Query("select target.id,target.name,c.name as category,first_price,curF.name as currencyFirst,last_price,curL.name as currencyLast,u.name as user,u.id_user,sh.name as shop,date_last as dateLast from target " +
             "join category as c on id_category = c.id " +
             "join shop as sh on id_shop = sh.id " +
-            "join currency as curF on id_currency_first = curF.code " +
-            "join currency as curL on id_currency_last = curL.code " +
+            "join currency as curF on id_currency_first = curF.id " +
+            "join currency as curL on id_currency_last = curL.id " +
             "join user as u on id_user_buyer = u.id_user " +
             "where target.id_group = :id and target.status = 1 and target.name like :query " +
             "order by date_first desc")

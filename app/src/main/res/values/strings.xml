@@ -23,7 +23,7 @@
     <string name="check">Чек</string>
     <string name="statistic">Статистика</string>
     <string name="history">История</string>
-    <string name="group">Профиль</string>
+    <string name="group">Группы</string>
 
 <!--    Группы в профиле-->
     <string name="group_label">Группы</string>
@@ -82,7 +82,11 @@
     <!--    Настройки-->
     <string name="settings">Настройки</string>
     <string name="settings_delete_swipe">быстрое удаление</string>
-
+    <string name="email">Почта: %1$s</string>
+    <string name="name">Имя: %1$s</string>
+    <string name="weight">Вес: %1$s</string>
+    <string name="height">Рост: %1$s</string>
+    <string name="age">Возраст: %1$s</string>
 
 
 </resources>

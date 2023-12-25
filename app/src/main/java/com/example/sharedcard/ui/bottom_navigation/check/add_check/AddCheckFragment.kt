@@ -8,8 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
@@ -54,12 +56,11 @@ companion object{
 
     override fun onStart() {
         super.onStart()
-
         binding.dialogNameEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 viewModel.getProducts(p0.toString()).observe(viewLifecycleOwner) { products ->
-                    if (products.size == 1 && products[0].name == p0.toString()) {
+                    if (products[0].name == p0.toString()) {
                         viewModel.product = products[0]
                     } else {
                         viewModel.product = null

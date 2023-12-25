@@ -9,7 +9,8 @@ import java.util.UUID
 
 class EditGroupViewModel(application: Application) : AndroidViewModel(application) {
     private val groupUsersRepository: GroupUsersRepository
-    var idGroup: UUID = UUID.fromString("")
+    var idGroup: UUID = UUID.fromString("00000000-0000-0000-0000-000000000000")
+    var photo: ByteArray? = null
     init {
         (application as SharedCardApp).apply {
             groupUsersRepository = getGroupUsersRepository()
@@ -17,4 +18,8 @@ class EditGroupViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun getGroup() = groupUsersRepository.getGroup(idGroup)
+
+    fun save(){
+        groupUsersRepository.savePhotoGroup(idGroup,photo!!)
+    }
 }

@@ -14,9 +14,12 @@ import com.example.sharedcard.ui.authorization.AuthorizationFragment
 import com.example.sharedcard.ui.bottom_navigation.NavigationFragment
 import com.example.sharedcard.ui.change_password.ChangePasswordFragment
 import com.example.sharedcard.ui.registration.RegistrationFragment
+import com.example.sharedcard.ui.settings.SettingsFragment
 import java.util.UUID
 
-class MainActivity : AppCompatActivity(), AuthorizationFragment.Callbacks, RegistrationFragment.Callbacks , ChangePasswordFragment.Callbacks, NavigationFragment.Callbacks{
+class MainActivity : AppCompatActivity(), AuthorizationFragment.Callbacks,
+    RegistrationFragment.Callbacks, ChangePasswordFragment.Callbacks, NavigationFragment.Callbacks,
+    SettingsFragment.Callbacks {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var navHostFragment: NavHostFragment
@@ -64,5 +67,9 @@ class MainActivity : AppCompatActivity(), AuthorizationFragment.Callbacks, Regis
 
     override fun onNavigationToSettingsFragment() {
         navController.navigate(R.id.action_navigationFragment_to_settingsFragment)
+    }
+
+    override fun onSettingsToAuthorizationFragment() {
+        navController.navigate(R.id.action_settingsFragment_to_authorizationFragment)
     }
 }

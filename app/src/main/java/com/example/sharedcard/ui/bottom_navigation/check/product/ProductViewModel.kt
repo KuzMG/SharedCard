@@ -22,7 +22,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     private val mutableSearch = MutableLiveData<String>()
     init {
         queryPreferences = (application as SharedCardApp).getQueryPreferences()
-        checkRepository = application.getProductRepository()
+        checkRepository = application.getCheckRepository()
         mutableSearch.value = ""
         checkItemLiveData = mutableSearch.switchMap { query ->
             if (query.isBlank()) {

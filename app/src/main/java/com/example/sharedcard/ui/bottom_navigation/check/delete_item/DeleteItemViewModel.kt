@@ -14,7 +14,7 @@ class DeleteItemViewModel(application: Application) : AndroidViewModel(applicati
     var page = 0
 
     init {
-        checkRepository = (application as SharedCardApp).getProductRepository()
+        checkRepository = (application as SharedCardApp).getCheckRepository()
         targetRepository = application.getTargetRepository()
     }
 

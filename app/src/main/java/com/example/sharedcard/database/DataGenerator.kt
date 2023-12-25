@@ -14,14 +14,14 @@ object DataGenerator {
         MetricEntity(4,"л",""),
         MetricEntity(5,"мл",""))
 
-    fun getCurrency(): List<CurrencyEntity> = listOf(
-        CurrencyEntity("RUS","₽"),
-        CurrencyEntity("USD","$"),
-        CurrencyEntity("EUR","€"),
-        CurrencyEntity("TRY","₤"),
-        CurrencyEntity("UAH","₴"),
-        CurrencyEntity("KZT","₸")
-    )
+//    fun getCurrency(): List<CurrencyEntity> = listOf(
+//        CurrencyEntity(1,"RUS","₽"),
+//        CurrencyEntity(2,"USD","$"),
+//        CurrencyEntity(3,"EUR","€"),
+//        CurrencyEntity(4,"TRY","₤"),
+//        CurrencyEntity(5,"UAH","₴"),
+//        CurrencyEntity(6,"KZT","₸")
+//    )
 
     fun getShopProduct(): List<ShopEntity> = listOf(
         ShopEntity(1,"Аптека","",true),
@@ -45,13 +45,13 @@ object DataGenerator {
     )
 
     fun getProducts(): List<ProductEntity> = listOf(
-        ProductEntity(1,"гречка","",3.3,12.6,57.1,308,5),
-        ProductEntity(2,"овсянка","",6.1,12.3,59.5,68,5),
-        ProductEntity(3,"рис","",2.6,7.5,62.3,303,5),
-        ProductEntity(4,"кукурузная крупа","",1.2,8.3,71.0,328,5),
-        ProductEntity(5,"пшеничная крупа","",2.0,11.2,65.7,342,5),
-        ProductEntity(6,"манная крупа","",1.0,10.3,70.6,333,5),
-        ProductEntity(7,"булгур","",1.5,15.0,14.1,85,5)
+        ProductEntity(1,"гречка","",3.3,12.6,57.1,308.0,5),
+        ProductEntity(2,"овсянка","",6.1,12.3,59.5,68.0,5),
+        ProductEntity(3,"рис","",2.6,7.5,62.3,303.0,5),
+        ProductEntity(4,"кукурузная крупа","",1.2,8.3,71.0,328.0,5),
+        ProductEntity(5,"пшеничная крупа","",2.0,11.2,65.7,342.0,5),
+        ProductEntity(6,"манная крупа","",1.0,10.3,70.6,333.0,5),
+        ProductEntity(7,"булгур","",1.5,15.0,14.1,85.0,5)
     )
 
     fun getCategoryProduct(): List<CategoryEntity> = listOf(

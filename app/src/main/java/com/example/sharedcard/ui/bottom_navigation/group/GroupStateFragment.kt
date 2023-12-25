@@ -21,6 +21,7 @@ import com.example.sharedcard.ui.bottom_navigation.group.create_group.CreateGrou
 import com.example.sharedcard.ui.bottom_navigation.group.delete_group.DeleteGroupFragment
 import com.example.sharedcard.ui.bottom_navigation.group.edit_group.EditGroupFragment
 import com.example.sharedcard.ui.bottom_navigation.group.join_group.JoinGroupFragment
+import com.squareup.picasso.Picasso
 
 class GroupStateFragment : Fragment() {
     private val groupAdapter = GroupListAdapter()
@@ -107,6 +108,11 @@ class GroupStateFragment : Fragment() {
                 itemGroupName.text = group.group.name
                 groupRecyclerView.adapter = userAdapter
                 userAdapter.submitList(group.users)
+
+//                val sr = "http://192.168.80.31:8080/groups/photo/${group.group.id}"
+//                Picasso.get()
+//                    .load(sr)
+//                    .into(binding.itemGroupImage)
 
                 val status = group.users.find { user ->
                     user.status == true

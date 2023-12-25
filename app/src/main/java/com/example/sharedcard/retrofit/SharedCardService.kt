@@ -12,7 +12,7 @@ class SharedCardService {
         fun getInstance(): Retrofit {
             if (nRetrofit == null) {
                 nRetrofit = Retrofit.Builder()
-                    .baseUrl("http://192.168.31.31:8080")
+                    .baseUrl("http://192.168.80.31:8000")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
             }

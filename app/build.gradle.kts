@@ -61,6 +61,10 @@ dependencies {
     
     implementation("com.squareup.picasso:picasso:2.8")
 
+    val work_version = "2.9.0"
+    implementation("androidx.work:work-runtime-ktx:$work_version")
+
+
     val mail_version = "1.6.0"
     implementation("com.sun.mail:android-mail:$mail_version")
     implementation("com.sun.mail:android-activation:$mail_version")

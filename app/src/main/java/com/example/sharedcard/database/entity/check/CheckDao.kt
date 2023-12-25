@@ -34,7 +34,7 @@ interface CheckDao {
             "join category as c on pr.id_category = c.id " +
             "join user as u on u.id_user = id_user_buyer " +
             "join metric as m on m.id = id_metric " +
-            "join currency as cur on cur.code = id_currency " +
+            "join currency as cur on cur.id = id_currency " +
             "where id_group = :id and `check`.status = 2 " +
             "order by date_last desc"
     )
@@ -46,7 +46,7 @@ interface CheckDao {
             "join category as c on pr.id_category = c.id " +
             "join user as u on u.id_user = id_user_buyer " +
             "join metric as m on m.id = id_metric " +
-            "join currency as cur on cur.code = id_currency " +
+            "join currency as cur on cur.id = id_currency " +
             "where id_group = :id and `check`.status = 2 and pr.name like :query " +
             "order by date_last desc"
     )

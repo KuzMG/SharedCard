@@ -12,6 +12,7 @@ import com.example.sharedcard.R
 import com.example.sharedcard.database.entity.product.ProductEntity
 import com.example.sharedcard.databinding.FragmentProductListBinding
 import com.example.sharedcard.databinding.ListItemProductBinding
+import com.squareup.picasso.Picasso
 
 class ProductListFragment : Fragment() {
 
@@ -63,10 +64,10 @@ class ProductListFragment : Fragment() {
                 nameTextView.text = product.name
                 pfcTextView.text = "${product.calorie}/${product.protein}/${product.fat}/${product.carb}"
             }
-//            val sr = "http://172.16.81.98:8080/category/photo/${category.id}"
-//            Picasso.get()
-//                .load(sr)
-//                .into(binding.categoryImageView)
+            val sr = "http://192.168.80.31:8080/category/photo/product/${product.id}"
+            Picasso.get()
+                .load(sr)
+                .into(binding.categoryImageView)
         }
 
         override fun onClick(p0: View?) {

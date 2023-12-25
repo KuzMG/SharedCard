@@ -22,7 +22,7 @@ class HistoryProductViewModel(application: Application) : AndroidViewModel(appli
 
     init {
         queryPreferences = (application as SharedCardApp).getQueryPreferences()
-        checkRepository = application.getProductRepository()
+        checkRepository = application.getCheckRepository()
         mutableSearch.value = ""
         historyItemLiveData = mutableSearch.switchMap { query ->
             if (query.isBlank()) {

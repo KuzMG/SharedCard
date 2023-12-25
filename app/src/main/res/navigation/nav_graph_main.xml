@@ -52,5 +52,11 @@
         android:id="@+id/settingsFragment"
         android:name="com.example.sharedcard.ui.settings.SettingsFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_authorizationFragment"
+            app:destination="@id/authorizationFragment"
+            app:popUpTo="@id/navigationFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

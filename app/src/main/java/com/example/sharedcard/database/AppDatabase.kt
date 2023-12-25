@@ -72,34 +72,33 @@ abstract class AppDatabase : RoomDatabase() {
             if (nDatabase == null) {
                 nDatabase = Room
                     .databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
-                    .addCallback(object : Callback() {
-                        override fun onCreate(db: SupportSQLiteDatabase) {
-                            super.onCreate(db)
-                            executor.execute {
-                                val database = getInstance(context)
-                                val category = DataGenerator.getCategoryProduct()
-                                val shop = DataGenerator.getShopProduct()
-                                val currency = DataGenerator.getCurrency()
-                                val metric = DataGenerator.getMetric()
-                                val product = DataGenerator.getProducts()
-                                insertData(
-                                    database,
-                                    category,
-                                    shop,
-                                    currency,
-                                    metric,
-                                    product
-                                )
-                            }
-
-                        }
-                    })
                     .build()
 
             }
             return nDatabase!!
         }
-
+//        .addCallback(object : Callback() {
+//            override fun onCreate(db: SupportSQLiteDatabase) {
+//                super.onCreate(db)
+//                executor.execute {
+//                    val database = getInstance(context)
+//                    val category = DataGenerator.getCategoryProduct()
+//                    val shop = DataGenerator.getShopProduct()
+//                    val currency = DataGenerator.getCurrency()
+//                    val metric = DataGenerator.getMetric()
+//                    val product = DataGenerator.getProducts()
+//                    insertData(
+//                        database,
+//                        category,
+//                        shop,
+//                        currency,
+//                        metric,
+//                        product
+//                    )
+//                }
+//
+//            }
+//        })
         fun insertData(
             database: AppDatabase,
             category: List<CategoryEntity>,

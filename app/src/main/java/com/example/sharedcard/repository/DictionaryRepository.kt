@@ -4,7 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.sharedcard.database.AppDatabase
 import com.example.sharedcard.database.entity.category.CategoryEntity
+import com.example.sharedcard.database.entity.currency.CurrencyEntity
+import com.example.sharedcard.database.entity.metric.MetricEntity
+import com.example.sharedcard.database.entity.product.ProductEntity
 import com.example.sharedcard.database.entity.shop.ShopEntity
+import java.util.Currency
 
 class DictionaryRepository private constructor(database: AppDatabase) {
     private val shopDao = database.shopDao()
@@ -12,7 +16,22 @@ class DictionaryRepository private constructor(database: AppDatabase) {
     private val metricDao = database.metricDao()
     private val currencyDao= database.currencyDao()
     private val productDao = database.productDao()
+    fun addMetrics(metrics: List<MetricEntity>){
+        metricDao.add(metrics)
+    }
 
+    fun addShops(shops: List<ShopEntity>){
+        shopDao.add(shops)
+    }
+    fun addProducts(products: List<ProductEntity>){
+        productDao.add(products)
+    }
+    fun addCurrencies(currencies: List<CurrencyEntity>){
+        currencyDao.add(currencies)
+    }
+    fun addCategories(categories: List<CategoryEntity>){
+        categoryDao.add(categories)
+    }
     fun getAllShopsProduct(): LiveData<List<ShopEntity>> = shopDao.getAllProduct()
     fun getAllShopsTarget(): LiveData<List<ShopEntity>> = shopDao.getAllTarget()
     fun getAllCategoriesProduct(): LiveData<List<CategoryEntity>> = categoryDao.getAllProduct()

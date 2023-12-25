@@ -19,7 +19,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUiSaveStateControl
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.sharedcard.R
+import com.example.sharedcard.background_work.SynchronizationWorker
 import com.example.sharedcard.databinding.FragmentNavigationBinding
 import com.example.sharedcard.ui.MainActivity
 import com.example.sharedcard.ui.bottom_navigation.check.CheckFragment
@@ -60,6 +66,7 @@ class NavigationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        workerInstance()
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object: MenuProvider{
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -78,6 +85,16 @@ class NavigationFragment : Fragment() {
             }
 
         }, viewLifecycleOwner, Lifecycle.State.CREATED)
+    }
+    fun workerInstance(){
+
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+        val requestWorker = OneTimeWorkRequestBuilder<SynchronizationWorker>()
+            .setConstraints(constraints)
+            .build()
+        WorkManager.getInstance(requireContext()).enqueue(requestWorker);
     }
 
     override fun onStart() {

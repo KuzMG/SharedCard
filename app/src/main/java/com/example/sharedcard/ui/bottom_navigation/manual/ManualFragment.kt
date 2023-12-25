@@ -56,7 +56,7 @@ class ManualFragment : Fragment() {
         fun onBind(category: CategoryEntity) {
             this.category = category
             binding.nameTextView.text = category.name
-            val sr = "http://192.168.212.31:8080/category/photo/${category.id}"
+            val sr = "http://192.168.80.31:8080/category/photo/${category.id}"
             Picasso.get()
                 .load(sr)
                 .into(binding.categoryImageView)

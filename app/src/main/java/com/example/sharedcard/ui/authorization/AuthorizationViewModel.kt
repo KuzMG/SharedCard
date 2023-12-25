@@ -31,7 +31,7 @@ class AuthorizationViewModel(application: Application) : AndroidViewModel(applic
 
     fun signIn(){
         val group = GroupEntity(name = "")
-        val user = UserEntity(name = "Михаил")
+        val user = UserEntity(email = "mifa_224@mail.ru",name = "Михаил", weight = 65, height = 178, age = 20)
         queryPreferences.apply {
             userId = user.id
             groupId =group.id
