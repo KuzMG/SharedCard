@@ -1,76 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="check"
+            type="com.example.sharedcard.database.entity.check.Check" />
+    </data>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="5dp">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/category_card_view"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:cardCornerRadius="20dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <ImageView
-                android:id="@+id/category_image_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
-
-        </androidx.cardview.widget.CardView>
-        <TextView
-            android:id="@+id/name_text_view"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            android:gravity="center"
-            android:textColor="@color/light_green_2"
-            tools:text="соска в тесте"
-            app:layout_constraintLeft_toRightOf="@id/category_card_view"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+        app:cardCornerRadius="30dp"
+        app:strokeWidth="2dp"
+        android:background="?attr/selectableItemBackground"
+        app:strokeColor="?attr/colorPrimary">
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/name_text_view">
-            <TextView
-                android:id="@+id/pfc_name_text_view"
-                android:layout_width="wrap_content"
+            android:id="@+id/item_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="@color/light_green_2"
-                android:textSize="12sp"
-                android:text="@string/pfc"/>
-            <TextView
-                android:id="@+id/pfc_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="right"
-                android:textColor="@color/light_green_2"
-                android:layout_margin="5dp"
-                android:textSize="12sp"
-                tools:text="46/10/12/12"
-                />
-        </LinearLayout>
-        <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/bottom_add_background"
-            android:layout_gravity="center_vertical"
-            android:scaleType="centerInside"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+                android:minHeight="60dp">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <CheckBox
+                    android:id="@+id/check_box"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="15dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:selectable="@{check.status}"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <TextView
+                    android:id="@+id/name_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@{check.name}"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@id/check_box"
+                    app:layout_constraintLeft_toRightOf="@id/check_box"
+                    app:layout_constraintTop_toTopOf="@id/check_box"
+                    tools:text="Манная крупа" />
+
+                <TextView
+                    android:id="@+id/count_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@{check.quantity}"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@id/check_box"
+                    app:layout_constraintLeft_toRightOf="@id/name_text_view"
+                    app:layout_constraintTop_toTopOf="@id/check_box"
+                    tools:text="2 шт" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="40dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <ImageView
+                        android:id="@+id/user_image_view"
+                        android:src="@color/black"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </androidx.cardview.widget.CardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <View
+                android:id="@+id/border"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:visibility="invisible"
+                android:background="?attr/colorPrimary"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

@@ -14,7 +14,8 @@ data class UserEntity(
     val id: UUID = UUID.randomUUID(),
     val email: String,
     val name: String,
-    val weight: Int?,
-    val height: Int?,
-    val age: Int?
+    val weight: Int =170,
+    val height: Int=60,
+    val age: Int =25,
+    val password: String
 )

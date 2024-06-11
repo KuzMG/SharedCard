@@ -5,15 +5,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:background="?attr/selectableItemBackground">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/item_user_card_view"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
+            android:layout_margin="5dp"
             app:cardCornerRadius="40dp"
-            app:cardElevation="1000dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -22,20 +23,19 @@
                 android:id="@+id/item_user_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/img"
+                android:src="@color/black"
                 android:scaleType="centerInside"/>
         </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/item_user_name"
-            style="@style/TextViewLight"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:textSize="20sp"
-            android:layout_marginHorizontal="5dp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginLeft="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/item_user_card_view"
             app:layout_constraintRight_toLeftOf="@id/item_user_administrator_image_view"
+            app:layout_constraintLeft_toRightOf="@id/item_user_card_view"
             app:layout_constraintTop_toTopOf="parent" />
         <ImageView
             android:id="@+id/item_user_administrator_image_view"
@@ -45,7 +45,7 @@
             android:scaleType="centerCrop"
             android:visibility="invisible"
             tools:visibility="visible"
-            android:layout_margin="10dp"
+            app:layout_constraintLeft_toRightOf="@id/item_user_name"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>

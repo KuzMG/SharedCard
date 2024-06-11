@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/products"
+            android:title="@string/products" />
+        <item
+            android:id="@+id/recipes"
+            android:title="@string/recipes" />
+        <item
+            android:id="@+id/group"
+            android:title="@string/group" />
+        <item
+            android:id="@+id/statistic"
+            android:title="@string/statistic" />
+        <item
+            android:id="@+id/history"
+            android:title="@string/history" />
+        <item
+            android:id="@+id/settings"
+            android:title="@string/settings"/>
+    </group>
+
+</menu>

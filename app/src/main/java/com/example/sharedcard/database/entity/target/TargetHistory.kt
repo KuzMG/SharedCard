@@ -14,9 +14,10 @@ data class TargetHistory(
     @ColumnInfo("last_price")
     val priceLast: Int,
     private val currencyLast: String,
-    val user: String,
-    @ColumnInfo("id_user")
-    val userId: UUID,
+    val userFirst: String,
+    val idUserFirst: UUID,
+    val userLast: String,
+    val idUserLast: UUID,
     val shop: String,
     private val dateLast: Long
 ) {

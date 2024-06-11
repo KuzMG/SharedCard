@@ -1,48 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.SharedCard" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!--                Toolbar                          -->
-        <!--        <item name="android:windowTranslucentStatus">false</item>-->
-        <item name="android:statusBarColor">@color/dark_green</item>
-        <!--        <item name="android:windowLightStatusBar">false</item>-->
+    <style name="Base.Theme.SharedCard" parent="Theme.MaterialComponents.DayNight">
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="toolbarStyle">@style/toolbarStyle</item>
+        <item name="colorControlNormal">@color/textColorPrimary</item>
+        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
 
-
-        <item name="android:fontFamily">@font/gothic</item>
-        <!--        <item name="android:textColorHint">@color/dark_green</item>-->
-
-        <!--        <item name="actionBarStyle">@style/action_bar</item>-->
-        <item name="android:windowBackground">@drawable/background</item>
-        <item name="toolbarStyle">@style/toolbar</item>
-
-        <item name="actionBarTheme">@style/actionBarTheme</item>
-
-
-
-
-
-
-        <item name="colorPrimary">@color/dark_green</item>
-
-
-
-
-
-
-        <!--        <item name="colorPrimaryVariant">@color/light_green_2</item>-->
-        <item name="colorOnPrimary">@color/light_green_2</item>
-        <!--        <item name="colorSecondary">@color/dark_green</item>-->
-        <!--        <item name="colorSecondaryVariant">@color/dark_green</item>-->
-        <!--        <item name="colorOnSecondary">@color/black</item>-->
-        <!--        <item name="colorOnSurface">@color/light_green_2</item>-->
-
-
-        <!--        <item name="popupMenuBackground">@color/light_green_2</item>-->
-        <!--        <item name="itemTextAppearance">@style/popup_menu</item>-->
-        <!--        <item name="android:ambientShadowAlpha">0.05</item>-->
-        <!--        <item name="android:spotShadowAlpha">0.3</item>-->
-
-        <item name="bottomNavigationStyle">@style/bottom_navigation</item>
     </style>
 
     <style name="Theme.SharedCard" parent="Base.Theme.SharedCard" />
+
+    <style name="Theme.SharedCard.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>

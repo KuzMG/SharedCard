@@ -14,8 +14,10 @@ data class CheckHistory(
     private val currency: String,
     private val count: Int,
     private val metric: String,
-    val user: String,
-    val idUser: UUID,
+    val userFirst: String,
+    val idUserFirst: UUID,
+    val userLast: String,
+    val idUserLast: UUID,
     @ColumnInfo("date_last")
     private val dateLast: Long,
     val calorie: Int?,

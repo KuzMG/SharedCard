@@ -14,9 +14,13 @@ interface GroupUsersDao {
     fun createGroup(entity: GroupUsersEntity)
     @Insert
     fun createGroups(entities: List<GroupUsersEntity>)
+    @Query("delete from group_users where id_group=:idGroup")
+    fun deleteGroup(idGroup: UUID)
+    @Query("select status from group_users where id_user=:idUser and id_group=:idGroup")
+    fun getStatus(idUser: UUID, idGroup: UUID): LiveData<Boolean>
     @Transaction
     @Query("select * from `group` " +
             "join group_users as gu on `group`.id_group = gu.id_group " +
-            "where gu.id_group in (select id_group from group_users where id_user=:id) group by `group`.id_group;")
+            "where gu.id_group in (select id_group from group_users where id_user=:id) and `group`.name!='' group by `group`.id_group;")
     fun allGroup(id: UUID): LiveData<List<GroupUsers>>
 }

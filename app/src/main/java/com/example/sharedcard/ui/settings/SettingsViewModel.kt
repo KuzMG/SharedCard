@@ -1,29 +1,15 @@
 package com.example.sharedcard.ui.settings
 
-import android.app.Application
-import android.text.BoringLayout
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
-import com.example.sharedcard.SharedCardApp
-import com.example.sharedcard.repository.GroupUsersRepository
 import com.example.sharedcard.repository.QueryPreferences
-import java.util.UUID
+import javax.inject.Inject
 
-class SettingsViewModel(application: Application) : AndroidViewModel(application) {
-    private val queryPreferences: QueryPreferences
-    private val groupUsersRepository: GroupUsersRepository
-    private val userId: UUID
+class SettingsViewModel @Inject constructor(private val queryPreferences: QueryPreferences) :
+    ViewModel() {
+
     var quickDelete: Boolean
         get() = queryPreferences.quickDelete
-        set(value){
+        set(value) {
             queryPreferences.quickDelete = value
         }
-    init {
-        queryPreferences = (application as SharedCardApp).getQueryPreferences()
-        groupUsersRepository = application.getGroupUsersRepository()
-        userId = queryPreferences.userId
-    }
-
-    fun getUser() =groupUsersRepository.getUser(userId)
-
 }

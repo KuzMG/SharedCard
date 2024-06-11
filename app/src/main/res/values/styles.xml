@@ -1,86 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="popup_menu">
-        <item name="android:textColor">@color/dark_green</item>
-        <item name="android:itemBackground">@color/light_green_2</item>
+    <style name="BottomSheetDialogTheme" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetDialog</item>
+        <item name="android:colorBackground">@null</item>
+        <item name="android:colorControlNormal">@null</item>
+        <item name="android:windowElevation">0dp</item>
     </style>
 
-    <style name="TextViewLight">
-        <item name="android:textColor">@color/light_green_2</item>
-        <item name="android:fontFamily">@font/gothic</item>
+    <style name="BottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="shapeAppearance">@style/BottomSheetShapeAppearance</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:elevation">0dp</item>
     </style>
 
-    <style name="TextViewLightTranslucent">
-        <item name="android:textColor">@color/light_green_2_translucent</item>
-        <item name="android:fontFamily">@font/gothic</item>
+    <style name="BottomSheetShapeAppearance" parent="ShapeAppearance.MaterialComponents">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">24dp</item>
     </style>
-
-    <style name="EditTextRegistration">
-        <item name="android:textColor">@color/dark_green</item>
-        <item name="android:textColorHint">@color/dark_green_translucent</item>
-        <item name="android:fontFamily">@font/gothic</item>
-        <item name="android:background">@drawable/edit_text_registration</item>
-        <item name="android:gravity">center</item>
-        <item name="android:maxLength">30</item>
-        <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="TextViewDark">
-        <item name="android:textColor">@color/dark_green</item>
-        <item name="android:fontFamily">@font/gothic</item>
-    </style>
-
-    <style name="TextViewKitchen">
-        <item name="android:textColor">@color/light_green_2</item>
-        <item name="android:fontFamily">@font/kitchen_home</item>
-    </style>
-
-    <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
-        <item name="android:fontFamily">@font/gothic</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name="for_search_bar">
-        <item name="colorSecondary">@color/light_green_2_translucent</item>
-        <item name="backgroundTint">@color/light_green_2</item>
-        <item name="android:textColorHint">@color/light_green_2_translucent</item>
-        <item name="android:textColor">@color/light_green_2</item>
-        <item name="android:fontFamily">@font/update_gothic</item>
-    </style>
-
-    <style name="bottom_navigation" parent="@style/Widget.MaterialComponents.BottomNavigationView.Colored">
-        <item name="android:backgroundTint">@color/dark_green</item>
-        <item name="labelVisibilityMode">unlabeled</item>
-        <!--        <item name="itemIconTint">@color/light_green_2_translucent</item>-->
-        <!--        <item name="colorPrimary">@color/pink_red</item>-->
-        <item name="itemIconSize">35dp</item>
-        <item name="elevation">20dp</item>
-        <item name="menu">@menu/bottom_menu</item>
-    </style>
-
-    <style name="toolbar">
-        <item name="titleTextColor">@color/light_green_2</item>
-    </style>
-
-    <style name="action_bar_text_style" parent="@style/TextAppearance.MaterialComponents.Headline5">
-        <item name="android:textColor">@color/light_green_2</item>
-    </style>
-
-    <style name="ButtonStyleAuthorisation" parent="@style/Widget.MaterialComponents.Button">
-        <item name="android:background">@color/transparent</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/dark_green</item>
-    </style>
-
-
-    <style name="SearchViewStyle">
-        <item name="searchIcon">@drawable/search_view_icon_search</item>
-    </style>
-
-    <style name="actionBarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="colorControlNormal">@color/light_green_2</item>
-        <item name="searchViewStyle">@style/Widget.AppCompat.SearchView.ActionBar</item>
+    <style name="toolbarStyle" parent="@style/Widget.MaterialComponents.Toolbar">
+        <item name="titleTextColor">@color/white</item>
     </style>
 
 </resources>

@@ -65,18 +65,8 @@ abstract class AppDatabase : RoomDatabase() {
 
 
     companion object {
-        private const val DATABASE_NAME = "shared_card"
-        private var nDatabase: AppDatabase? = null
-        private val executor: Executor = Executors.newSingleThreadExecutor()
-        fun getInstance(context: Context): AppDatabase {
-            if (nDatabase == null) {
-                nDatabase = Room
-                    .databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
-                    .build()
-
-            }
-            return nDatabase!!
-        }
+        const val DATABASE_NAME = "shared_card"
+        const val DEFAULT_UUID = "00000000-0000-0000-0000-000000000000"
 //        .addCallback(object : Callback() {
 //            override fun onCreate(db: SupportSQLiteDatabase) {
 //                super.onCreate(db)

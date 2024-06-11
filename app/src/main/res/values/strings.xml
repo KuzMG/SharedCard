@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SharedCard</string>
+    <string name="app_name">Учет Покупок</string>
 
     <!--    Регистрация/Аутентификация в аккаунт-->
     <string name="forgot_password">забыли пароль?</string>
@@ -10,22 +10,29 @@
     <string name="enter_your_password">введите пароль</string>
     <string name="sign_up">Создать</string>
     <string name="sign_in">Войти</string>
+    <string name="sign_up_toolbar">Регистрация</string>
+    <string name="sign_in_toolbar">Авторизация</string>
     <string name="create_account">Создать аккаунт</string>
     <string name="enter_email">введите Email</string>
     <string name="create_password">придумайте пароль</string>
     <string name="repeat_password">повторите пароль</string>
     <string name="send_code">отправить код</string>
     <string name="change_password">изменить пароль</string>
-
-
+    <string name="invalid_username">Некорректный логин</string>
+    <string name="invalid_password">Пароль должен быть >5 символом</string>
+    <string name="invalid_repeat_password">пароль не совпадает</string>
+    <string name="invalid_code">Код не подходит</string>
+    <string name="invalid_sign_in">Неверный логин или пароль</string>
     <!--   toolbar -->
-    <string name="manual">справочник</string>
+    <string name="profile">Профиль</string>
+    <string name="products">Продукты</string>
+    <string name="recipes">Рецепты</string>
     <string name="check">Чек</string>
     <string name="statistic">Статистика</string>
     <string name="history">История</string>
     <string name="group">Группы</string>
 
-<!--    Группы в профиле-->
+    <!--    Группы в профиле-->
     <string name="group_label">Группы</string>
 
 
@@ -35,24 +42,27 @@
     <string name="tab_target">цели</string>
     <!--   кнопки -->
     <string name="add_product_by_search">\uf002 поиск</string>
-    
+
 
     <!--    поисковая строка-->
-    <string name="search_bar">\uf002 Введите название</string>
+    <string name="search_bar">\uf002</string>
     <string name="sorting_by_date">по дате</string>
     <string name="sorting_by_name">по названию</string>
     <string name="sorting_by_category">по категории</string>
     <string name="sorting_by_user">по пользователю</string>
 
     <!--   диалог добавление -->
-    <string name="dialog_add_product">Добавить продукт</string>
-    <string name="dialog_add_target">Добавить цель</string>
-    <string name="dialog_add_text_hint_porduct">Название товара</string>
-    <string name="dialog_add_text_hint_target">Название цели</string>
+    <string name="dialog_add_product">Новый продукт</string>
+    <string name="dialog_add_target">Новая цель</string>
+    <string name="dialog_add_text_hint">Название</string>
+    <string name="dialog_add_text_shop">Магазин</string>
+    <string name="dialog_add_text_hint_metric"> Метрика</string>
+    <string name="dialog_add_text_hint_currency">Валюта</string>
     <string name="dialog_add_text_hint_count">Кол-во</string>
     <string name="dialog_add_text_hint_price">Цена</string>
+    <string name="dialog_add_text_hint_category">Категория</string>
     <string name="dialog_add">Добавить</string>
-    <string name="dialog_add_item_comment">комментарий</string>
+    <string name="dialog_add_item_comment">Комментарий</string>
 
     <!--   диалог удалени -->
     <string name="dialog_delete_item">Вы уверены, что хотите удалить %1$s?</string>
@@ -65,28 +75,55 @@
 
     <!--   диалог группы -->
     <string name="dialog_edit_group_name">Название группы</string>
-    <string name="dialog_edit_button">Изменить</string>
+    <string name="dialog_edit_button">Сохранить</string>
     <string name="dialog_create_group_button">Создать</string>
     <string name="dialog_join_group_token">Введите токен</string>
-    <string name="dialog_join_group_button">Присоединиться</string>
+    <string name="join_group_button">Присоединиться</string>
+    <string name="create_group_button">Создать группу</string>
 
     <!--   ячейка продукта -->
     <string name="recipe">рецепты</string>
-    <string name="pfc">к/б/ж/у</string>
+    <string name="pfc">Ккал/Б/Ж/У:</string>
+    <string name="date_creation">Дата создания:</string>
+    <string name="description">Комментарий:</string>
+    <string name="category">Категория:</string>
+    <string name="shop">Магазин:</string>
+    <string name="first_price">Первоначальная цена:</string>
+    <string name="last_price">Конечная цена:</string>
 
-    <string name="category">Категория: %1$s</string>
-    <string name="shop">Магазин: %1$s</string>
-    <string name="first_price">Изначальная цена: %1$s</string>
-
+    <!--    Профиль-->
+    <string name="weight">%1$s кг</string>
+    <string name="height">%1$s см</string>
+    <string name="age">%1$s лет</string>
 
     <!--    Настройки-->
     <string name="settings">Настройки</string>
     <string name="settings_delete_swipe">быстрое удаление</string>
-    <string name="email">Почта: %1$s</string>
-    <string name="name">Имя: %1$s</string>
-    <string name="weight">Вес: %1$s</string>
-    <string name="height">Рост: %1$s</string>
-    <string name="age">Возраст: %1$s</string>
+    <string name="edit_profile">Редактировать профиль</string>
+    <string name="exit">Выход</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="group_fragment_token">Код приглашения</string>
+    <string name="price">Цена:</string>
+    <string name="user">Пользователь:</string>
+    <string name="date_buy">Дата покупки:</string>
+    <string name="first_user">Добавил:</string>
+    <string name="last_user">Купил:</string>
+    <string name="fragment_join_group">Добавление группы</string>
+    <string name="fragment_create_group">Создание группы</string>
+    <string name="popup_user_admin">Администратор</string>
+    <string name="popup_user_delete">Удалить</string>
 
 
 </resources>

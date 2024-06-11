@@ -6,15 +6,15 @@ plugins {
     kotlin("kapt")
 }
 
-android {
 
+android {
     namespace = "com.example.sharedcard"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.example.sharedcard"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -47,7 +47,7 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.10.0")
+    implementation("com.google.android.material:material:1.8.0")
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
@@ -57,11 +57,20 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
+    val dagger_version = "2.51.1"
+    implementation("com.google.dagger:dagger:$dagger_version")
+    kapt("com.google.dagger:dagger-compiler:$dagger_version")
+
+
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
     
     implementation("com.squareup.picasso:picasso:2.8")
 
-    val work_version = "2.9.0"
+    implementation("org.greenrobot:eventbus:3.1.1")
+
+    implementation("com.github.kobakei:MaterialFabSpeedDial:2.0.0")
+
+    val work_version = "2.8.0"
     implementation("androidx.work:work-runtime-ktx:$work_version")
 
 
@@ -74,15 +83,14 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.retrofit2:converter-gson:$retrofit_version")
 
-    val nav_version = "2.7.5"
-    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
-    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
-
     val lifecycle_version = "2.6.2"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
 
-    val activity_version = "1.8.1"
+    val fragment_version = "1.6.2"
+    implementation("androidx.fragment:fragment-ktx:$fragment_version")
+
+    val activity_version = "1.7.0"
     implementation("androidx.activity:activity-ktx:$activity_version")
 
     val room_version = "2.5.2"

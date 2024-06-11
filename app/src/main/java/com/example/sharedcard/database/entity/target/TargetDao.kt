@@ -25,22 +25,24 @@ interface TargetDao {
             "order by date_first desc")
     fun getAllForCheckQuery(id: UUID, query: String): LiveData<List<Target>>
 
-    @Query("select target.id,target.name,c.name as category,first_price,curF.name as currencyFirst,last_price,curL.name as currencyLast,u.name as user,u.id_user,sh.name as shop,date_last as dateLast from target " +
+    @Query("select target.id,target.name,c.name as category,first_price,curF.name as currencyFirst,last_price,curL.name as currencyLast,uf.name as userFirst,uf.id_user as idUserFirst,ul.name as userLast,ul.id_user as idUserLast,sh.name as shop,date_last as dateLast from target " +
             "join category as c on id_category = c.id " +
             "join shop as sh on id_shop = sh.id " +
             "join currency as curF on id_currency_first = curF.id " +
             "join currency as curL on id_currency_last = curL.id " +
-            "join user as u on id_user_buyer = u.id_user " +
+            "join user as uf on id_user_creator = uf.id_user " +
+            "join user as ul on id_user_buyer = ul.id_user " +
             "where target.id_group = :id and target.status = 1 " +
             "order by date_first desc")
     fun getAllForHistory(id: UUID): LiveData<List<TargetHistory>>
 
-    @Query("select target.id,target.name,c.name as category,first_price,curF.name as currencyFirst,last_price,curL.name as currencyLast,u.name as user,u.id_user,sh.name as shop,date_last as dateLast from target " +
+    @Query("select target.id,target.name,c.name as category,first_price,curF.name as currencyFirst,last_price,curL.name as currencyLast,uf.name as userFirst,uf.id_user as idUserFirst,ul.name as userLast,ul.id_user as idUserLast,sh.name as shop,date_last as dateLast from target " +
             "join category as c on id_category = c.id " +
             "join shop as sh on id_shop = sh.id " +
             "join currency as curF on id_currency_first = curF.id " +
             "join currency as curL on id_currency_last = curL.id " +
-            "join user as u on id_user_buyer = u.id_user " +
+            "join user as uf on id_user_creator = uf.id_user " +
+            "join user as ul on id_user_buyer = ul.id_user " +
             "where target.id_group = :id and target.status = 1 and target.name like :query " +
             "order by date_first desc")
     fun getAllForHistoryQuery(id: UUID, query: String): LiveData<List<TargetHistory>>
