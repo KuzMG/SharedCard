@@ -11,13 +11,9 @@ import java.util.UUID
 import javax.inject.Inject
 
 class HistoryProductViewModel @Inject constructor(
-    private val checkRepository: CheckRepository,
-    private val queryPreferences: QueryPreferences
+    private val checkRepository: CheckRepository
 ) : ViewModel() {
 
-
-    private val groupId: UUID
-        get() = queryPreferences.groupId
     val historyItemLiveData: LiveData<List<CheckHistory>>
     private val mutableSearch = MutableLiveData<String>()
 
@@ -25,9 +21,9 @@ class HistoryProductViewModel @Inject constructor(
         mutableSearch.value = ""
         historyItemLiveData = mutableSearch.switchMap { query ->
             if (query.isBlank()) {
-                checkRepository.getAllHistory(groupId)
+                checkRepository.getAllHistory()
             } else {
-                checkRepository.getAllHistoryQuery(groupId, query)
+                checkRepository.getAllHistoryQuery(query)
             }
         }
     }

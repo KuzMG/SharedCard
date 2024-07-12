@@ -186,13 +186,20 @@ class GroupFragment : Fragment() {
                 }
 
                 viewModel.currentGroupLiveData.observe(viewLifecycleOwner) { groupId ->
-                    materialCardView.strokeColor = when (group.group.id) {
-                        groupId -> ContextCompat.getColor(
-                            requireContext(),
-                            R.color.red
-                        )
+                     when (group.group.id) {
+                        groupId -> {
+                            materialCardView.strokeColor =
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.red
+                            )
+                            border.setBackgroundResource(R.color.red)
+                        }
 
-                        else -> ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+                        else ->{
+                            materialCardView.strokeColor =ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+                            border.setBackgroundResource(R.color.colorPrimary)
+                        }
                     }
                 }
                 itemGroupEditButton.setOnClickListener {

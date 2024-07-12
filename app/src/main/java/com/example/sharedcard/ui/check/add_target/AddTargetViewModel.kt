@@ -8,6 +8,7 @@ import com.example.sharedcard.repository.TargetRepository
 import com.project.shared_card.database.dao.target.TargetEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Locale
 import java.util.UUID
 import javax.inject.Inject
 
@@ -25,8 +26,8 @@ class AddTargetViewModel @Inject constructor(
 
     var name = ""
     var price = 0
-    var currency = 1L
-    var category = 1L
+    var currency = 0L
+    var category = 0L
 
 
     fun getCurrency() = dictionaryRepository.getAllCurrency()
@@ -39,6 +40,12 @@ class AddTargetViewModel @Inject constructor(
     }
 
     fun add() {
+        if(currency==0L){
+            currency = when(Locale.getDefault().country){
+                "RU" -> 1L
+                else -> 2L
+            }
+        }
         val target = TargetEntity(
             name = name,
             firstPrice = price,

@@ -2,9 +2,15 @@ package com.example.sharedcard.di.module
 
 import android.app.Application
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.sharedcard.database.AppDatabase
+import com.example.sharedcard.database.DataGenerator
+import com.example.sharedcard.util.appComponent
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.coroutineScope
+import java.util.concurrent.Executors
 import javax.inject.Singleton
 
 @Module
@@ -14,6 +20,20 @@ class DBModule {
     @Provides
     fun provideDatabase(app: Application) = Room
         .databaseBuilder(app, AppDatabase::class.java, AppDatabase.DATABASE_NAME)
+        .addCallback(object : RoomDatabase.Callback(){
+            override fun onCreate(db: SupportSQLiteDatabase) {
+                super.onCreate(db)
+                Executors.newSingleThreadExecutor().execute {
+                    app.applicationContext.appComponent.run {
+                        currencyDao.add(DataGenerator.getCurrency())
+                        shopDao.add(DataGenerator.getShopProduct())
+                        metricDao.add(DataGenerator.getMetric())
+                        categoryDao.add(DataGenerator.getCategoryProduct())
+                        productDao.add(DataGenerator.getProducts())
+                    }
+                }
+            }
+        })
         .build()
 
     @Singleton

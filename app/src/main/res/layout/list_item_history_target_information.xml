@@ -11,7 +11,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:textSize="16sp"
+            style="@style/TextAppearance.AppCompat.Title.Information"
             android:text="@string/category"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -20,9 +20,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:textSize="16sp"
+            style="@style/TextAppearance.AppCompat.Title.Information.Value"
             tools:text="Хлебобулочное изделье"
-            android:textColor="@color/red"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toRightOf="@id/category_label"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -32,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="@string/shop"
-            android:textSize="16sp"
+            style="@style/TextAppearance.AppCompat.Title.Information"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/category_label"/>
 
@@ -41,9 +40,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:textSize="16sp"
+            style="@style/TextAppearance.AppCompat.Title.Information.Value"
             tools:text="Магни!"
-            android:textColor="@color/red"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toRightOf="@id/shop_label"
             app:layout_constraintTop_toBottomOf="@id/category_label"/>
@@ -53,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="@string/first_price"
-            android:textSize="16sp"
+            style="@style/TextAppearance.AppCompat.Title.Information"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/shop_label"/>
 
@@ -62,9 +60,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:textSize="16sp"
+            style="@style/TextAppearance.AppCompat.Title.Information.Value"
             tools:text="Срочно!"
-            android:textColor="@color/red"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toRightOf="@id/price_first_label"
             app:layout_constraintTop_toBottomOf="@id/shop_label"/>
@@ -75,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="@string/last_price"
-            android:textSize="16sp"
+            style="@style/TextAppearance.AppCompat.Title.Information"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/price_first_label"/>
 
@@ -84,9 +81,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:textSize="16sp"
+            style="@style/TextAppearance.AppCompat.Title.Information.Value"
             tools:text="Срочно!"
-            android:textColor="@color/red"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toRightOf="@id/price_last_label"
             app:layout_constraintTop_toBottomOf="@id/price_first_label"/>
@@ -96,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="@string/date_buy"
-            android:textSize="16sp"
+            style="@style/TextAppearance.AppCompat.Title.Information"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/price_last_label"/>
         <TextView
@@ -104,9 +100,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:textSize="16sp"
+            style="@style/TextAppearance.AppCompat.Title.Information.Value"
             tools:text="2024-05-21 18:00"
-            android:textColor="@color/red"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toRightOf="@id/date_label"
             app:layout_constraintTop_toBottomOf="@id/price_last_text_view"/>
@@ -116,7 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="@string/first_user"
-            android:textSize="16sp"
+            style="@style/TextAppearance.AppCompat.Title.Information"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/date_text_view"/>
         <TextView
@@ -124,9 +119,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:textSize="16sp"
+            style="@style/TextAppearance.AppCompat.Title.Information.Value"
             tools:text="Михаил"
-            android:textColor="@color/red"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toRightOf="@id/first_user_label"
             app:layout_constraintTop_toBottomOf="@id/date_text_view"/>
@@ -136,7 +130,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="@string/last_user"
-            android:textSize="16sp"
+            style="@style/TextAppearance.AppCompat.Title.Information"
             android:paddingBottom="5dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/first_user_text_view"/>
@@ -145,10 +139,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:textSize="16sp"
             android:paddingBottom="5dp"
+            style="@style/TextAppearance.AppCompat.Title.Information.Value"
             tools:text="Михаил"
-            android:textColor="@color/red"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toRightOf="@id/last_user_label"
             app:layout_constraintTop_toBottomOf="@id/first_user_text_view"/>

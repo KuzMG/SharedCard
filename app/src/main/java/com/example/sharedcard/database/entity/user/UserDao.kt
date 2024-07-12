@@ -11,13 +11,19 @@ import java.util.UUID
 @Dao
 interface UserDao {
     @Insert
-    fun createUser(user: UserEntity): Long?
-    @Query("select * from user where email =:email")
-    fun findUser(email: String): UserEntity
+    fun createUser(user: UserEntity)
+
+    @Insert
+    fun createUserAccount(user: UserAccountEntity)
+    @Query("select * from user_account where email =:email")
+    fun findUserAccount(email: String): UserAccountEntity
     @Insert
     fun createUsers(users: List<UserEntity>)
     @Query("select * from user where id_user = :id")
     fun get(id: UUID): LiveData<UserEntity>
+
+    @Query("select * from user_account where id_user = :id")
+    fun getAccount(id: UUID): LiveData<UserAccountEntity>
     @Update
     fun update(entity: UserEntity)
     @Query("update user set name = :name where  id_user = :id")

@@ -201,7 +201,12 @@ class ProductFragment : CheckListFragment() {
                 )
                 bottomMenuBinding.userTextView.text = check.user
                 bottomMenuBinding.pfcTextView.text = check.pfc
-                bottomMenuBinding.descriptionTextView.text = check.description
+                if(check.description.isEmpty()){
+                    bottomMenuBinding.descriptionTextView.visibility = View.GONE
+                    bottomMenuBinding.descriptionLabel.visibility = View.GONE
+                } else{
+                    bottomMenuBinding.descriptionTextView.text = check.description
+                }
                 bottomMenuBinding.categoryTextView.text = check.category
                 bottomMenuBinding.dateTextView.text = DateFormat.format(localDateFormat, check.date)
                 binding.border.visibility = View.VISIBLE

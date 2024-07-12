@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "product",
-    primaryKeys = arrayOf("id"))
+    primaryKeys = ["id"])
 data class ProductEntity(
     val id: Long,
     val name: String,
@@ -17,5 +17,6 @@ data class ProductEntity(
     val calorie: Double?,
     @ColumnInfo(name = "id_category")
     @SerializedName("id_category")
-    val idCategory: Long
+    val idCategory: Long,
+    val allergy: Boolean
 )

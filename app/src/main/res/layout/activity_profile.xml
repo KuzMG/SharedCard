@@ -12,6 +12,9 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             tools:context=".ui.profile.ProfileActivity">
+            <include
+                android:id="@+id/app_bar"
+                layout="@layout/app_bar"/>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/profile_card_view"

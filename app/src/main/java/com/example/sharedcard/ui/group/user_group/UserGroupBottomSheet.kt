@@ -52,9 +52,11 @@ class UserGroupBottomSheet : BottomSheetDialogFragment() {
         binding.run {
             adminLayout.setOnClickListener {
                 viewModel.makeUserAdmin(idUser, idGroup)
+                dismiss()
             }
             deleteLayout.setOnClickListener {
                 viewModel.deleteUser(idUser, idGroup)
+                dismiss()
             }
         }
     }

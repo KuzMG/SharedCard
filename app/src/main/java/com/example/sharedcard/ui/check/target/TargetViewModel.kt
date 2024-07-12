@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.example.sharedcard.database.entity.target.Target
+import com.example.sharedcard.repository.GroupManager
 import com.example.sharedcard.repository.QueryPreferences
 import com.example.sharedcard.repository.TargetRepository
 import kotlinx.coroutines.Dispatchers
@@ -15,13 +16,13 @@ import javax.inject.Inject
 
 class TargetViewModel @Inject constructor(
     private val queryPreferences: QueryPreferences,
-    private val targetRepository: TargetRepository
+    private val targetRepository: TargetRepository,
+    private val groupManager: GroupManager
 ) : ViewModel() {
 
-    private val userId: UUID
-        get() = queryPreferences.userId
-    private val groupId: UUID
-        get() = queryPreferences.groupId
+    val groupChanged: LiveData<UUID>
+        get() = groupManager.groupChangedLiveData
+
     val quickDelete: Boolean
         get() = queryPreferences.quickDelete
     val targetItemLiveData: LiveData<List<Target>>
@@ -31,9 +32,9 @@ class TargetViewModel @Inject constructor(
         mutableSearch.value = ""
         targetItemLiveData = mutableSearch.switchMap { query ->
             if (query.isBlank()) {
-                targetRepository.getAllCheck(groupId)
+                targetRepository.getAllCheck()
             } else {
-                targetRepository.getAllQuery(groupId, query)
+                targetRepository.getAllQuery(query)
             }
         }
     }

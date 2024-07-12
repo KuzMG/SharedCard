@@ -36,6 +36,6 @@ class ProfileViewModel @Inject constructor(private val accountManager: AccountMa
     }
 
     fun getUser() = accountManager.getUser()
-
+    fun getUserAccount() = accountManager.getUserAccount()
 
 }

@@ -23,8 +23,6 @@ class ProductViewModel @Inject constructor(
     val groupChanged: LiveData<UUID>
         get() = groupManager.groupChangedLiveData
 
-    private val groupId: UUID
-        get() = queryPreferences.groupId
     val quickDelete: Boolean
         get() = queryPreferences.quickDelete
     val checkItemLiveData: LiveData<List<Check>>
@@ -34,9 +32,9 @@ class ProductViewModel @Inject constructor(
         mutableSearch.value = ""
         checkItemLiveData = mutableSearch.switchMap { query ->
             if (query.isBlank()) {
-                checkRepository.getAllCheck(groupId)
+                checkRepository.getAllCheck()
             } else {
-                checkRepository.getAllQuery(groupId, query)
+                checkRepository.getAllQuery(query)
             }
         }
     }

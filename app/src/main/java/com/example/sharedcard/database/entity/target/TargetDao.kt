@@ -9,7 +9,7 @@ import java.util.UUID
 
 @Dao
 interface TargetDao {
-    @Query("select target.id,target.name,c.name as category,first_price as price,cur.name as currency,u.name as user,u.id_user,date_first as dateFirst from target " +
+    @Query("select target.id,target.name,c.name as category,first_price as price,cur.symbol as currency,u.name as user,u.id_user,date_first as dateFirst from target " +
             "join category as c on id_category = c.id " +
             "join currency as cur on id_currency_first = cur.id " +
             "join user as u on id_user_creator = u.id_user " +
@@ -17,7 +17,7 @@ interface TargetDao {
             "order by date_first desc")
     fun getAllForCheck(id: UUID): LiveData<List<Target>>
 
-    @Query("select target.id,target.name,c.name as category,first_price as price,cur.name as currency,u.name as user,u.id_user,date_first as dateFirst from target " +
+    @Query("select target.id,target.name,c.name as category,first_price as price,cur.symbol as currency,u.name as user,u.id_user,date_first as dateFirst from target " +
             "join category as c on id_category = c.id " +
             "join currency as cur on id_currency_first = cur.id " +
             "join user as u on id_user_creator = u.id_user " +
@@ -25,7 +25,7 @@ interface TargetDao {
             "order by date_first desc")
     fun getAllForCheckQuery(id: UUID, query: String): LiveData<List<Target>>
 
-    @Query("select target.id,target.name,c.name as category,first_price,curF.name as currencyFirst,last_price,curL.name as currencyLast,uf.name as userFirst,uf.id_user as idUserFirst,ul.name as userLast,ul.id_user as idUserLast,sh.name as shop,date_last as dateLast from target " +
+    @Query("select target.id,target.name,c.name as category,first_price,curF.symbol as currencyFirst,last_price,curL.symbol as currencyLast,uf.name as userFirst,uf.id_user as idUserFirst,ul.name as userLast,ul.id_user as idUserLast,sh.name as shop,date_last as dateLast from target " +
             "join category as c on id_category = c.id " +
             "join shop as sh on id_shop = sh.id " +
             "join currency as curF on id_currency_first = curF.id " +
@@ -36,7 +36,7 @@ interface TargetDao {
             "order by date_first desc")
     fun getAllForHistory(id: UUID): LiveData<List<TargetHistory>>
 
-    @Query("select target.id,target.name,c.name as category,first_price,curF.name as currencyFirst,last_price,curL.name as currencyLast,uf.name as userFirst,uf.id_user as idUserFirst,ul.name as userLast,ul.id_user as idUserLast,sh.name as shop,date_last as dateLast from target " +
+    @Query("select target.id,target.name,c.name as category,first_price,curF.symbol as currencyFirst,last_price,curL.symbol as currencyLast,uf.name as userFirst,uf.id_user as idUserFirst,ul.name as userLast,ul.id_user as idUserLast,sh.name as shop,date_last as dateLast from target " +
             "join category as c on id_category = c.id " +
             "join shop as sh on id_shop = sh.id " +
             "join currency as curF on id_currency_first = curF.id " +

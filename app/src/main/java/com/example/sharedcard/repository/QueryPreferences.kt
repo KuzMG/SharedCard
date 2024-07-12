@@ -56,4 +56,5 @@ class QueryPreferences @Inject  constructor(app: Application) {
                 putBoolean(PREF_QUICK_DELETE, value)
             }
         }
+
 }

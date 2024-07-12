@@ -12,21 +12,22 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Locale
 import java.util.UUID
 
 class ToHistoryViewModel(
     val page: Int,
     private val id: UUID,
     val name: String,
-    private val queryPreferences: QueryPreferences,
     private val dictionaryRepository: DictionaryRepository,
     private val checkRepository: CheckRepository,
     private val targetRepository: TargetRepository
 ) : ViewModel() {
-    private val idUser: UUID
-        get() = queryPreferences.userId
 
 
+    var price = 0
+    var currency = 0L
+    var shop = 0L
     fun getShop() =
         when (page) {
             0 -> dictionaryRepository.getAllShopsProduct()
@@ -36,17 +37,22 @@ class ToHistoryViewModel(
 
     fun getCurrency() = dictionaryRepository.getAllCurrency()
 
-    fun toHistory(shop: Long, price: Int, currency: Long) {
+    fun toHistory() {
+        if (currency == 0L)
+            currency = when (Locale.getDefault().country) {
+                "RU" -> 1L
+                else -> 2L
+            }
         when (page) {
             0 -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    checkRepository.toHistory(id, shop, price, currency, idUser)
+                    checkRepository.toHistory(id, shop, price, currency)
                 }
             }
 
             1 -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    targetRepository.toHistory(id, shop, price, currency, idUser)
+                    targetRepository.toHistory(id, shop, price, currency)
                 }
             }
         }
@@ -57,7 +63,6 @@ class ToHistoryViewModel(
         @Assisted("page") private val page: Int,
         @Assisted("id") private val id: String,
         @Assisted("name") private val name: String,
-        private val queryPreferences: QueryPreferences,
         private val dictionaryRepository: DictionaryRepository,
         private val checkRepository: CheckRepository,
         private val targetRepository: TargetRepository
@@ -68,7 +73,6 @@ class ToHistoryViewModel(
                 page,
                 UUID.fromString(id),
                 name,
-                queryPreferences,
                 dictionaryRepository,
                 checkRepository,
                 targetRepository

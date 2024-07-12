@@ -50,10 +50,11 @@
 
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/dialog_to_history_edit_view"
+                        android:id="@+id/dialog_to_history_price_edit_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="@string/dialog_add_text_hint_price"
+                        android:maxLength="7"
                         android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 

@@ -1,6 +1,12 @@
 package com.example.sharedcard.di
 
 import android.app.Application
+import com.example.sharedcard.database.AppDatabase
+import com.example.sharedcard.database.entity.category.CategoryDao
+import com.example.sharedcard.database.entity.currency.CurrencyDao
+import com.example.sharedcard.database.entity.metric.MetricDao
+import com.example.sharedcard.database.entity.product.ProductDao
+import com.example.sharedcard.database.entity.shop.ShopDao
 import com.example.sharedcard.di.module.DBModule
 import com.example.sharedcard.di.module.ServiceModule
 import com.example.sharedcard.di.module.ViewModelModule
@@ -18,6 +24,11 @@ import javax.inject.Singleton
 interface AppComponent {
     val accountManager: AccountManager
     val multiViewModelFactory: MultiViewModelFactory
+    val currencyDao: CurrencyDao
+    val metricDao: MetricDao
+    val productDao: ProductDao
+    val categoryDao: CategoryDao
+    val shopDao: ShopDao
     fun inject(fragment: DeleteItemFragment)
     fun inject(fragment: ToHistoryFragment)
     fun inject(fragment: EditGroupBottomSheet)

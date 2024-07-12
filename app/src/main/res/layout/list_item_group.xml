@@ -29,6 +29,7 @@
                     android:layout_height="55dp"
                     android:layout_margin="10dp"
                     app:cardCornerRadius="70dp"
+                    app:cardElevation="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -46,16 +47,18 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:textSize="24sp"
+                    style="@style/TextAppearance.AppCompat.Title.Custom"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintLeft_toRightOf="@id/item_group_card_view"
                     app:layout_constraintRight_toLeftOf="@id/item_group_edit_button"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Группа" />
 
                 <ImageButton
                     android:id="@+id/item_group_edit_button"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_margin="5dp"
                     android:background="?attr/selectableItemBackground"
                     android:scaleType="centerCrop"
@@ -66,16 +69,17 @@
 
                 <ImageButton
                     android:id="@+id/item_group_token_button"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="5dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="15dp"
                     android:background="?attr/selectableItemBackground"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/swipe_delete_icon"
+                    android:src="@drawable/email"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <View
                 android:id="@+id/border"
                 android:layout_width="match_parent"

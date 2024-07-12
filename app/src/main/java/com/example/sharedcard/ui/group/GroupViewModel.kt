@@ -50,13 +50,13 @@ class GroupViewModel @Inject constructor(private val groupManager: GroupManager)
     }
 
     fun deleteGroup(idGroup: UUID) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             groupManager.deleteGroup(idGroup)
         }
     }
 
     fun makeUserAdmin(idUser: UUID, idGroup: UUID) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             groupManager.makeUserAdmin(idUser, idGroup)
         }
     }

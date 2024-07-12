@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "shop",
-    primaryKeys = arrayOf("id")
+    primaryKeys = ["id"]
 )
 class ShopEntity(
     val id: Long,

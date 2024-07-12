@@ -130,7 +130,12 @@ class HistoryProductFragment : CheckListFragment() {
                 bottomMenuBinding.firstUserTextView.text = check.userFirst
                 bottomMenuBinding.lastUserTextView.text = check.userLast
                 bottomMenuBinding.pfcTextView.text = check.pfc
-                bottomMenuBinding.priceTextView.text = check.priceList
+                if (check.price == 0){
+                    bottomMenuBinding.priceTextView.visibility = View.GONE
+                    bottomMenuBinding.priceLabel.visibility = View.GONE
+                } else{
+                    bottomMenuBinding.priceTextView.text = check.priceList
+                }
                 bottomMenuBinding.categoryTextView.text = check.category
                 bottomMenuBinding.shopTextView.text = check.shop
                 bottomMenuBinding.dateTextView.text = DateFormat.format(localDateFormat, check.date)

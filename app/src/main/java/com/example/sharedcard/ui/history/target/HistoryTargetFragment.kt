@@ -133,7 +133,7 @@ class HistoryTargetFragment : CheckListFragment() {
                     bottomMenuBinding.priceFirstLabel.visibility = View.GONE
                 }
                 if(target.priceLast>0) {
-                    bottomMenuBinding.priceLastTextView.text = target.priceFirst.toString()
+                    bottomMenuBinding.priceLastTextView.text = target.priceLast.toString()
                 } else{
                     bottomMenuBinding.priceLastTextView.visibility= View.GONE
                     bottomMenuBinding.priceLastLabel.visibility = View.GONE

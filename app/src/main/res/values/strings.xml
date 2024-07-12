@@ -124,6 +124,8 @@
     <string name="fragment_create_group">Создание группы</string>
     <string name="popup_user_admin">Администратор</string>
     <string name="popup_user_delete">Удалить</string>
+    <string name="dialog_user_options_admin">Назначить администратором</string>
+    <string name="dialog_user_options_delete">Удалить</string>
 
 
 </resources>

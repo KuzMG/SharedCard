@@ -3,6 +3,7 @@ package com.example.sharedcard.repository
 import com.example.sharedcard.database.entity.gpoup_users.GroupUsersDao
 import com.example.sharedcard.database.entity.group.GroupDao
 import com.example.sharedcard.database.entity.group.GroupEntity
+import com.example.sharedcard.database.entity.user.UserAccountEntity
 import com.example.sharedcard.database.entity.user.UserDao
 import com.example.sharedcard.database.entity.user.UserEntity
 import com.example.sharedcard.retrofit.api.GroupApi
@@ -23,10 +24,11 @@ class AccountManager @Inject constructor(
 
 
     fun getUser() = userDao.get(queryPreferences.userId)
+    fun getUserAccount() = userDao.getAccount(queryPreferences.userId)
     fun accountExists() = queryPreferences.userId != UUID.fromString(QueryPreferences.DEF_VALUE)
 
     fun signIn(email: String, password: String): Boolean {
-        val user = userDao.findUser(email)
+        val user = userDao.findUserAccount(email)
         if(user.password != password)
             return false
         val idGroup = groupDao.findLocalGroup(user.id)
@@ -39,9 +41,11 @@ class AccountManager @Inject constructor(
     }
 
     fun signUp(email: String, password: String) {
-        val user = UserEntity(email = email, name = "user", password = password)
+        val user = UserEntity(name = "user")
+        val userAccount = UserAccountEntity(user.id,email,password)
         val group = GroupEntity(name = "")
         userDao.createUser(user)
+        userDao.createUserAccount(userAccount)
         groupDao.createGroup(group)
         groupUsersDao.createGroup(GroupUsersEntity(user.id, group.id, true))
         queryPreferences.run {

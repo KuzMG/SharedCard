@@ -14,5 +14,6 @@ data class RecipeProductEntity(
     val idRecipe: Long,
     @ColumnInfo("id_metric")
     val idMetric: Long,
-    val count: Int
+    val count: Int,
+    val weight: Int
 )

@@ -7,7 +7,7 @@
         <item name="toolbarStyle">@style/toolbarStyle</item>
         <item name="colorControlNormal">@color/textColorPrimary</item>
         <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
-
+        <item name="fontFamily">@font/update_gothic</item>
     </style>
 
     <style name="Theme.SharedCard" parent="Base.Theme.SharedCard" />

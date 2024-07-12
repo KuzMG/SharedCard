@@ -1,11 +1,8 @@
 package com.example.sharedcard.database
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.sharedcard.database.entity.category.CategoryDao
 import com.example.sharedcard.database.entity.category.CategoryEntity
 import com.example.sharedcard.database.entity.check.CheckDao
@@ -24,13 +21,12 @@ import com.example.sharedcard.database.entity.recipe_product.RecipeProductEntity
 import com.example.sharedcard.database.entity.shop.ShopDao
 import com.example.sharedcard.database.entity.shop.ShopEntity
 import com.example.sharedcard.database.entity.target.TargetDao
+import com.example.sharedcard.database.entity.user.UserAccountEntity
 import com.example.sharedcard.database.entity.user.UserDao
 import com.example.sharedcard.database.entity.user.UserEntity
 import com.example.sharedcard.database.type_converter.DateConverter
 import com.project.shared_card.database.dao.group_users.GroupUsersEntity
 import com.project.shared_card.database.dao.target.TargetEntity
-import java.util.concurrent.Executor
-import java.util.concurrent.Executors
 
 
 @Database(
@@ -47,7 +43,8 @@ import java.util.concurrent.Executors
         RecipeProductEntity::class,
         ShopEntity::class,
         TargetEntity::class,
-        UserEntity::class
+        UserEntity::class,
+        UserAccountEntity::class
     ]
 )
 @TypeConverters(DateConverter::class)
@@ -67,46 +64,6 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
         const val DATABASE_NAME = "shared_card"
         const val DEFAULT_UUID = "00000000-0000-0000-0000-000000000000"
-//        .addCallback(object : Callback() {
-//            override fun onCreate(db: SupportSQLiteDatabase) {
-//                super.onCreate(db)
-//                executor.execute {
-//                    val database = getInstance(context)
-//                    val category = DataGenerator.getCategoryProduct()
-//                    val shop = DataGenerator.getShopProduct()
-//                    val currency = DataGenerator.getCurrency()
-//                    val metric = DataGenerator.getMetric()
-//                    val product = DataGenerator.getProducts()
-//                    insertData(
-//                        database,
-//                        category,
-//                        shop,
-//                        currency,
-//                        metric,
-//                        product
-//                    )
-//                }
-//
-//            }
-//        })
-        fun insertData(
-            database: AppDatabase,
-            category: List<CategoryEntity>,
-            shopProduct: List<ShopEntity>,
-            currency: List<CurrencyEntity>,
-            metric: List<MetricEntity>,
-            product: List<ProductEntity>
-        ) {
-            database.apply {
-                runInTransaction {
-                    categoryDao().add(category)
-                    shopDao().add(shopProduct)
-                    currencyDao().add(currency)
-                    metricDao().add(metric)
-                    productDao().add(product)
-                }
-            }
-        }
     }
 }
 

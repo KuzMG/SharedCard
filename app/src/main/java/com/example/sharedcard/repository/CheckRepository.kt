@@ -8,28 +8,24 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CheckRepository @Inject constructor(private val checkDao: CheckDao) {
+class CheckRepository @Inject constructor(
+    private val queryPreferences: QueryPreferences,
+    private val checkDao: CheckDao
+) {
 
 
-    fun getAllCheck(
-        id: UUID
-    ) = checkDao.getAllForCheck(id)
+    fun getAllCheck() = checkDao.getAllForCheck(queryPreferences.groupId)
 
 
-    fun getAllQuery(
-        id: UUID,
-        query: String
-    ) = checkDao.getAllForCheckQuery(id, "$query%")
+    fun getAllQuery(query: String) =
+        checkDao.getAllForCheckQuery(queryPreferences.groupId, "$query%")
 
-    fun getAllHistory(
-        id: UUID
-    ) = checkDao.getAllForHistory(id)
+    fun getAllHistory() = checkDao.getAllForHistory(queryPreferences.groupId)
 
 
     fun getAllHistoryQuery(
-        id: UUID,
         query: String
-    ) = checkDao.getAllForHistoryQuery(id, "$query%")
+    ) = checkDao.getAllForHistoryQuery(queryPreferences.groupId, "$query%")
 
 
     fun add(product: CheckEntity) {
@@ -44,7 +40,7 @@ class CheckRepository @Inject constructor(private val checkDao: CheckDao) {
         checkDao.delete(id)
     }
 
-    fun toHistory(id: UUID, idShop: Long, price: Int, idCurrency: Long, idUser: UUID) {
-        checkDao.toHistory(id, idShop, price, idCurrency, idUser, Date().time)
+    fun toHistory(id: UUID, idShop: Long, price: Int, idCurrency: Long) {
+        checkDao.toHistory(id, idShop, price, idCurrency, queryPreferences.userId, Date().time)
     }
 }

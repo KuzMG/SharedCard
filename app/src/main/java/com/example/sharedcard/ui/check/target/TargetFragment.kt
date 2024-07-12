@@ -69,6 +69,9 @@ class TargetFragment : CheckListFragment() {
         viewModel.targetItemLiveData.observe(viewLifecycleOwner) { targets ->
             targetListAdapter.submitList(targets)
         }
+        viewModel.groupChanged.observe(viewLifecycleOwner){
+            viewModel.setQuery("")
+        }
     }
 
     override fun onStart() {
@@ -164,8 +167,11 @@ class TargetFragment : CheckListFragment() {
             this.target = target
             binding.apply {
                 nameTextView.text = target.name
-                if (target.price > 0)
+                if (target.price > 0) {
                     priceTextView.text = target.priceList
+                } else{
+                  priceTextView.visibility = View.GONE
+                }
                 binding.root.setOnClickListener(this@TargetHolder)
             }
         }

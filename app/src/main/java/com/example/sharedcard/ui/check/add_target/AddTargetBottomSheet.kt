@@ -64,6 +64,8 @@ class AddTargetBottomSheet : BottomSheetDialogFragment() {
         }
         viewModel.getCategory().observe(this) { category ->
             binding.dialogCategorySpinner.setAdapter(CategoryArrayAdapter(category))
+            binding.dialogCategorySpinner.setText(category[0].name)
+            viewModel.category = category[0].id
         }
     }
 

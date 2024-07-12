@@ -11,5 +11,5 @@ class CategoryEntity(
     val id: Long,
     val name: String,
     val name_en: String,
-    val status: Boolean
+    val type: Int
 )

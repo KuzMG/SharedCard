@@ -2,9 +2,12 @@ package com.example.sharedcard.ui.check.to_history
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -12,7 +15,6 @@ import com.example.sharedcard.R
 import com.example.sharedcard.database.AppDatabase
 import com.example.sharedcard.databinding.FragmentToHistoryBinding
 import com.example.sharedcard.ui.check.array_adapter.ShopArrayAdapter
-import com.example.sharedcard.ui.check.delete_item.DeleteItemViewModel
 import com.example.sharedcard.util.appComponent
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.util.UUID
@@ -31,10 +33,12 @@ class ToHistoryFragment : BottomSheetDialogFragment() {
             requireArguments().getString(KEY_NAME, "")
         )
     }
+
     override fun onAttach(context: Context) {
         appComponent.inject(this)
         super.onAttach(context)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,6 +64,9 @@ class ToHistoryFragment : BottomSheetDialogFragment() {
 
         viewModel.getShop().observe(this) { shops ->
             binding.dialogToHistoryShopSpinner.setAdapter(ShopArrayAdapter(shops))
+
+            binding.dialogToHistoryShopSpinner.setText(shops[0].name)
+            viewModel.shop = shops[0].id
         }
 
         viewModel.getCurrency().observe(this) { currencies ->
@@ -77,13 +84,32 @@ class ToHistoryFragment : BottomSheetDialogFragment() {
         super.onStart()
         binding.run {
             dialogToHistoryAddButton.setOnClickListener {
-                viewModel.toHistory(
-                    dialogToHistoryShopSpinner.id + 1L,
-                    dialogToHistoryEditView.text.toString().toInt(),
-                    dialogToHistoryCurrencySpinner.id + 1L
-                )
+                viewModel.toHistory()
                 dismiss()
             }
+            dialogToHistoryPriceEditView.addTextChangedListener(object : TextWatcher{
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    if(p0.toString().isNotEmpty())
+                        viewModel.price = p0.toString().toInt()
+                }
+
+                override fun afterTextChanged(p0: Editable?) {
+
+                }
+
+            })
+            dialogToHistoryShopSpinner.onItemClickListener =
+                AdapterView.OnItemClickListener { _, _, _, id ->
+                    viewModel.shop = id + 1
+                }
+            dialogToHistoryCurrencySpinner.onItemClickListener =
+                AdapterView.OnItemClickListener { _, _, _, id ->
+                    viewModel.currency = id + 1
+                }
         }
     }
 

@@ -8,27 +8,22 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TargetRepository @Inject constructor(private val targetDao: TargetDao) {
+class TargetRepository @Inject constructor(
+    private val queryPreferences: QueryPreferences,
+    private val targetDao: TargetDao
+) {
 
 
-    fun getAllCheck(
-        id: UUID
-    ) = targetDao.getAllForCheck(id)
+    fun getAllCheck() = targetDao.getAllForCheck(queryPreferences.groupId)
 
 
-    fun getAllQuery(
-        id: UUID,
-        query: String
-    ) = targetDao.getAllForCheckQuery(id, "$query%")
+    fun getAllQuery(query: String) =
+        targetDao.getAllForCheckQuery(queryPreferences.groupId, "$query%")
 
-    fun getAllHistory(
-        id: UUID
-    ) = targetDao.getAllForHistory(id)
+    fun getAllHistory() = targetDao.getAllForHistory(queryPreferences.groupId)
 
-    fun getAllHistoryQuery(
-        id: UUID,
-        query: String
-    ) = targetDao.getAllForHistoryQuery(id, "$query%")
+    fun getAllHistoryQuery(query: String) =
+        targetDao.getAllForHistoryQuery(queryPreferences.groupId, "$query%")
 
     fun add(target: TargetEntity) {
         targetDao.add(target)
@@ -42,7 +37,7 @@ class TargetRepository @Inject constructor(private val targetDao: TargetDao) {
         targetDao.delete(id)
     }
 
-    fun toHistory(id: UUID, idShop: Long, price: Int, idCurrency: Long, idUser: UUID) {
-        targetDao.toHistory(id, idShop, price, idCurrency, idUser, Date().time)
+    fun toHistory(id: UUID, idShop: Long, price: Int, idCurrency: Long) {
+        targetDao.toHistory(id, idShop, price, idCurrency, queryPreferences.userId, Date().time)
     }
 }

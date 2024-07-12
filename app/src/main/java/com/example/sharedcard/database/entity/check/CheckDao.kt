@@ -28,7 +28,7 @@ interface CheckDao {
     )
     fun getAllForCheckQuery(id: UUID, query: String): LiveData<List<Check>>
 
-    @Query("select `check`.id_check as id_check,pr.name as name,c.name as category,uf.name as userFirst,ul.name as userLast,sh.name as shop,m.name as metric,count,price,cur.name as currency,date_last,uf.id_user as idUserFirst,ul.id_user as idUserLast,pr.calorie as calorie,pr.carb as carb,pr.fat as fat,pr.protein as protein from `check` " +
+    @Query("select `check`.id_check as id_check,pr.name as name,c.name as category,uf.name as userFirst,ul.name as userLast,sh.name as shop,m.name as metric,count,price,cur.symbol as currency,date_last,uf.id_user as idUserFirst,ul.id_user as idUserLast,pr.calorie as calorie,pr.carb as carb,pr.fat as fat,pr.protein as protein from `check` " +
             "join product as pr on `check`.id_product = pr.id " +
             "join shop as sh on sh.id = id_shop " +
             "join category as c on pr.id_category = c.id " +
@@ -41,7 +41,7 @@ interface CheckDao {
     )
     fun getAllForHistory(id: UUID): LiveData<List<CheckHistory>>
 
-    @Query("select `check`.id_check as id_check,pr.name as name,c.name as category,uf.name as userFirst,ul.name as userLast,sh.name as shop,m.name as metric,count,price,cur.name as currency,date_last,uf.id_user as idUserFirst,ul.id_user as idUserLast,pr.calorie as calorie,pr.carb as carb,pr.fat as fat,pr.protein as protein from `check` " +
+    @Query("select `check`.id_check as id_check,pr.name as name,c.name as category,uf.name as userFirst,ul.name as userLast,sh.name as shop,m.name as metric,count,price,cur.symbol as currency,date_last,uf.id_user as idUserFirst,ul.id_user as idUserLast,pr.calorie as calorie,pr.carb as carb,pr.fat as fat,pr.protein as protein from `check` " +
             "join product as pr on `check`.id_product = pr.id " +
             "join shop as sh on sh.id = id_shop " +
             "join category as c on pr.id_category = c.id " +

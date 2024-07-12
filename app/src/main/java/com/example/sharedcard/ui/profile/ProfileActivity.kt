@@ -19,24 +19,26 @@ class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_profile)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        setTitle(R.string.profile)
+
+        setToolbar()
 
         viewModel.getUser().observe(this) { user ->
-            binding.nameTextView.text = user.name
-            binding.emailTextView.text = user.email
-            binding.heightTextView.text = getString(R.string.height, user.height.toString())
-            binding.weightTextView.text = getString(R.string.weight, user.weight.toString())
-            binding.ageTextView.text = getString(R.string.age, user.age.toString())
-            binding.profileImageView
-//            Picasso.get().apply {
-//                if(load("").networkPolicy(NetworkPolicy.OFFLINE).get() == null){
-//                    load("").into(binding.profileImageView)
-//                } else{
-//                    load("").networkPolicy(NetworkPolicy.OFFLINE).into(binding.profileImageView)
-//                }
-//            }
+            binding.run {
+                nameTextView.text = user.name
+                heightTextView.text = getString(R.string.height, user.height.toString())
+                weightTextView.text = getString(R.string.weight, user.weight.toString())
+                ageTextView.text = getString(R.string.age, user.age.toString())
+            }
         }
+        viewModel.getUserAccount().observe(this) { userAccount ->
+            binding.emailTextView.text = userAccount.email
+        }
+    }
+
+    private fun setToolbar() {
+        binding.appBar.toolbar.setTitle(R.string.profile)
+        setSupportActionBar(binding.appBar.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onStart() {

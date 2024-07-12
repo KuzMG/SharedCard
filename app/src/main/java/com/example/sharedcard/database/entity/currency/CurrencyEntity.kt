@@ -9,9 +9,7 @@ import androidx.room.PrimaryKey
 data class CurrencyEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
-    val code: String,
     val name: String,
-    val units: Int,
-    val course: Double,
-    val code_en: String,
+    val name_en: String,
+    val symbol: String
 )

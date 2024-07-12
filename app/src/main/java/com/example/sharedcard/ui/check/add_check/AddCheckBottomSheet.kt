@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
 import com.example.sharedcard.databinding.FragmentAddCheckBinding
+import com.example.sharedcard.ui.check.array_adapter.MetricArrayAdapter
 import com.example.sharedcard.ui.check.array_adapter.ProductArrayAdapter
 import com.example.sharedcard.util.appComponent
 import com.example.sharedcard.viewmodel.MultiViewModelFactory
@@ -54,12 +55,10 @@ class AddCheckBottomSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getMetric().observe(this) { metric ->
             binding.dialogMetricSpinner.setAdapter(
-                ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_spinner_dropdown_item,
-                    metric
-                )
+                MetricArrayAdapter(metric)
             )
+            binding.dialogMetricSpinner.setText(metric[0])
+            binding.dialogCountEditView.setText("1")
         }
     }
 
