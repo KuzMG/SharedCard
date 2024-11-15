@@ -3,6 +3,7 @@ package com.example.sharedcard.ui.group.edit_group
 import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
@@ -13,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.drawToBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
@@ -20,7 +22,9 @@ import com.example.sharedcard.database.AppDatabase
 import com.example.sharedcard.databinding.FragmentEditGroupBinding
 import com.example.sharedcard.ui.group.data.Result
 import com.example.sharedcard.util.appComponent
+import com.example.sharedcard.util.isInternetConnection
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.squareup.picasso.Picasso
 import java.util.UUID
 import javax.inject.Inject
 
@@ -39,8 +43,10 @@ class EditGroupBottomSheet : BottomSheetDialogFragment() {
                 requireActivity().contentResolver.openInputStream(result.data?.data!!)
                     .use { stream ->
                         val bitmap = BitmapFactory.decodeStream(stream)
-                        binding.dialogEditGroupImage.setImageBitmap(bitmap)
-                        viewModel.photo = bitmap
+                        viewModel.savePic(
+                            isInternetConnection(requireContext()),
+                            bitmap
+                        )
                     }
 
             }
@@ -68,6 +74,7 @@ class EditGroupBottomSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getGroup().observe(viewLifecycleOwner) { group ->
             binding.dialogEditGroupNameEditView.setText(group.name)
+            Picasso.get().load(group.url).into(binding.dialogEditGroupImage)
         }
         viewModel.stateLiveData.observe(viewLifecycleOwner) {
             binding.dialogEditGroupAddButton.isEnabled = it
@@ -78,7 +85,7 @@ class EditGroupBottomSheet : BottomSheetDialogFragment() {
                 Result.State.ERROR -> {
                     binding.viewLayout.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.INVISIBLE
-                    Toast.makeText(requireContext(), it.error!!, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), it.error!!.message, Toast.LENGTH_SHORT).show()
                 }
 
                 Result.State.LOADING -> {
@@ -99,7 +106,10 @@ class EditGroupBottomSheet : BottomSheetDialogFragment() {
                 captureImageLauncher.launch(pickIntent)
             }
             dialogEditGroupAddButton.setOnClickListener {
-                viewModel.save()
+                viewModel.saveName(
+                    isInternetConnection(requireContext()),
+                    dialogEditGroupNameEditView.text.toString()
+                )
             }
             dialogEditGroupNameEditView.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
@@ -113,7 +123,7 @@ class EditGroupBottomSheet : BottomSheetDialogFragment() {
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
                 override fun afterTextChanged(s: Editable?) {
-                    viewModel.name = s.toString()
+                    viewModel.setState(s.toString())
                 }
 
             })

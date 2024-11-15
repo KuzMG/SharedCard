@@ -9,13 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
 import com.example.sharedcard.database.AppDatabase
 import com.example.sharedcard.databinding.FragmentToHistoryBinding
-import com.example.sharedcard.ui.check.array_adapter.ShopArrayAdapter
+import com.example.sharedcard.ui.adapter.ShopArrayAdapter
 import com.example.sharedcard.util.appComponent
+import com.example.sharedcard.util.isInternetConnection
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.util.UUID
 import javax.inject.Inject
@@ -56,12 +58,19 @@ class ToHistoryFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         binding.dialogToHistoryTextView.text = when (viewModel.page) {
             0 -> getString(R.string.dialog_to_history_product, viewModel.name)
             1 -> getString(R.string.dialog_to_history_target, viewModel.name)
             else -> throw IndexOutOfBoundsException()
         }
 
+        viewModel.sendLiveData.observe(viewLifecycleOwner){
+            it?.let {
+                Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
+            }
+            dismiss()
+        }
         viewModel.getShop().observe(this) { shops ->
             binding.dialogToHistoryShopSpinner.setAdapter(ShopArrayAdapter(shops))
 
@@ -84,8 +93,7 @@ class ToHistoryFragment : BottomSheetDialogFragment() {
         super.onStart()
         binding.run {
             dialogToHistoryAddButton.setOnClickListener {
-                viewModel.toHistory()
-                dismiss()
+                viewModel.toHistory(isInternetConnection(requireContext()))
             }
             dialogToHistoryPriceEditView.addTextChangedListener(object : TextWatcher{
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -104,11 +112,11 @@ class ToHistoryFragment : BottomSheetDialogFragment() {
             })
             dialogToHistoryShopSpinner.onItemClickListener =
                 AdapterView.OnItemClickListener { _, _, _, id ->
-                    viewModel.shop = id + 1
+                    viewModel.shop = id.toInt()
                 }
             dialogToHistoryCurrencySpinner.onItemClickListener =
                 AdapterView.OnItemClickListener { _, _, _, id ->
-                    viewModel.currency = id + 1
+                    viewModel.currency = id.toInt()
                 }
         }
     }

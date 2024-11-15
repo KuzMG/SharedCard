@@ -8,6 +8,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 private const val PREF_USER = "user"
+private const val PREF_IS_SYNC = "sync"
 private const val PREF_GROUP = "group"
 private const val PREF_LOCAL = "local"
 private const val PREF_NAME = "CONFIG"
@@ -20,7 +21,11 @@ class QueryPreferences @Inject  constructor(app: Application) {
     }
 
     private val prefs = app.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-
+    var isSync: Boolean
+        get() = prefs.getBoolean(PREF_IS_SYNC,false)
+        set(value) = prefs.edit {
+            putBoolean(PREF_IS_SYNC,value)
+        }
     var userId: UUID
         get() = UUID.fromString(prefs
             .getString(PREF_USER, DEF_VALUE))

@@ -25,11 +25,11 @@ class DBModule {
                 super.onCreate(db)
                 Executors.newSingleThreadExecutor().execute {
                     app.applicationContext.appComponent.run {
-                        currencyDao.add(DataGenerator.getCurrency())
-                        shopDao.add(DataGenerator.getShopProduct())
-                        metricDao.add(DataGenerator.getMetric())
-                        categoryDao.add(DataGenerator.getCategoryProduct())
-                        productDao.add(DataGenerator.getProducts())
+//                        currencyDao.add(DataGenerator.getCurrency())
+//                        shopDao.add(DataGenerator.getShopProduct())
+//                        metricDao.add(DataGenerator.getMetric())
+//                        categoryDao.add(DataGenerator.getCategoryProduct())
+//                        productDao.add(DataGenerator.getProducts())
                     }
                 }
             }
@@ -71,4 +71,12 @@ class DBModule {
     @Singleton
     @Provides
     fun provideShopDao(db: AppDatabase) = db.shopDao()
+
+    @Singleton
+    @Provides
+    fun provideRecipeDao(db: AppDatabase) = db.recipeDao()
+
+    @Singleton
+    @Provides
+    fun provideRecipeProductDao(db: AppDatabase) = db.recipeProductDao()
 }

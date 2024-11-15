@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.sharedcard.R
 import com.example.sharedcard.databinding.FragmentHistoryBinding
@@ -18,6 +20,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class HistoryFragment : Fragment() {
     private lateinit var binding: FragmentHistoryBinding
+    private val historyProductFragment= HistoryProductFragment()
+    private val historyTargetFragment= HistoryTargetFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().setTitle(R.string.history)
@@ -28,13 +33,16 @@ class HistoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false)
-
+        historyProductFragment.onResume()
+        historyTargetFragment.onResume()
         binding.apply {
+
             appBar.toolbar.setTitle(R.string.history)
             (requireActivity() as NavigationDrawerActivity).setSupportActionBar(appBar.toolbar)
             (requireActivity() as NavigationDrawerActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            historyPager.adapter = HistoryListAdapter(requireActivity())
+            historyPager.adapter = HistoryListAdapter(this@HistoryFragment)
             historyPager.offscreenPageLimit = 2
+            historyPager.isSaveEnabled = false
             TabLayoutMediator(historyTab, historyPager) { tab, position ->
                 tab.text = when (position) {
                     0 -> getString(R.string.tab_product)
@@ -47,8 +55,8 @@ class HistoryFragment : Fragment() {
         return binding.root
     }
 
-    class HistoryListAdapter(fragmentActivity: FragmentActivity) :
-        FragmentStateAdapter(fragmentActivity) {
+    class HistoryListAdapter(fragment: Fragment) :
+        FragmentStateAdapter(fragment) {
         override fun getItemCount(): Int = 2
 
         override fun createFragment(position: Int): Fragment {

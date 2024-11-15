@@ -12,6 +12,7 @@ android {
     compileSdk = 33
 
     defaultConfig {
+        multiDexEnabled = true
         applicationId = "com.example.sharedcard"
         minSdk = 24
         targetSdk = 33
@@ -66,7 +67,11 @@ dependencies {
     
     implementation("com.squareup.picasso:picasso:2.8")
 
-    implementation("org.greenrobot:eventbus:3.1.1")
+
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+    implementation("androidx.multidex:multidex:2.0.1")
+
 
     implementation("com.github.kobakei:MaterialFabSpeedDial:2.0.0")
 
@@ -74,14 +79,13 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:$work_version")
 
 
-    val mail_version = "1.6.0"
-    implementation("com.sun.mail:android-mail:$mail_version")
-    implementation("com.sun.mail:android-activation:$mail_version")
-
     val retrofit_version = "2.9.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.retrofit2:converter-gson:$retrofit_version")
+
+    implementation("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
+    implementation("io.reactivex.rxjava2:rxjava:2.2.5")
 
     val lifecycle_version = "2.6.2"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
@@ -89,6 +93,8 @@ dependencies {
 
     val fragment_version = "1.6.2"
     implementation("androidx.fragment:fragment-ktx:$fragment_version")
+
+    
 
     val activity_version = "1.7.0"
     implementation("androidx.activity:activity-ktx:$activity_version")

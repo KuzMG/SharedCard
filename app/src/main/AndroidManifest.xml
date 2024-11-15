@@ -8,6 +8,7 @@
     <application
         android:name=".SharedCardApp"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -17,6 +18,11 @@
         android:theme="@style/Theme.SharedCard"
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation" />
+
         <activity
             android:name=".ui.splash_screen.SplashScreenHubActivity"
             android:exported="true"

@@ -2,11 +2,14 @@ package com.example.sharedcard.ui.check.delete_item
 
 import android.content.Context
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
 import com.example.sharedcard.util.appComponent
+import com.example.sharedcard.util.isInternetConnection
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Provider
@@ -30,9 +33,18 @@ class DeleteItemFragment : DialogFragment() {
         return AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.dialog_delete_item, nameItem))
             .setPositiveButton("Да") { dialog, _ ->
-                viewModel.deleteItem(idItem)
-                dialog.cancel()
+                viewModel.deleteItem(isInternetConnection(requireContext()),idItem)
             }.create()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.sendLiveData.observe(viewLifecycleOwner){
+            it?.let {
+                Toast.makeText(requireContext(),it.message, Toast.LENGTH_SHORT).show()
+            }
+            dismiss()
+        }
     }
 
 

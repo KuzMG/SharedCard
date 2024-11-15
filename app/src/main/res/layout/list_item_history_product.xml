@@ -65,12 +65,14 @@
                     android:layout_height="55dp"
                     android:layout_margin="10dp"
                     app:cardCornerRadius="40dp"
+                    app:cardElevation="0dp"
                     app:layout_constraintRight_toLeftOf="@id/last_user_card_view"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
                     <ImageView
                         android:id="@+id/first_user_image_view"
                         android:src="@color/black"
+                        android:scaleType="centerCrop"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
                 </androidx.cardview.widget.CardView>
@@ -87,6 +89,7 @@
                     <ImageView
                         android:id="@+id/last_user_image_view"
                         android:src="@color/black"
+                        android:scaleType="centerCrop"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
                 </androidx.cardview.widget.CardView>

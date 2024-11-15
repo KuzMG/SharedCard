@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
     primaryKeys = ["id"]
 )
 class ShopEntity(
-    val id: Long,
+    val id: Int,
     val name: String,
     val name_en: String,
     val status: Boolean

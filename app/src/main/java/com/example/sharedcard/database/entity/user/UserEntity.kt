@@ -1,19 +1,24 @@
 package com.example.sharedcard.database.entity.user
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.PrimaryKey
+import com.example.sharedcard.di.module.ServiceModule
+import com.google.gson.annotations.SerializedName
 import java.util.UUID
 
 @Entity(
-    tableName = "user"
+    tableName = "user",
+    primaryKeys = ["id"]
 )
 data class UserEntity(
-    @PrimaryKey()
-    @ColumnInfo("id_user")
     val id: UUID = UUID.randomUUID(),
     val name: String,
-    val weight: Int =60,
-    val height: Int=170,
-    val age: Int =25,
-)
+    val weight: Double,
+    val height: Int,
+    @SerializedName("date")
+    val birthday: Long,
+    val gender: Boolean,
+    val pic: String
+) {
+    val url: String
+        get() = ServiceModule.URL_REST+"/$pic"
+}

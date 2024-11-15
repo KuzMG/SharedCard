@@ -1,31 +1,38 @@
 package com.example.sharedcard.ui.group.delete_group
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.example.sharedcard.R
+import com.example.sharedcard.ui.group.GroupFragment
 import com.example.sharedcard.ui.group.GroupViewModel
+import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerActivity
+import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel
 import com.example.sharedcard.util.appComponent
+import com.example.sharedcard.util.isInternetConnection
 import java.util.UUID
 
 class DeleteGroupFragment : DialogFragment() {
 
-    private val viewModel by viewModels<GroupViewModel> {
-        appComponent.multiViewModelFactory
-    }
+
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         val idGroup = UUID.fromString(requireArguments().getString(KEY_ID))
         val nameGroup = requireArguments().getString(KEY_NAME)
-
+        val viewModel = ViewModelProvider(requireActivity() as NavigationDrawerActivity,appComponent.multiViewModelFactory)[GroupViewModel::class.java]
         return AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.dialog_delete_group, nameGroup))
             .setPositiveButton("Да") { dialog, _ ->
-                viewModel.deleteGroup(idGroup)
-                dialog.cancel()
+                viewModel.deleteGroup(isInternetConnection(requireContext()), idGroup)
             }.create()
     }
+
+
+
 
 
     companion object {

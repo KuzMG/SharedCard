@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.size
@@ -26,7 +27,9 @@ import com.example.sharedcard.ui.check.check_list.CustomSwipeCallback
 import com.example.sharedcard.ui.check.delete_item.DeleteItemFragment
 import com.example.sharedcard.ui.check.to_history.ToHistoryFragment
 import com.example.sharedcard.util.appComponent
+import com.example.sharedcard.util.isInternetConnection
 import com.example.sharedcard.viewmodel.MultiViewModelFactory
+import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
 private const val DATE_FORMAT = "yyyy-MM.dd HH:mm"
@@ -72,6 +75,12 @@ class TargetFragment : CheckListFragment() {
         viewModel.groupChanged.observe(viewLifecycleOwner){
             viewModel.setQuery("")
         }
+
+        viewModel.sendLiveData.observe(viewLifecycleOwner){
+            it?.let {
+                Toast.makeText(requireContext(),it.message, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onStart() {
@@ -94,7 +103,7 @@ class TargetFragment : CheckListFragment() {
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
                         if (viewModel.quickDelete) {
-                            viewModel.deleteTarget(target.id)
+                            viewModel.deleteTarget(isInternetConnection(requireContext()),target.id)
                         } else {
                             DeleteItemFragment.apply {
                                 newInstance(1, target.id, target.name)
@@ -167,6 +176,9 @@ class TargetFragment : CheckListFragment() {
             this.target = target
             binding.apply {
                 nameTextView.text = target.name
+                Picasso.get()
+                    .load(target.userPic)
+                    .into(userImageView)
                 if (target.price > 0) {
                     priceTextView.text = target.priceList
                 } else{

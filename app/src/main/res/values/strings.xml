@@ -6,23 +6,36 @@
     <string name="choose_an_avatar_for_myself">Выберите аватарку</string>
     <string name="enter_your_name">введите ваше имя</string>
     <string name="enter_your_login">введите логин</string>
-    <string name="enter_code">код подтверждения</string>
+    <string name="registration_code_edit_text">Код подтверждения</string>
     <string name="enter_your_password">введите пароль</string>
     <string name="sign_up">Создать</string>
+    <string name="registration_continue_button">Далее</string>
+    <string name="registration_create_button">Создать</string>
+    <string name="dialog_ok_button">Ок</string>
+    <string name="dialog_cancel_button">Отмена</string>
     <string name="sign_in">Войти</string>
     <string name="sign_up_toolbar">Регистрация</string>
     <string name="sign_in_toolbar">Авторизация</string>
     <string name="create_account">Создать аккаунт</string>
-    <string name="enter_email">введите Email</string>
-    <string name="create_password">придумайте пароль</string>
+    <string name="registration_email_edit_text">Email</string>
+    <string name="registration_name_edit_text">Имя</string>
+    <string name="male">Мужской</string>
+    <string name="female">Женский</string>
+    <string name="create_password">Пароль</string>
     <string name="repeat_password">повторите пароль</string>
     <string name="send_code">отправить код</string>
     <string name="change_password">изменить пароль</string>
-    <string name="invalid_username">Некорректный логин</string>
+    <string name="invalid_username">Некорректное имя</string>
+    <string name="invalid_email">Некорректный email</string>
+    <string name="invalid_gender">Выберете пол</string>
     <string name="invalid_password">Пароль должен быть >5 символом</string>
     <string name="invalid_repeat_password">пароль не совпадает</string>
     <string name="invalid_code">Код не подходит</string>
+    <string name="invalid_code_is_empty">Введите код</string>
     <string name="invalid_sign_in">Неверный логин или пароль</string>
+    <string name="invalid_internet_connection">Нет подключения к интернету</string>
+    <string name="invalid_exception">Ошибка. </string>
+
     <!--   toolbar -->
     <string name="profile">Профиль</string>
     <string name="products">Продукты</string>
@@ -124,8 +137,16 @@
     <string name="fragment_create_group">Создание группы</string>
     <string name="popup_user_admin">Администратор</string>
     <string name="popup_user_delete">Удалить</string>
-    <string name="dialog_user_options_admin">Назначить администратором</string>
+    <string name="dialog_user_options_make_admin">Назначить администратором</string>
+    <string name="dialog_user_options_del_admin">Снять администртора</string>
     <string name="dialog_user_options_delete">Удалить</string>
+    <string name="registration_birthday_label">Дата рождения</string>
+    <string name="registration_gender_edit_text">Пол</string>
+    <string name="registration_height_label">Рост</string>
+    <string name="registration_weight_label">Вес</string>
+    <string name="enter_code">Код</string>
+    <string name="date_format">d MMMM yyyy</string>
+    <string name="birthday">День рождения</string>
 
 
 </resources>

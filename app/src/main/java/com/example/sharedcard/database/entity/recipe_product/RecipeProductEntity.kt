@@ -5,15 +5,14 @@ import androidx.room.Entity
 
 @Entity(
     tableName = "recipe_product",
-    primaryKeys = arrayOf("id_product", "id_recipe")
+    primaryKeys = ["id_product", "id_recipe"]
 )
 data class RecipeProductEntity(
     @ColumnInfo("id_product")
-    val idProduct: Long,
+    val idProduct: Int,
     @ColumnInfo("id_recipe")
-    val idRecipe: Long,
+    val idRecipe: Int,
     @ColumnInfo("id_metric")
-    val idMetric: Long,
-    val count: Int,
-    val weight: Int
+    val idMetric: Int,
+    val count: Int
 )

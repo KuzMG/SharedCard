@@ -1,6 +1,7 @@
 package com.example.sharedcard.database.entity.target
 
 import androidx.room.ColumnInfo
+import com.example.sharedcard.di.module.ServiceModule
 import java.util.Date
 import java.util.UUID
 
@@ -11,10 +12,11 @@ data class Target(
     val price: Int,
     private val currency: String,
     val user: String,
-    @ColumnInfo("id_user")
-    val userId: UUID,
+    val picUser: String,
     private val dateFirst: Long
 ) {
+    val userPic: String
+        get() = ServiceModule.URL_REST  + "/$picUser"
     val priceList: String
         get() = "$price $currency"
     val date: Date

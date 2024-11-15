@@ -2,39 +2,62 @@ package com.project.shared_card.database.dao.target
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.sharedcard.database.entity.group.GroupEntity
+import com.google.gson.annotations.SerializedName
 import java.util.Date
 import java.util.UUID
 
-@Entity(tableName = "target")
+@Entity(
+    tableName = "target",
+    primaryKeys = ["id"],
+    foreignKeys = [ForeignKey(GroupEntity::class, ["id"], ["id_group"], ForeignKey.CASCADE)]
+)
 data class TargetEntity(
-    @field:PrimaryKey()
     val id: UUID = UUID.randomUUID(),
     val name: String,
     val status: Int = 0,
-    @field:ColumnInfo(name = "id_group")
+    @ColumnInfo(name = "id_group")
+    @SerializedName("id_group")
     val idGroup: UUID,
-    @field:ColumnInfo(name = "id_category")
-    val idCategory: Long,
-    @field:ColumnInfo(name = "id_shop")
-    val idShop: Long? = null,
-    @field:ColumnInfo(name = "first_price")
-    val firstPrice: Int,
-    @field:ColumnInfo(name = "last_price")
-    val lastPrice: Int? = null,
-    @field:ColumnInfo(name = "id_currency_first")
-    val idCurrencyFirst: Long,
-    @field:ColumnInfo(name = "id_currency_last")
-    val idCurrencyLast: Long? = null,
-    @field:ColumnInfo(name = "id_user_creator")
+    @ColumnInfo(name = "id_category")
+    @SerializedName("id_category")
+    val idCategory: Int,
+    @ColumnInfo(name = "id_shop")
+    @SerializedName("id_shop")
+    val idShop: Int? = null,
+    @ColumnInfo(name = "price_first")
+    @SerializedName("price_first")
+    val priceFirst: Int,
+    @ColumnInfo(name = "price_last")
+    @SerializedName("price_last")
+    val priceLast: Int? = null,
+    @ColumnInfo(name = "id_currency_first")
+    @SerializedName("id_currency_first")
+    val idCurrencyFirst: Int,
+    @ColumnInfo(name = "id_currency_last")
+    @SerializedName("id_currency_last")
+    val idCurrencyLast: Int? = null,
+    @ColumnInfo(name = "id_creator")
+    @SerializedName("id_creator")
     val idCreator: UUID,
-    @field:ColumnInfo(name = "id_user_buyer")
+    @ColumnInfo(name = "id_buyer")
+    @SerializedName("id_buyer")
     val idBuyer: UUID? = null,
-    @field:ColumnInfo(name = "date_first")
+    @ColumnInfo(name = "date_first")
+    @SerializedName("date_first")
     val dateFirst: Long = Date().time,
-    @field:ColumnInfo(name = "date_last")
+    @ColumnInfo(name = "date_last")
+    @SerializedName("date_last")
     val dateLast: Long? = null
-)
+){
+    companion object{
+        const val HISTORY = 2
+        const val CHECKED = 1
+        const val UNCHECKED = 0
+    }
+}
 
 
 

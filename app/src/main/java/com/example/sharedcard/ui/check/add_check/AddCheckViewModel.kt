@@ -1,30 +1,28 @@
 package com.example.sharedcard.ui.check.add_check
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sharedcard.database.entity.check.CheckEntity
 import com.example.sharedcard.database.entity.product.ProductEntity
-import com.example.sharedcard.repository.CheckRepository
+import com.example.sharedcard.repository.AccountManager
+import com.example.sharedcard.repository.CheckManager
 import com.example.sharedcard.repository.DictionaryRepository
-import com.example.sharedcard.repository.QueryPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.UUID
+import java.lang.Error
 import javax.inject.Inject
 
 class AddCheckViewModel @Inject constructor(
-    private val queryPreferences: QueryPreferences,
     private val dictionaryRepository: DictionaryRepository,
-    private val checkRepository: CheckRepository
+    private val checkManager: CheckManager
 ) : ViewModel() {
-    private val idGroup: UUID
-        get() = queryPreferences.groupId
-    private val idUser: UUID
-        get() = queryPreferences.userId
-    private val isLocal: Boolean
-        get() = queryPreferences.isLocal
+    private val _sendLiveData = MutableLiveData<Throwable?>()
+    val sendLiveData: LiveData<Throwable?>
+        get() = _sendLiveData
     var count = 1
-    var metric = 1L
+    var metric = 1
     var description = ""
     var product: ProductEntity? = null
 
@@ -38,17 +36,18 @@ class AddCheckViewModel @Inject constructor(
         else -> 2
     }
 
-    fun add() {
-        val check = CheckEntity(
-            idProduct = product!!.id,
-            description = description,
-            idMetric = metric,
-            count = count,
-            idCreator = idUser,
-            idGroup = idGroup
-        )
+    fun add(isInternetConnection: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            checkRepository.add(check)
+            checkManager.add(
+                isInternetConnection = isInternetConnection,
+                idProduct = product!!.id,
+                description = description,
+                idMetric = metric,
+                count = count,).subscribe({
+                _sendLiveData.postValue(null)
+            },{error ->
+                _sendLiveData.postValue(error)
+            })
         }
     }
 

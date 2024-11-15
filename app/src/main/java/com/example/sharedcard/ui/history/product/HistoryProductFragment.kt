@@ -21,6 +21,7 @@ import com.example.sharedcard.databinding.ListItemHistoryProductInformationBindi
 import com.example.sharedcard.ui.check.check_list.CheckListFragment
 import com.example.sharedcard.util.appComponent
 import com.example.sharedcard.viewmodel.MultiViewModelFactory
+import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
 
@@ -82,6 +83,7 @@ class HistoryProductFragment : CheckListFragment() {
     }
 
 
+
     private fun showPopupMenu(v: View) {
         val popupMenu = PopupMenu(requireContext(), v)
         popupMenu.inflate(R.menu.popup_menu_history)
@@ -107,6 +109,12 @@ class HistoryProductFragment : CheckListFragment() {
             this.check = check
             binding.apply {
                 nameTextView.text = check.name
+                Picasso.get()
+                    .load(check.userFirstPic)
+                    .into(firstUserImageView)
+                Picasso.get()
+                    .load(check.userLastPic)
+                    .into(lastUserImageView)
                 countTextView.text = check.quantity
                 binding.root.setOnClickListener(this@ProductHolder)
             }

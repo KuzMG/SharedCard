@@ -7,12 +7,15 @@ import com.example.sharedcard.ui.check.product.ProductViewModel
 import com.example.sharedcard.ui.check.target.TargetViewModel
 import com.example.sharedcard.ui.group.GroupViewModel
 import com.example.sharedcard.ui.group.create_group.CreateGroupViewModel
-import com.example.sharedcard.ui.group.join_group.JoinGroupViewModel
+import com.example.sharedcard.ui.group.token_group.DialogTokenViewModel
+import com.example.sharedcard.ui.group.user_group.UserGroupViewModel
 import com.example.sharedcard.ui.history.product.HistoryProductViewModel
 import com.example.sharedcard.ui.history.target.HistoryTargetViewModel
 import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel
+import com.example.sharedcard.ui.products.ProductCategoriesViewModel
 import com.example.sharedcard.ui.products.ProductsViewModel
 import com.example.sharedcard.ui.profile.ProfileViewModel
+import com.example.sharedcard.ui.recipes.RecipeCategoriesViewModel
 import com.example.sharedcard.ui.recipes.RecipesViewModel
 import com.example.sharedcard.ui.settings.SettingsViewModel
 import com.example.sharedcard.ui.startup.StartupViewModel
@@ -40,8 +43,15 @@ interface ViewModelModule {
     @[Binds IntoMap ViewModelKey(CreateGroupViewModel::class)]
     fun provideCreateGroupViewModel(createGroupViewModel: CreateGroupViewModel): ViewModel
 
-    @[Binds IntoMap ViewModelKey(JoinGroupViewModel::class)]
-    fun provideJoinGroupViewModel(joinGroupViewModel: JoinGroupViewModel): ViewModel
+    @[Binds IntoMap ViewModelKey(ProductCategoriesViewModel::class)]
+    fun provideProductCategoriesViewModel(productCategoriesViewModel: ProductCategoriesViewModel): ViewModel
+
+
+    @[Binds IntoMap ViewModelKey(DialogTokenViewModel::class)]
+    fun provideDialogTokenViewModel(dialogTokenViewModel: DialogTokenViewModel): ViewModel
+
+    @[Binds IntoMap ViewModelKey(UserGroupViewModel::class)]
+    fun provideUserGroupViewModel(userGroupViewModel: UserGroupViewModel): ViewModel
 
     @[Binds IntoMap ViewModelKey(GroupViewModel::class)]
     fun provideGroupViewModel(groupViewModel: GroupViewModel): ViewModel
@@ -55,14 +65,11 @@ interface ViewModelModule {
     @[Binds IntoMap ViewModelKey(NavigationDrawerViewModel::class)]
     fun provideNavigationDrawerViewModel(navigationDrawerViewModel: NavigationDrawerViewModel): ViewModel
 
-    @[Binds IntoMap ViewModelKey(ProductsViewModel::class)]
-    fun provideProductsViewModel(productsViewModel: ProductsViewModel): ViewModel
-
     @[Binds IntoMap ViewModelKey(ProfileViewModel::class)]
     fun provideProfileViewModel(profileViewModel: ProfileViewModel): ViewModel
 
-    @[Binds IntoMap ViewModelKey(RecipesViewModel::class)]
-    fun provideRecipesViewModel(recipesViewModel: RecipesViewModel): ViewModel
+    @[Binds IntoMap ViewModelKey(RecipeCategoriesViewModel::class)]
+    fun provideRecipeCategoriesViewModel(recipeCategoriesViewModel: RecipeCategoriesViewModel): ViewModel
 
     @[Binds IntoMap ViewModelKey(SettingsViewModel::class)]
     fun provideSettingsViewModel(settingsViewModel: SettingsViewModel): ViewModel

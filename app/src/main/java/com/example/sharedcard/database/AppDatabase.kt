@@ -16,7 +16,9 @@ import com.example.sharedcard.database.entity.metric.MetricDao
 import com.example.sharedcard.database.entity.metric.MetricEntity
 import com.example.sharedcard.database.entity.product.ProductDao
 import com.example.sharedcard.database.entity.product.ProductEntity
+import com.example.sharedcard.database.entity.recipe.RecipeDao
 import com.example.sharedcard.database.entity.recipe.RecipeEntity
+import com.example.sharedcard.database.entity.recipe_product.RecipeProductDao
 import com.example.sharedcard.database.entity.recipe_product.RecipeProductEntity
 import com.example.sharedcard.database.entity.shop.ShopDao
 import com.example.sharedcard.database.entity.shop.ShopEntity
@@ -54,6 +56,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun groupDao(): GroupDao
     abstract fun groupUsersDao(): GroupUsersDao
     abstract fun userDao(): UserDao
+    abstract fun recipeDao(): RecipeDao
+    abstract fun recipeProductDao(): RecipeProductDao
     abstract fun metricDao(): MetricDao
     abstract fun shopDao(): ShopDao
     abstract fun checkDao(): CheckDao

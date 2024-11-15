@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="TextAppearance.AppCompat.Title.Custom">
         <item name="android:textSize">18sp</item>
     </style>
@@ -36,12 +37,34 @@
         <item name="android:elevation">0dp</item>
     </style>
 
+    <style name="Button.Registration" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="iconPadding">0dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:textColor">?attr/editTextColor</item>
+        <item name="strokeColor">@android:color/darker_gray</item>
+    </style>
+
     <style name="BottomSheetShapeAppearance" parent="ShapeAppearance.MaterialComponents">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">24dp</item>
     </style>
+
+    <style name="TextAppearance.MaterialComponents.Headline6.Сustom">
+        <item name="fontFamily">@font/update_gothic</item>
+        <item name="android:fontFamily">@font/update_gothic</item>
+        <item name="android:textStyle">normal</item>
+    </style>
     <style name="toolbarStyle" parent="@style/Widget.MaterialComponents.Toolbar">
         <item name="titleTextColor">@color/white</item>
+        <item name="titleTextAppearance">@style/TextAppearance.MaterialComponents.Headline6.Сustom</item>
+    </style>
+
+
+    <style name="DialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
 </resources>

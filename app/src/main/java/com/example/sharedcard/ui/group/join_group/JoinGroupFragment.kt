@@ -12,14 +12,22 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
 import com.example.sharedcard.databinding.FragmentJoinGroupBinding
+import com.example.sharedcard.ui.group.GroupViewModel
+import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerActivity
 import com.example.sharedcard.util.appComponent
-import com.example.sharedcard.viewmodel.MultiViewModelFactory
-import javax.inject.Inject
+import com.example.sharedcard.util.isInternetConnection
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
 
 class JoinGroupFragment : DialogFragment() {
 
-
-    private val viewModel: JoinGroupViewModel by viewModels {
+    private val scanQrResultLauncher =
+        registerForActivityResult(ScanContract()) { result ->
+            if (result.contents != null) {
+                viewModel.join(isInternetConnection(requireContext()), result.contents)
+            }
+        }
+    private val viewModel by viewModels<GroupViewModel>({ activity as NavigationDrawerActivity }) {
         appComponent.multiViewModelFactory
     }
     private lateinit var binding: FragmentJoinGroupBinding
@@ -37,11 +45,23 @@ class JoinGroupFragment : DialogFragment() {
         return binding.root
     }
 
+
     override fun onStart() {
         super.onStart()
         binding.run {
-            dialogToHistoryAddButton.setOnClickListener {
-                viewModel.join()
+            joinButton.setOnClickListener {
+                viewModel.join(
+                    isInternetConnection(requireContext()),
+                    binding.dialogToHistoryEditView.text.toString()
+                )
+            }
+            qrCodeButton.setOnClickListener {
+                val scanOptions = ScanOptions()
+                scanOptions.setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+                scanOptions.setPrompt("Отсканируйте QR-code")
+                scanOptions.setBeepEnabled(false)
+                scanOptions.setBarcodeImageEnabled(false)
+                scanQrResultLauncher.launch(scanOptions)
             }
         }
     }

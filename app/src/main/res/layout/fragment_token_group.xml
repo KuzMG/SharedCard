@@ -5,9 +5,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="350dp"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="30dp"
-        tools:context=".ui.group.token_group.DialogTokenGroup">
+        tools:context=".ui.group.token_group.DialogTokenGroupFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,10 +33,10 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/copy_view"
-                android:background="?attr/selectableItemBackground"
+                android:foreground="?attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:clickable="false"
-                android:layout_height="130dp">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -46,18 +46,31 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/group_fragment_token_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:id="@+id/group_fragment_token_image_view"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
                     android:layout_margin="10dp"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="@string/group_fragment_token" />
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                <TextView
+                    android:id="@+id/group_fragment_token_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/group_fragment_token_image_view" />
 
                 <ProgressBar
                     android:id="@+id/progress_bar"

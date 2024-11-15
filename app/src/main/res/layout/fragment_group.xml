@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +15,14 @@
             android:id="@+id/app_bar"
             layout="@layout/app_bar_group"
             app:layout_constraintTop_toTopOf="parent" />
-
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/app_bar"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/group_recycler_view"
             android:layout_width="match_parent"
@@ -22,7 +30,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
 
-            app:layout_constraintTop_toBottomOf="@id/app_bar" />
+            app:layout_constraintTop_toBottomOf="@id/progress_bar" />
 
         <io.github.kobakei.materialfabspeeddial.FabSpeedDial
             android:id="@+id/fab_button"

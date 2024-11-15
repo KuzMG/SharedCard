@@ -4,11 +4,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "currency"
+    tableName = "currency",
+    primaryKeys = ["id"]
 )
 data class CurrencyEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int? = null,
+    val id: Int,
     val name: String,
     val name_en: String,
     val symbol: String

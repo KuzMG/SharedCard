@@ -2,36 +2,56 @@ package com.example.sharedcard.database.entity.check
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.sharedcard.database.entity.group.GroupEntity
+import com.google.gson.annotations.SerializedName
 import java.util.Date
 import java.util.UUID
 
-@Entity(tableName = "check")
+@Entity(
+    tableName = "check",
+    primaryKeys = ["id"],
+    foreignKeys = [ForeignKey(GroupEntity::class, ["id"], ["id_group"], ForeignKey.CASCADE)]
+)
 data class CheckEntity(
-    @PrimaryKey()
-    @ColumnInfo("id_check")
-    val idCheck: UUID = UUID.randomUUID(),
-    @field:ColumnInfo("id_product")
-    val idProduct: Long,
+    val id: UUID = UUID.randomUUID(),
+    @ColumnInfo("id_product")
+    @SerializedName("id_product")
+    val idProduct: Int,
     val description: String,
     val status: Int = 0,
-    @field:ColumnInfo("id_group")
+    @ColumnInfo("id_group")
+    @SerializedName("id_group")
     val idGroup: UUID,
-    @field:ColumnInfo("id_shop")
-    val idShop: Long? = null,
+    @ColumnInfo("id_shop")
+    @SerializedName("id_shop")
+    val idShop: Int? = null,
     val price: Int = 0,
     val count: Int,
-    @field:ColumnInfo("id_metric")
-    val idMetric: Long,
-    @field:ColumnInfo("id_currency")
-    val idCurrency: Long? = null,
-    @field:ColumnInfo("id_user_creator")
+    @ColumnInfo("id_metric")
+    @SerializedName("id_metric")
+    val idMetric: Int,
+    @ColumnInfo("id_currency")
+    @SerializedName("id_currency")
+    val idCurrency: Int? = null,
+    @ColumnInfo("id_creator")
+    @SerializedName("id_creator")
     val idCreator: UUID,
-    @field:ColumnInfo("id_user_buyer")
+    @ColumnInfo("id_buyer")
+    @SerializedName("id_buyer")
     val idBuyer: UUID? = null,
-    @field:ColumnInfo(name = "date_first")
+    @ColumnInfo(name = "date_first")
+    @SerializedName("date_first")
     val dataFirst: Long = Date().time,
-    @field:ColumnInfo(name = "date_last")
+    @ColumnInfo(name = "date_last")
+    @SerializedName("date_last")
     val dataLast: Long? = null
-)
+){
+    companion object{
+        const val HISTORY = 2
+        const val CHECKED = 1
+        const val UNCHECKED = 0
+    }
+}
 

@@ -21,6 +21,7 @@ import com.example.sharedcard.databinding.ListItemHistoryTargetInformationBindin
 import com.example.sharedcard.ui.check.check_list.CheckListFragment
 import com.example.sharedcard.util.appComponent
 import com.example.sharedcard.viewmodel.MultiViewModelFactory
+import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
 
@@ -106,6 +107,12 @@ class HistoryTargetFragment : CheckListFragment() {
         fun onBind(target: TargetHistory) {
             this.target = target
             binding.apply {
+                Picasso.get()
+                    .load(target.userFirstPic)
+                    .into(firstUserImageView)
+                Picasso.get()
+                    .load(target.userLastPic)
+                    .into(lastUserImageView)
                 nameTextView.text = target.name
                 root.setOnClickListener(this@TargetHolder)
             }
@@ -127,13 +134,13 @@ class HistoryTargetFragment : CheckListFragment() {
                     )
                 )
                 if(target.priceFirst>0) {
-                    bottomMenuBinding.priceFirstTextView.text = target.priceFirst.toString()
+                    bottomMenuBinding.priceFirstTextView.text = target.priceListFirst
                 } else{
                     bottomMenuBinding.priceFirstTextView.visibility= View.GONE
                     bottomMenuBinding.priceFirstLabel.visibility = View.GONE
                 }
                 if(target.priceLast>0) {
-                    bottomMenuBinding.priceLastTextView.text = target.priceLast.toString()
+                    bottomMenuBinding.priceLastTextView.text = target.priceListLast
                 } else{
                     bottomMenuBinding.priceLastTextView.visibility= View.GONE
                     bottomMenuBinding.priceLastLabel.visibility = View.GONE

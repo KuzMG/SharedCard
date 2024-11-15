@@ -1,33 +1,39 @@
 package com.example.sharedcard.ui.startup.registration
 
-import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AutoCompleteTextView
+import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.example.sharedcard.R
 import com.example.sharedcard.databinding.FragmentRegistrationBinding
-import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerActivity
 import com.example.sharedcard.ui.startup.StartupActivity
 import com.example.sharedcard.ui.startup.StartupViewModel
+import com.example.sharedcard.ui.startup.StartupViewModel.State.Synchronization
 import com.example.sharedcard.util.appComponent
+import com.google.android.material.textfield.TextInputEditText
+import java.text.SimpleDateFormat
+import java.util.GregorianCalendar
 
 class RegistrationFragment : Fragment() {
 
 
-    private val viewModel by viewModels<StartupViewModel>({ activity as StartupActivity }){
+    private val viewModel by viewModels<StartupViewModel>({ activity as StartupActivity }) {
         appComponent.multiViewModelFactory
     }
     private lateinit var binding: FragmentRegistrationBinding
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,87 +41,136 @@ class RegistrationFragment : Fragment() {
     ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_registration, container, false)
-
+        binding.viewPager.adapter =  ViewPagerAdapter(childFragmentManager,lifecycle)
+        binding.viewPager.offscreenPageLimit = 5
+        binding.viewPager.isUserInputEnabled = false
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.loginResult.observe(viewLifecycleOwner) { result ->
-            result ?: return@observe
-            if (result.error == null) {
-                startActivity(
-                    Intent(requireActivity(), NavigationDrawerActivity::class.java)
-                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                )
-            } else {
-                showLoginFailed(result.error!!)
+
+        viewModel.currentPageLivedata.observe(viewLifecycleOwner) {
+            binding.viewPager.setCurrentItem(it-1,false)
+            binding.continueButton.text = when(it){
+                5  -> getString(R.string.registration_create_button)
+                else -> getString(R.string.registration_continue_button)
             }
         }
-
-        viewModel.loginFormState.observe(viewLifecycleOwner) { state ->
-            if (state == null) {
-                return@observe
-            }
-            binding.continueButton.isEnabled = state.isDataValid
-            binding.sendCodeButton.isEnabled = when (state.usernameError) {
-                null -> true
-                0 -> false
-                else -> {
-                    binding.loginEditText.error = getString(state.usernameError)
-                    false
+        viewModel.registerResult.observe(viewLifecycleOwner) { result ->
+            result ?: return@observe
+            loading(result.loading)
+            if (!result.loading) {
+                result.message?.let {
+                    showLoginFailed(result.message, result.error)
+                }
+                if (result.codeSend) {
+                    viewModel.currentPageReg++
+                }
+                if(result.isContinue){
+                    viewModel.setTransitionState(Synchronization)
                 }
             }
-            state.passwordError?.let {
-                if(it!=0)
-                    binding.passwordEditText.error = getString(it)
-            }
-            state.repeatPasswordError?.let {
-                binding.repeatPasswordEditText.error = getString(it)
+        }
+
+        viewModel.registerFormState.observe(viewLifecycleOwner) { state ->
+            state ?: return@observe
+            if (state.page ==binding.viewPager.currentItem) {
+                binding.continueButton.isEnabled = state.isDataValid
+            } else if(binding.viewPager.currentItem == 2){
+                binding.continueButton.isEnabled = true
             }
         }
     }
 
 
+    private fun loading(flag: Boolean) {
+        binding.continueButton.isEnabled = !flag
+        binding.progressBar.visibility = isVisible(flag)
+        binding.viewPager.visibility = isVisible(!flag)
+    }
+
+
+    private fun isVisible(flag: Boolean) =
+        if (flag) View.VISIBLE else View.GONE
+
+    val callback = object: ViewPager2.OnPageChangeCallback(){
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            val page = binding.viewPager
+            val child = page.children.first() as RecyclerView
+            if(child.childCount == 0)
+                return
+            when(position){
+                0 -> {
+                    val nameEditText = page.findViewById<TextInputEditText>(R.id.name_edit_text)
+                    nameEditText.setText(viewModel.regName)
+                }
+                1 -> {
+                    val emailEditText = page.findViewById<TextInputEditText>(R.id.email_edit_text)
+                    emailEditText.setText(viewModel.regEmail)
+                }
+                2 -> {
+                    val weightButton = page.findViewById<Button>(R.id.weight_button)
+                    val heightButton = page.findViewById<Button>(R.id.height_button)
+                    val birthDayButton = page.findViewById<Button>(R.id.birthday_button)
+
+                    weightButton.text = getString(R.string.weight,viewModel.regWeight.toString())
+                    heightButton.text = getString(R.string.height,viewModel.regHeight.toString())
+
+
+                    val format = SimpleDateFormat(getString(R.string.date_format))
+                    birthDayButton.text = format.format(viewModel.regDate)
+
+
+                }
+                3 -> {
+                    val passwordEditText = page.findViewById<TextInputEditText>(R.id.password_edit_text)
+                    passwordEditText.setText(viewModel.regPassword)
+                }
+                4 -> {
+                    val codeEditText = page.findViewById<TextInputEditText>(R.id.code_edit_text)
+                    codeEditText.setText(viewModel.regCode)
+                }
+            }
+        }
+    }
     override fun onStart() {
         super.onStart()
-        val textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun afterTextChanged(p0: Editable?) {
-                viewModel.registration(
-                    binding.loginEditText.text.toString(),
-                    binding.passwordEditText.text.toString(),
-                    binding.repeatPasswordEditText.text.toString(),
-                    binding.codeEditText.text.toString()
-                )
+        binding.viewPager.registerOnPageChangeCallback(callback)
+        binding.continueButton.setOnClickListener {
+            when (viewModel.currentPageReg) {
+                4 -> viewModel.registration()
+                5 -> viewModel.verification()
+                else -> {
+                    viewModel.currentPageReg++
+                }
             }
         }
-        binding.loginEditText.addTextChangedListener(textWatcher)
-        binding.codeEditText.addTextChangedListener(textWatcher)
-        binding.passwordEditText.addTextChangedListener(textWatcher)
-        binding.repeatPasswordEditText.addTextChangedListener(textWatcher)
-
-        binding.sendCodeButton.setOnClickListener {
-            viewModel.sendMessage(binding.loginEditText.text.toString())
-        }
-
-        binding.continueButton.setOnClickListener {
-            viewModel.signUp(
-                binding.loginEditText.text.toString(),
-                binding.passwordEditText.text.toString(),
-                binding.codeEditText.text.toString()
-            )
-        }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        viewModel.clear()
+    override fun onStop() {
+        super.onStop()
+        binding.viewPager.unregisterOnPageChangeCallback(callback)
     }
-    private fun showLoginFailed(@StringRes errorString: Int) {
+    private fun showLoginFailed(@StringRes errorString: Int, e: Exception?) {
         val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
+        val message = getString(errorString)
+        Toast.makeText(appContext, message + e?.message, Toast.LENGTH_LONG).show()
+    }
+
+    class ViewPagerAdapter(fragment: FragmentManager,lifecycle : Lifecycle) : FragmentStateAdapter(fragment,lifecycle) {
+        override fun getItemCount() = 5
+
+        override fun createFragment(position: Int): Fragment = when (position) {
+            0 -> RegistrationNameFragment()
+            1 -> RegistrationEmailFragment()
+            2 -> RegistrationGeneralInformationFragment()
+            3 -> RegistrationPasswordFragment()
+            4 -> RegistrationCodeFragment()
+            else -> throw IndexOutOfBoundsException()
+        }
+
+
     }
 }

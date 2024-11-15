@@ -1,11 +1,11 @@
 package com.example.sharedcard.database.entity.check
 
 import androidx.room.ColumnInfo
+import com.example.sharedcard.di.module.ServiceModule
 import java.util.Date
 import java.util.UUID
 
 data class CheckHistory(
-    @ColumnInfo("id_check")
     val id: UUID,
     val name: String,
     val category: String?,
@@ -15,9 +15,9 @@ data class CheckHistory(
     private val count: Int,
     private val metric: String?,
     val userFirst: String,
-    val idUserFirst: UUID,
+    val picUserFirst: String,
     val userLast: String,
-    val idUserLast: UUID,
+    val picUserLast: String,
     @ColumnInfo("date_last")
     private val dateLast: Long,
     val calorie: Int?,
@@ -25,6 +25,10 @@ data class CheckHistory(
     val carb: Double?,
     val protein: Double?
 ) {
+    val userFirstPic: String
+        get() =ServiceModule.URL_REST + "/$picUserFirst"
+    val userLastPic: String
+        get() =ServiceModule.URL_REST + "/$picUserLast"
     val quantity: String
         get() = "$count $metric"
     val pfc: String

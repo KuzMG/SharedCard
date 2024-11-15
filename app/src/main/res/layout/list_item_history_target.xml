@@ -52,6 +52,7 @@
                     <ImageView
                         android:id="@+id/first_user_image_view"
                         android:src="@color/black"
+                        android:scaleType="centerCrop"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
                 </androidx.cardview.widget.CardView>
@@ -68,6 +69,7 @@
                     <ImageView
                         android:id="@+id/last_user_image_view"
                         android:src="@color/black"
+                        android:scaleType="centerCrop"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
                 </androidx.cardview.widget.CardView>

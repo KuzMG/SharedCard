@@ -8,18 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView.OnItemClickListener
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
 import com.example.sharedcard.databinding.FragmentAddCheckBinding
-import com.example.sharedcard.ui.check.array_adapter.MetricArrayAdapter
-import com.example.sharedcard.ui.check.array_adapter.ProductArrayAdapter
+import com.example.sharedcard.ui.adapter.MetricArrayAdapter
+import com.example.sharedcard.ui.adapter.ProductArrayAdapter
 import com.example.sharedcard.util.appComponent
-import com.example.sharedcard.viewmodel.MultiViewModelFactory
+import com.example.sharedcard.util.isInternetConnection
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import javax.inject.Inject
 
 
 class AddCheckBottomSheet : BottomSheetDialogFragment() {
@@ -60,6 +58,12 @@ class AddCheckBottomSheet : BottomSheetDialogFragment() {
             binding.dialogMetricSpinner.setText(metric[0])
             binding.dialogCountEditView.setText("1")
         }
+        viewModel.sendLiveData.observe(viewLifecycleOwner){
+            it?.let {
+                Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
+            }
+            dismiss()
+        }
     }
 
     override fun onStart() {
@@ -93,7 +97,7 @@ class AddCheckBottomSheet : BottomSheetDialogFragment() {
             override fun afterTextChanged(p0: Editable?) {}
         })
         binding.dialogMetricSpinner.onItemClickListener =
-            OnItemClickListener { _, _, _, id -> viewModel.metric = id + 1 }
+            OnItemClickListener { _, _, _, id -> viewModel.metric = id.toInt() + 1 }
         binding.dialogDescriptionEditView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -111,8 +115,8 @@ class AddCheckBottomSheet : BottomSheetDialogFragment() {
                 ).show()
 
                 2 -> {
-                    viewModel.add()
-                    dismiss()
+                    viewModel.add(isInternetConnection(requireContext())
+                    )
                 }
             }
         }

@@ -2,11 +2,14 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.SharedCard" parent="Theme.MaterialComponents.DayNight">
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowLightStatusBar">false</item>
+
         <item name="android:textColor">@color/black</item>
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="toolbarStyle">@style/toolbarStyle</item>
         <item name="colorControlNormal">@color/textColorPrimary</item>
-        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
+                <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
         <item name="fontFamily">@font/update_gothic</item>
     </style>
 

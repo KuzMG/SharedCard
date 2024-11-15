@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sharedcard.repository.GroupManager
+import com.example.sharedcard.ui.group.data.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -17,13 +18,16 @@ class GroupViewModel @Inject constructor(private val groupManager: GroupManager)
     private val mutableCurrentGroupLiveData = MutableLiveData<UUID>()
 
 
+
+    val sendDekGroupLiveData: LiveData<Pair<Throwable,UUID>>
+        get() = _sendDekGroupLiveData
+    private val _sendDekGroupLiveData = MutableLiveData<Pair<Throwable,UUID>>()
     init {
         mutableCurrentGroupLiveData.value = getCurrentGroupId()
     }
 
-    fun getToken(idGroup: UUID): LiveData<String> {
-        return MutableLiveData("pt43f34k")
-    }
+fun getCurrentGroupIdLiveData() = groupManager.groupChangedLiveData
+
 
     fun isLocalGroup() = groupManager.isLocalGroup()
     private fun getCurrentGroupId() = groupManager.getCurrentGroupId()
@@ -43,25 +47,37 @@ class GroupViewModel @Inject constructor(private val groupManager: GroupManager)
         }
     }
 
-    fun deleteUser(idUser: UUID, idGroup: UUID) {
-        viewModelScope.launch(Dispatchers.Default) {
-            groupManager.deleteUser(idUser, idGroup)
-        }
-    }
 
-    fun deleteGroup(idGroup: UUID) {
+
+
+    private val _loadingLiveData = MutableLiveData<Result>()
+    val loadingLiveData: LiveData<Result>
+        get() = _loadingLiveData
+    fun join(isInternetConnection: Boolean, token: String) {
+        _loadingLiveData.postValue(Result(Result.State.LOADING))
         viewModelScope.launch(Dispatchers.IO) {
-            groupManager.deleteGroup(idGroup)
+            groupManager.joinInGroup(isInternetConnection, token).subscribe({
+                _loadingLiveData.postValue(Result(Result.State.OK))
+            }, { error ->
+                _loadingLiveData.postValue(Result(Result.State.ERROR,error))
+            })
         }
     }
 
-    fun makeUserAdmin(idUser: UUID, idGroup: UUID) {
+
+
+
+    fun deleteGroup(isInternetConnection: Boolean, idGroup: UUID) {
         viewModelScope.launch(Dispatchers.IO) {
-            groupManager.makeUserAdmin(idUser, idGroup)
+            groupManager.deleteGroup(isInternetConnection, idGroup).subscribe({}, { error ->
+                    _sendDekGroupLiveData.postValue(error to idGroup)
+            })
         }
     }
 
-    fun isAdmin(idGroup: UUID) = groupManager.isAdmin(idGroup)
+
+    fun getStatus(idGroup: UUID) = groupManager.getStatus(idGroup)
 
     fun getGroups() = groupManager.getAllGroups()
+    fun getMyId(): UUID = groupManager.getMyId()
 }

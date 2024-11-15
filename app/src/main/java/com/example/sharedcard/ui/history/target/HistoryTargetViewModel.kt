@@ -5,13 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
 import com.example.sharedcard.database.entity.target.TargetHistory
-import com.example.sharedcard.repository.QueryPreferences
-import com.example.sharedcard.repository.TargetRepository
-import java.util.UUID
+import com.example.sharedcard.repository.TargetManager
 import javax.inject.Inject
 
 class HistoryTargetViewModel @Inject constructor(
-    private val targetRepository: TargetRepository
+    private val targetManager: TargetManager
 ) : ViewModel() {
 
 
@@ -22,9 +20,9 @@ class HistoryTargetViewModel @Inject constructor(
         mutableSearch.value = ""
         historyItemLiveData = mutableSearch.switchMap { query ->
             if (query.isBlank()) {
-                targetRepository.getAllHistory()
+                targetManager.getAllHistory()
             } else {
-                targetRepository.getAllHistoryQuery(query)
+                targetManager.getAllHistoryQuery(query)
             }
         }
     }

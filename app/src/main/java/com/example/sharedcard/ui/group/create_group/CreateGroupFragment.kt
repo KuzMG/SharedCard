@@ -23,6 +23,7 @@ import com.example.sharedcard.R
 import com.example.sharedcard.databinding.FragmentCreateGroupBinding
 import com.example.sharedcard.ui.group.data.Result
 import com.example.sharedcard.util.appComponent
+import com.example.sharedcard.util.isInternetConnection
 
 class CreateGroupFragment : DialogFragment() {
 
@@ -66,7 +67,7 @@ class CreateGroupFragment : DialogFragment() {
                 Result.State.ERROR -> {
                     binding.viewLayout.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.INVISIBLE
-                    Toast.makeText(requireContext(), it.error!!, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), it.error?.message ?: "", Toast.LENGTH_SHORT).show()
                 }
 
                 Result.State.LOADING -> {
@@ -110,7 +111,10 @@ class CreateGroupFragment : DialogFragment() {
 
             })
             dialogCreateGroupAddButton.setOnClickListener {
-                viewModel.create(binding.dialogCreateGroupImage.drawToBitmap())
+                viewModel.create(
+                    isInternetConnection(requireContext()),
+                    binding.dialogCreateGroupImage.drawToBitmap()
+                )
             }
         }
     }

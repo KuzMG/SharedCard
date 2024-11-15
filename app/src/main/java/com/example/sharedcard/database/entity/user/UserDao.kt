@@ -2,39 +2,56 @@ package com.example.sharedcard.database.entity.user
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
+import com.example.sharedcard.database.entity.group.GroupEntity
 import java.util.UUID
 
 @Dao
 interface UserDao {
-    @Insert
-    fun createUser(user: UserEntity)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun add(users: List<UserEntity>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insert(user: UserEntity): Long
 
-    @Insert
+    @Update
+    fun update(user: UserEntity): Int
+
+    @Transaction
+    fun insertOrUpdate(user: UserEntity) {
+        val id = insert(user)
+        if (id ==-1L)
+            update(user)
+    }
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createUserAccount(user: UserAccountEntity)
     @Query("select * from user_account where email =:email")
     fun findUserAccount(email: String): UserAccountEntity
     @Insert
     fun createUsers(users: List<UserEntity>)
-    @Query("select * from user where id_user = :id")
-    fun get(id: UUID): LiveData<UserEntity>
+    @Query("select * from user where id = :id")
+    fun getLiveData(id: UUID): LiveData<UserEntity>
+    @Query("select * from user where id = :id")
+    fun get(id: UUID): UserEntity
+    @Query("select * from user_account where id = :id")
+    fun getAccountLiveData(id: UUID): LiveData<UserAccountEntity>
 
-    @Query("select * from user_account where id_user = :id")
-    fun getAccount(id: UUID): LiveData<UserAccountEntity>
-    @Update
-    fun update(entity: UserEntity)
-    @Query("update user set name = :name where  id_user = :id")
+    @Query("select * from user_account where id = :id")
+    fun getAccount(id: UUID): UserAccountEntity
+    @Query("update user set name = :name where  id = :id")
     fun setName(id: UUID,name: String)
-    @Query("update user set weight = :weight where  id_user = :id")
-    fun setWeight(id: UUID,weight: Int)
-    @Query("update user set height = :height where  id_user = :id")
+    @Query("update user set weight = :weight where  id = :id")
+    fun setWeight(id: UUID,weight: Double)
+    @Query("update user set height = :height where  id = :id")
     fun setHeight(id: UUID,height: Int)
-    @Query("update user set age = :age where  id_user = :id")
-    fun setAge(id: UUID,age: Int)
 
-    @Delete
-    fun delete(entity: UserEntity)
+    @Query("delete from `user` where id=:idUser")
+    fun delete(idUser: UUID)
+    @Query("select * from user_account")
+    fun getAll(): List<UserAccountEntity>
+    @Query("delete from `user` where id !=:idUser")
+    fun deleteAllUsers(idUser: UUID)
 }

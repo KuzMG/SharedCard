@@ -5,10 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
+import com.example.sharedcard.database.entity.group.GroupEntity
 import com.example.sharedcard.database.entity.target.Target
 import com.example.sharedcard.repository.GroupManager
 import com.example.sharedcard.repository.QueryPreferences
-import com.example.sharedcard.repository.TargetRepository
+import com.example.sharedcard.repository.TargetManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -16,10 +17,12 @@ import javax.inject.Inject
 
 class TargetViewModel @Inject constructor(
     private val queryPreferences: QueryPreferences,
-    private val targetRepository: TargetRepository,
+    private val targetManager: TargetManager,
     private val groupManager: GroupManager
 ) : ViewModel() {
-
+    private val _sendLiveData = MutableLiveData<Throwable?>()
+    val sendLiveData: LiveData<Throwable?>
+        get() = _sendLiveData
     val groupChanged: LiveData<UUID>
         get() = groupManager.groupChangedLiveData
 
@@ -32,16 +35,20 @@ class TargetViewModel @Inject constructor(
         mutableSearch.value = ""
         targetItemLiveData = mutableSearch.switchMap { query ->
             if (query.isBlank()) {
-                targetRepository.getAllCheck()
+                targetManager.getAllCheck()
             } else {
-                targetRepository.getAllQuery(query)
+                targetManager.getAllQuery(query)
             }
         }
     }
 
-    fun deleteTarget(id: UUID) {
+    fun deleteTarget(isInternetConnection: Boolean,id: UUID) {
         viewModelScope.launch(Dispatchers.IO) {
-            targetRepository.delete(id)
+            targetManager.delete(isInternetConnection,id).subscribe({
+                _sendLiveData.postValue(null)
+            }, { error ->
+                _sendLiveData.postValue(error)
+            })
         }
     }
 

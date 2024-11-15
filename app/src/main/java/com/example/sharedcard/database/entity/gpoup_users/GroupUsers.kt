@@ -11,7 +11,7 @@ data class GroupUsers(
     @Embedded
     val group: GroupEntity,
     @Relation(
-        parentColumn = "id_group",
+        parentColumn = "id",
         entityColumn = "id_group",
         entity = GroupUsersEntity::class
     )
@@ -20,10 +20,10 @@ data class GroupUsers(
 
 data class UserEntityWithStatus(
     private val id_user: UUID,
-    val status: Boolean,
+    val status: Int,
     @Relation(
         parentColumn = "id_user",
-        entityColumn = "id_user"
+        entityColumn = "id"
     )
     val user: UserEntity
 )

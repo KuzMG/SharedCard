@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pie_chart_calories">%1$s ккал</string>
+    <string name="pie_chart_protein">Белки %1$s</string>
+    <string name="pie_chart_fat">Жиры %1$s</string>
+    <string name="pie_chart_carb">Углеводы %1$s</string>
+</resources>

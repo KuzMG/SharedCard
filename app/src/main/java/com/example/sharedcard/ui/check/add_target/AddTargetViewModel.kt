@@ -1,11 +1,12 @@
 package com.example.sharedcard.ui.check.add_target
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sharedcard.repository.DictionaryRepository
 import com.example.sharedcard.repository.QueryPreferences
-import com.example.sharedcard.repository.TargetRepository
-import com.project.shared_card.database.dao.target.TargetEntity
+import com.example.sharedcard.repository.TargetManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -13,21 +14,16 @@ import java.util.UUID
 import javax.inject.Inject
 
 class AddTargetViewModel @Inject constructor(
-    private val queryPreferences: QueryPreferences,
     private val dictionaryRepository: DictionaryRepository,
-    private val targetRepository: TargetRepository
+    private val targetManager: TargetManager
 ) : ViewModel() {
-    private val idGroup: UUID
-        get() = queryPreferences.groupId
-    private val idUser: UUID
-        get() = queryPreferences.userId
-    private val isLocal: Boolean
-        get() = queryPreferences.isLocal
-
+    private val _sendLiveData = MutableLiveData<Throwable?>()
+    val sendLiveData: LiveData<Throwable?>
+        get() = _sendLiveData
     var name = ""
     var price = 0
-    var currency = 0L
-    var category = 0L
+    var currency = 0
+    var category = 0
 
 
     fun getCurrency() = dictionaryRepository.getAllCurrency()
@@ -39,25 +35,20 @@ class AddTargetViewModel @Inject constructor(
         else -> 2
     }
 
-    fun add() {
-        if(currency==0L){
-            currency = when(Locale.getDefault().country){
-                "RU" -> 1L
-                else -> 2L
+    fun add(isInternetConnection: Boolean) {
+        if (currency == 0) {
+            currency = when (Locale.getDefault().country) {
+                "RU" -> 1
+                else -> 2
             }
         }
-        val target = TargetEntity(
-            name = name,
-            firstPrice = price,
-            idCurrencyFirst = currency,
-            idCategory = category,
-            idGroup = idGroup,
-            idCreator = idUser
-        )
-        if (isLocal)
-            viewModelScope.launch(Dispatchers.IO) {
-                targetRepository.add(target)
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            targetManager.add(isInternetConnection, name, price, currency, category).subscribe({
+                _sendLiveData.postValue(null)
+            },{error ->
+                _sendLiveData.postValue(error)
+            })
+        }
     }
 
 }

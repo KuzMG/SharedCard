@@ -11,8 +11,10 @@ import com.example.sharedcard.ui.startup.StartupViewModel.State.Authorization
 import com.example.sharedcard.ui.startup.StartupViewModel.State.Continue
 import com.example.sharedcard.ui.startup.StartupViewModel.State.Registration
 import com.example.sharedcard.ui.startup.StartupViewModel.State.Startup
-import com.example.sharedcard.ui.startup.authorization.AuthorizationFragment
+import com.example.sharedcard.ui.startup.StartupViewModel.State.Synchronization
+import com.example.sharedcard.ui.startup.authentication.AuthenticationFragment
 import com.example.sharedcard.ui.startup.registration.RegistrationFragment
+import com.example.sharedcard.ui.startup.synchronization.SyncFragment
 import com.example.sharedcard.util.appComponent
 
 
@@ -35,14 +37,19 @@ class StartupActivity : AppCompatActivity() {
                 )
 
                 Authorization -> showFragment(
-                    AuthorizationFragment(),
-                    AuthorizationFragment::class.simpleName!!
+                    AuthenticationFragment(),
+                    AuthenticationFragment::class.simpleName!!
+                )
+
+                Synchronization -> showFragment(
+                    SyncFragment(),
+                    SyncFragment::class.simpleName!!
                 )
 
                 Continue -> startActivity(
                     Intent(this, NavigationDrawerActivity::class.java)
-                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 )
 
                 else -> throw IndexOutOfBoundsException()
@@ -52,10 +59,16 @@ class StartupActivity : AppCompatActivity() {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        if (currentFragment != StartupFragment::class.simpleName) {
-            viewModel.setTransitionState(Startup)
-        } else {
-            super.onBackPressed()
+        when(currentFragment){
+            StartupFragment::class.simpleName ->  super.onBackPressed()
+            RegistrationFragment::class.simpleName -> {
+                if(viewModel.currentPageReg>1){
+                    viewModel.currentPageReg--
+                } else {
+                    viewModel.setTransitionState(Startup)
+                }
+            }
+            else -> viewModel.setTransitionState(Startup)
         }
     }
 

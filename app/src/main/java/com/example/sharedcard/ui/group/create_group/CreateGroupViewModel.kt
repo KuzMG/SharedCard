@@ -11,7 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class CreateGroupViewModel @Inject constructor(private val groupManager: GroupManager) : ViewModel() {
+class CreateGroupViewModel @Inject constructor(private val groupManager: GroupManager) :
+    ViewModel() {
 
 
     var name = ""
@@ -27,10 +28,14 @@ class CreateGroupViewModel @Inject constructor(private val groupManager: GroupMa
         get() = mutableResultLiveData
 
 
-    fun create(photo: Bitmap) {
+    fun create(isInternetConnection: Boolean, pic: Bitmap) {
         mutableResultLiveData.postValue(Result(Result.State.LOADING))
         viewModelScope.launch(Dispatchers.Default) {
-            mutableResultLiveData.postValue(groupManager.createGroup(name, photo))
+            groupManager.createGroup(isInternetConnection, name, pic).subscribe({
+                mutableResultLiveData.postValue(Result(Result.State.OK))
+            }, { error ->
+                mutableResultLiveData.postValue(Result(Result.State.ERROR,error))
+            })
         }
     }
 

@@ -14,11 +14,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
 import com.example.sharedcard.databinding.FragmentAddTargetBinding
-import com.example.sharedcard.ui.check.array_adapter.CategoryArrayAdapter
+import com.example.sharedcard.ui.adapter.CategoryArrayAdapter
 import com.example.sharedcard.util.appComponent
-import com.example.sharedcard.viewmodel.MultiViewModelFactory
+import com.example.sharedcard.util.isInternetConnection
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import javax.inject.Inject
 
 
 class AddTargetBottomSheet : BottomSheetDialogFragment() {
@@ -67,6 +66,12 @@ class AddTargetBottomSheet : BottomSheetDialogFragment() {
             binding.dialogCategorySpinner.setText(category[0].name)
             viewModel.category = category[0].id
         }
+        viewModel.sendLiveData.observe(viewLifecycleOwner){
+            it?.let {
+                Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
+            }
+            dismiss()
+        }
     }
 
     override fun onStart() {
@@ -93,17 +98,16 @@ class AddTargetBottomSheet : BottomSheetDialogFragment() {
             override fun afterTextChanged(p0: Editable?) {}
         })
         binding.dialogCurrencySpinner.onItemClickListener =
-            OnItemClickListener { _, _, _, id -> viewModel.currency = id + 1 }
+            OnItemClickListener { _, _, _, id -> viewModel.currency = id.toInt() + 1 }
         binding.dialogCategorySpinner.onItemClickListener =
-            OnItemClickListener { _, _, _, id -> viewModel.category = id }
+            OnItemClickListener { _, _, _, id -> viewModel.category = id.toInt() }
         binding.dialogAddButton.setOnClickListener {
             when (viewModel.check()) {
                 1 -> Toast.makeText(requireContext(), "Некорректное имя цели!", Toast.LENGTH_SHORT)
                     .show()
 
                 2 -> {
-                    viewModel.add()
-                    dismiss()
+                    viewModel.add(isInternetConnection(requireContext()))
                 }
             }
         }

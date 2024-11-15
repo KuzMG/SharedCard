@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.example.sharedcard.database.entity.check.Check
-import com.example.sharedcard.repository.CheckRepository
+import com.example.sharedcard.database.entity.check.CheckEntity
+import com.example.sharedcard.database.entity.group.GroupEntity
+import com.example.sharedcard.repository.CheckManager
 import com.example.sharedcard.repository.GroupManager
 import com.example.sharedcard.repository.QueryPreferences
 import kotlinx.coroutines.Dispatchers
@@ -15,11 +17,13 @@ import java.util.UUID
 import javax.inject.Inject
 
 class ProductViewModel @Inject constructor(
-    private val checkRepository: CheckRepository,
+    private val checkManager: CheckManager,
     private val queryPreferences: QueryPreferences,
     private val groupManager: GroupManager
 ) : ViewModel() {
-
+    private val _sendLiveData = MutableLiveData<Throwable?>()
+    val sendLiveData: LiveData<Throwable?>
+        get() = _sendLiveData
     val groupChanged: LiveData<UUID>
         get() = groupManager.groupChangedLiveData
 
@@ -32,9 +36,9 @@ class ProductViewModel @Inject constructor(
         mutableSearch.value = ""
         checkItemLiveData = mutableSearch.switchMap { query ->
             if (query.isBlank()) {
-                checkRepository.getAllCheck()
+                checkManager.getAllCheck()
             } else {
-                checkRepository.getAllQuery(query)
+                checkManager.getAllQuery(query)
             }
         }
     }
@@ -42,9 +46,9 @@ class ProductViewModel @Inject constructor(
 
 
     fun setCheckBox(id: UUID, isChecked: Boolean) {
-        val status = if (isChecked) 1 else 0
+        val status = if (isChecked) CheckEntity.CHECKED else CheckEntity.UNCHECKED
         viewModelScope.launch(Dispatchers.IO) {
-            checkRepository.setStatus(id, status)
+            checkManager.setStatus(id, status)
         }
     }
 
@@ -52,9 +56,13 @@ class ProductViewModel @Inject constructor(
         mutableSearch.value = query
     }
 
-    fun deleteCheck(id: UUID) {
+    fun deleteCheck(isInternetConnection: Boolean,id: UUID) {
         viewModelScope.launch(Dispatchers.IO) {
-            checkRepository.delete(id)
+            checkManager.delete(isInternetConnection, id).subscribe({
+                _sendLiveData.postValue(null)
+            }, { error ->
+                _sendLiveData.postValue(error)
+            })
         }
     }
 }

@@ -1,10 +1,12 @@
 package com.example.sharedcard.ui.group
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -21,13 +23,18 @@ import com.example.sharedcard.database.entity.gpoup_users.UserEntityWithStatus
 import com.example.sharedcard.databinding.ListItemGroupBinding
 import com.example.sharedcard.databinding.ListItemUserBinding
 import com.example.sharedcard.ui.group.create_group.CreateGroupFragment
+import com.example.sharedcard.ui.group.data.Result
 import com.example.sharedcard.ui.group.delete_group.DeleteGroupFragment
 import com.example.sharedcard.ui.group.edit_group.EditGroupBottomSheet
 import com.example.sharedcard.ui.group.join_group.JoinGroupFragment
-import com.example.sharedcard.ui.group.token_group.DialogTokenGroup
+import com.example.sharedcard.ui.group.token_group.DialogTokenGroupFragment
 import com.example.sharedcard.ui.group.user_group.UserGroupBottomSheet
 import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerActivity
 import com.example.sharedcard.util.appComponent
+import com.example.sharedcard.util.isVisible
+import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.project.shared_card.database.dao.group_users.GroupUsersEntity
+import com.squareup.picasso.Picasso
 import io.github.kobakei.materialfabspeeddial.FabSpeedDial
 import java.util.UUID
 
@@ -41,6 +48,8 @@ class GroupFragment : Fragment() {
     private lateinit var toolbar: Toolbar
     private lateinit var localButton: ImageButton
     private lateinit var fabButton: FabSpeedDial
+    private lateinit var progressBar: LinearProgressIndicator
+
 
     private val itemTouchHelper = ItemTouchHelper(object : CustomSwipeCallback() {
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -62,7 +71,10 @@ class GroupFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel =
-            ViewModelProvider(this, appComponent.multiViewModelFactory)[GroupViewModel::class.java]
+            ViewModelProvider(
+                requireActivity() as NavigationDrawerActivity,
+                appComponent.multiViewModelFactory
+            )[GroupViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -85,6 +97,7 @@ class GroupFragment : Fragment() {
         fabButton = view.findViewById(R.id.fab_button)
         localButton = view.findViewById(R.id.local_button)
         recyclerView = view.findViewById(R.id.group_recycler_view)
+        progressBar = view.findViewById(R.id.progress_bar)
     }
 
     private fun setToolbar() {
@@ -97,16 +110,27 @@ class GroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel.loadingLiveData.observe(viewLifecycleOwner) {
+            progressBar.isVisible(it.state == Result.State.LOADING)
+            it.error?.let { e ->
+                Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_SHORT).show()
+            }
+        }
         viewModel.run {
             getGroups().observe(viewLifecycleOwner) { groups ->
                 groupAdapter.submitList(groups)
             }
-            currentGroupLiveData.observe(viewLifecycleOwner) {
+            getCurrentGroupIdLiveData().observe(viewLifecycleOwner) {
                 when (viewModel.isLocalGroup()) {
                     true -> localButton.setImageResource(R.drawable.planet_selected)
                     false -> localButton.setImageResource(R.drawable.planet_default)
                 }
+            }
+            sendDekGroupLiveData.observe(viewLifecycleOwner) {
+                it?.let {
+                    Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+                }
+
             }
         }
     }
@@ -116,10 +140,13 @@ class GroupFragment : Fragment() {
         super.onStart()
         fabButton.addOnMenuItemClickListener { _, _, itemId ->
             when (itemId) {
-                R.id.join_group -> JoinGroupFragment().show(
-                    parentFragmentManager,
-                    JoinGroupFragment.DIALOG_JOIN_GROUP
-                )
+                R.id.join_group -> {
+                    JoinGroupFragment().show(
+                        parentFragmentManager,
+                        JoinGroupFragment.DIALOG_JOIN_GROUP
+                    )
+
+                }
 
                 R.id.create_group -> CreateGroupFragment().show(
                     parentFragmentManager,
@@ -175,29 +202,30 @@ class GroupFragment : Fragment() {
             this.group = group
             binding.apply {
                 itemGroupName.text = group.group.name
-
-                viewModel.isAdmin(group.group.id).observe(viewLifecycleOwner) { isAdmin ->
-                    if (isAdmin) {
-                        itemGroupTokenButton.visibility = View.VISIBLE
-                        itemGroupEditButton.visibility = View.VISIBLE
-                    }
-                    userAdapter = UserListAdapter(group.group.id, isAdmin)
+                Picasso.get()
+                    .load(group.group.url)
+                    .into(itemGroupImage)
+                viewModel.getStatus(group.group.id).observe(viewLifecycleOwner) { status ->
+                    status ?: return@observe
+                    itemGroupEditButton.isVisible(status != GroupUsersEntity.USER)
+                    userAdapter = UserListAdapter(group.group.id, status)
                     groupRecyclerView.adapter = userAdapter
                 }
 
-                viewModel.currentGroupLiveData.observe(viewLifecycleOwner) { groupId ->
-                     when (group.group.id) {
+                viewModel.getCurrentGroupIdLiveData().observe(viewLifecycleOwner) { groupId ->
+                    when (group.group.id) {
                         groupId -> {
                             materialCardView.strokeColor =
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.red
-                            )
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.red
+                                )
                             border.setBackgroundResource(R.color.red)
                         }
 
-                        else ->{
-                            materialCardView.strokeColor =ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+                        else -> {
+                            materialCardView.strokeColor =
+                                ContextCompat.getColor(requireContext(), R.color.colorPrimary)
                             border.setBackgroundResource(R.color.colorPrimary)
                         }
                     }
@@ -208,9 +236,9 @@ class GroupFragment : Fragment() {
                         .show(parentFragmentManager, EditGroupBottomSheet.DIALOG_EDIT_GROUP)
                 }
                 itemGroupTokenButton.setOnClickListener {
-                    DialogTokenGroup.newInstance(group.group.id).show(
+                    DialogTokenGroupFragment.newInstance(group.group.id).show(
                         parentFragmentManager,
-                        DialogTokenGroup.DIALOG_TOKEN_GROUP
+                        DialogTokenGroupFragment.DIALOG_TOKEN_GROUP
                     )
                 }
             }
@@ -258,10 +286,33 @@ class GroupFragment : Fragment() {
         fun onBind(user: UserEntityWithStatus) {
             binding.run {
                 itemUserName.text = user.user.name
-                itemUserAdministratorImageView.visibility = when (user.status) {
-                    true -> View.VISIBLE
-                    else -> View.INVISIBLE
+                if (viewModel.getMyId() == user.user.id) {
+                    userLayout.setBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.colorPrimaryGray
+                        )
+                    )
+                } else {
+                    val outValue = TypedValue()
+                    requireContext().theme.resolveAttribute(
+                        android.R.attr.selectableItemBackground,
+                        outValue,
+                        true
+                    )
+                    userLayout.setBackgroundResource(outValue.resourceId)
                 }
+                Picasso.get()
+                    .load(user.user.url)
+                    .into(itemUserImageView)
+                itemUserAdministratorImageView.setImageResource(
+                    when (user.status) {
+                        GroupUsersEntity.CREATOR -> R.drawable.creator_icon
+                        GroupUsersEntity.ADMIN -> R.drawable.administrator_icon
+                        GroupUsersEntity.USER -> R.color.transparent
+                        else -> throw IndexOutOfBoundsException()
+                    }
+                )
             }
         }
 
@@ -270,7 +321,7 @@ class GroupFragment : Fragment() {
 
     private inner class UserListAdapter(
         private val idGroup: UUID,
-        private val isAdmin: Boolean
+        private val status: Int
     ) :
         ListAdapter<UserEntityWithStatus, UserViewHolder>(diffUtilUser) {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = UserViewHolder(
@@ -284,8 +335,15 @@ class GroupFragment : Fragment() {
                 onBind(getItem(position))
 
                 itemView.setOnLongClickListener {
-                    if (!getItem(position).status && isAdmin) {
-                        UserGroupBottomSheet.newInstance(getItem(position).user.id, idGroup).show(
+                    if (status == GroupUsersEntity.CREATOR && getItem(position).status != GroupUsersEntity.CREATOR ||
+                        status == GroupUsersEntity.ADMIN && getItem(position).status == GroupUsersEntity.USER
+                    ) {
+                        UserGroupBottomSheet.newInstance(
+                            getItem(position).user.id,
+                            idGroup,
+                            status,
+                            getItem(position).status
+                        ).show(
                             parentFragmentManager,
                             UserGroupBottomSheet.DIALOG_JOIN_GROUP
                         )

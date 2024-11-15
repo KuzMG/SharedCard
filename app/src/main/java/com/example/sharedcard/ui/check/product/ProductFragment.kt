@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.size
@@ -20,15 +21,16 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.sharedcard.R
 import com.example.sharedcard.database.entity.check.Check
+import com.example.sharedcard.databinding.ListItemCheckBinding
+import com.example.sharedcard.databinding.ListItemCheckInformationBinding
 import com.example.sharedcard.databinding.ListItemProductBinding
-import com.example.sharedcard.databinding.ListItemProductInformationBinding
 import com.example.sharedcard.ui.check.check_list.CheckListFragment
 import com.example.sharedcard.ui.check.check_list.CustomSwipeCallback
 import com.example.sharedcard.ui.check.delete_item.DeleteItemFragment
 import com.example.sharedcard.ui.check.to_history.ToHistoryFragment
 import com.example.sharedcard.util.appComponent
-import com.example.sharedcard.viewmodel.MultiViewModelFactory
-import javax.inject.Inject
+import com.example.sharedcard.util.isInternetConnection
+import com.squareup.picasso.Picasso
 
 
 private const val DATE_FORMAT = "yyyy-MM.dd HH:mm"
@@ -74,6 +76,12 @@ class ProductFragment : CheckListFragment() {
             viewModel.setQuery("")
         }
 
+        viewModel.sendLiveData.observe(viewLifecycleOwner){
+            it?.let {
+                Toast.makeText(requireContext(),it.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
 
     override fun onStart() {
@@ -96,7 +104,7 @@ class ProductFragment : CheckListFragment() {
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
                         if (viewModel.quickDelete) {
-                            viewModel.deleteCheck(product.id)
+                            viewModel.deleteCheck(isInternetConnection(requireContext()),product.id)
                         } else {
                             DeleteItemFragment.apply {
                                 newInstance(0, product.id, product.name)
@@ -155,10 +163,10 @@ class ProductFragment : CheckListFragment() {
     }
 
 
-    private inner class ProductHolder(private val binding: ListItemProductBinding) :
+    private inner class ProductHolder(private val binding: ListItemCheckBinding) :
         ViewHolder(binding.root), View.OnClickListener {
         lateinit var check: Check
-        lateinit var bottomMenuBinding: ListItemProductInformationBinding
+        lateinit var bottomMenuBinding: ListItemCheckInformationBinding
         var pressed = false
         fun close() {
             if (binding.itemLayout.size == 3) {
@@ -172,6 +180,9 @@ class ProductFragment : CheckListFragment() {
             this.check = check
             binding.apply {
                 this.check = check
+                Picasso.get()
+                    .load(check.userPic)
+                    .into(userImageView)
                 checkBox.setOnClickListener {
                     if (pressed) {
                         if (binding.itemLayout.size == 3)
@@ -187,7 +198,7 @@ class ProductFragment : CheckListFragment() {
         override fun onClick(v: View?) {
             bottomMenuBinding = DataBindingUtil.inflate(
                 layoutInflater,
-                R.layout.list_item_product_information,
+                R.layout.list_item_check_information,
                 binding.root as ViewGroup,
                 false
             )
@@ -223,7 +234,7 @@ class ProductFragment : CheckListFragment() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ProductHolder(
             DataBindingUtil.inflate(
                 layoutInflater,
-                R.layout.list_item_product,
+                R.layout.list_item_check,
                 parent,
                 false
             )
