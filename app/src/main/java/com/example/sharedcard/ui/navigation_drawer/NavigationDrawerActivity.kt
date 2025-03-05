@@ -12,6 +12,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.commit
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
@@ -19,11 +20,13 @@ import androidx.work.WorkManager
 import com.example.sharedcard.R
 import com.example.sharedcard.databinding.ActivityNavigationDrawerBinding
 import com.example.sharedcard.background.SynchronizationWorker
+import com.example.sharedcard.ui.check.AddButtonFragment
 import com.example.sharedcard.ui.check.CheckFragment
 import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.CategoryProducts
 import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.Group
 import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.History
 import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.Products
+import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.RecipeDetails
 import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.RecipeProducts
 import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.Recipes
 import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.Settings
@@ -50,7 +53,7 @@ class NavigationDrawerActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             synchronizationWork()
         }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_navigation_drawer)
@@ -69,9 +72,9 @@ class NavigationDrawerActivity : AppCompatActivity(),
 
         initialFragment()
 
-        viewModel.getGroup().observe(this) {group ->
+        viewModel.getGroup().observe(this) { group ->
             group ?: return@observe
-            binding.appBar.toolbar.setTitle(group.name)
+            binding.appBar.toolbar.title = group.name
         }
         viewModel.getUser().observe(this) { user ->
             binding.navView.findViewById<TextView>(R.id.nav_view_user_text_view).text = user.name
@@ -81,22 +84,6 @@ class NavigationDrawerActivity : AppCompatActivity(),
         }
 
 
-
-        viewModel.transitionState.observe(this) { state ->
-            if (viewModel.fragmentStack.size == 0 || viewModel.fragmentStack.peek() != state) {
-                val fm =
-                    supportFragmentManager
-                        .beginTransaction()
-                        .setCustomAnimations(R.animator.fragment_enter, R.animator.fragment_exit)
-                        .replace(R.id.nav_host_fragment, viewModel.fragments[state]!!)
-                if (state == Start) {
-                    fm.commit()
-                } else {
-                    fm.addToBackStack(null).commit()
-                }
-                viewModel.fragmentStack.push(state)
-            }
-        }
     }
 
     override fun onStart() {
@@ -118,11 +105,10 @@ class NavigationDrawerActivity : AppCompatActivity(),
     }
 
     private fun initialFragment() {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.background_fragment, CheckFragment(), CheckFragment::class.simpleName)
-            .commit()
-        if (viewModel.fragmentStack.size == 0)
-            viewModel.setTransitionState(Start)
+        supportFragmentManager.commit {
+            replace(R.id.background_fragment, CheckFragment(), CheckFragment::class.simpleName)
+            replace(R.id.nav_host_fragment,AddButtonFragment(),AddButtonFragment::class.simpleName)
+        }
     }
 
     private fun synchronizationWork() {
@@ -138,16 +124,11 @@ class NavigationDrawerActivity : AppCompatActivity(),
 
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.products -> viewModel.setTransitionState(CategoryProducts)
-            R.id.recipes -> viewModel.setTransitionState(RecipeProducts)
-            R.id.statistic -> viewModel.setTransitionState(Statistic)
-            R.id.group -> viewModel.setTransitionState(Group)
-            R.id.settings -> viewModel.setTransitionState(Settings)
-            R.id.history -> viewModel.setTransitionState(History)
-            else -> throw IndexOutOfBoundsException()
+        supportFragmentManager.commit {
+            setCustomAnimations(R.animator.fragment_enter, R.animator.fragment_exit)
+            replace(R.id.nav_host_fragment, viewModel.fragments[item.itemId]!!)
+            addToBackStack(null)
         }
-
         Handler(Looper.getMainLooper()).postDelayed(
             { binding.drawerLayout.closeDrawer(GravityCompat.START) },
             50
@@ -165,8 +146,5 @@ class NavigationDrawerActivity : AppCompatActivity(),
 
     override fun onBackPressed() {
         onBackPressedDispatcher.onBackPressed()
-        viewModel.fragmentStack.pop()
-        if (viewModel.fragmentStack.size > 0)
-            viewModel.setTransitionState(viewModel.fragmentStack.peek())
     }
 }

@@ -1,11 +1,9 @@
 package com.example.sharedcard.ui.view
 
-import android.R.attr
-import android.R.attr.endX
-import android.R.attr.endY
-import android.R.attr.startY
+
 import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
@@ -35,8 +33,8 @@ class PFCLineChart @JvmOverloads constructor(
 
     companion object {
         private const val DEFAULT_PERCENT_LINE = 0.9
-        const val DEFAULT_VIEW_SIZE_HEIGHT = 20
-        const val DEFAULT_VIEW_SIZE_WIDTH = 250
+        const val DEFAULT_VIEW_SIZE_HEIGHT = 10
+        const val DEFAULT_VIEW_SIZE_WIDTH = 400
     }
 
     private var percentageCircleList: MutableMap<PFC, PFCLineChartModel> = mutableMapOf()
@@ -75,6 +73,10 @@ class PFCLineChart @JvmOverloads constructor(
                 invalidate()
             }
         }
+        val bmOriginal = BitmapFactory.decodeResource(
+            resources,
+            com.example.sharedcard.R.drawable.tab_background_selected,
+        )
         animator.start()
     }
 
@@ -121,10 +123,10 @@ class PFCLineChart @JvmOverloads constructor(
         val initSizeWidth = resolveDefaultSize(widthMeasureSpec, DEFAULT_VIEW_SIZE_WIDTH)
 
         var initSizeHeight = resolveDefaultSize(heightMeasureSpec, DEFAULT_VIEW_SIZE_HEIGHT)
-        initSizeHeight += strokeLine.toInt() * 2
+        initSizeHeight += context.dpToPx(10).toInt()/2
         lineStartX = strokeLine
-        lineStartY = initSizeHeight.toFloat() - strokeLine
-        lineSize = initSizeWidth - strokeLine.toInt() * 2
+        lineStartY = initSizeHeight.toFloat() - context.dpToPx(15).toInt()/2
+        lineSize = initSizeWidth -  context.dpToPx(10).toInt()*2
 
         setMeasuredDimension(initSizeWidth, initSizeHeight)
     }

@@ -24,7 +24,7 @@ class ProductCategoriesFragment : Fragment() {
         appComponent.multiViewModelFactory
     }
 
-    private val navigationDrawerViewModel: NavigationDrawerViewModel by viewModels(  {activity as NavigationDrawerActivity }) {
+    private val navigationDrawerViewModel: NavigationDrawerViewModel by viewModels({ activity as NavigationDrawerActivity }) {
         appComponent.multiViewModelFactory
     }
     private lateinit var binding: FragmentProductCategoriesBinding
@@ -41,12 +41,13 @@ class ProductCategoriesFragment : Fragment() {
         setToolbar()
         return binding.root
     }
+
     private fun setToolbar() {
-        (requireActivity() as NavigationDrawerActivity).setSupportActionBar(binding.appBar.toolbar)
-        (requireActivity() as NavigationDrawerActivity).supportActionBar?.setDisplayHomeAsUpEnabled(
-            true
-        )
-        (requireActivity() as NavigationDrawerActivity).supportActionBar?.setTitle(R.string.products)
+        (requireActivity() as NavigationDrawerActivity).apply {
+            setSupportActionBar(binding.appBar.toolbar)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setTitle(R.string.products)
+        }
 
     }
 
@@ -55,21 +56,25 @@ class ProductCategoriesFragment : Fragment() {
         viewModel.getProductCategories().observe(viewLifecycleOwner) { categories ->
             val list = arrayListOf<ArrayList<CategoryEntity>>()
             categories.forEachIndexed { index, category ->
-                if(index/4 == 0){
+                if (index / 4 == 0) {
 
-                    if(index/2 >= list.size){
+                    if (index / 2 >= list.size) {
                         list.add(arrayListOf())
                     }
-                    list[index/2].add(category)
-                } else{
-                    if((index-4)/3 >= list.size-2){
+                    list[index / 2].add(category)
+                } else {
+                    if ((index - 4) / 3 >= list.size - 2) {
                         list.add(arrayListOf())
                     }
-                    list[(index-4)/3+2].add(category)
+                    list[(index - 4) / 3 + 2].add(category)
                 }
             }
-            binding.recyclerView.adapter = CategoryAdapter(list){
-                navigationDrawerViewModel.setTransitionState(NavigationDrawerViewModel.State.Products,ProductsFragment.newInstance(it))
+            binding.recyclerView.adapter = CategoryAdapter(list) {
+                parentFragmentManager.commit {
+                    setCustomAnimations(R.animator.fragment_enter, R.animator.fragment_exit)
+                    replace(R.id.nav_host_fragment,ProductsFragment.newInstance(it))
+                    addToBackStack(null)
+                }
             }
         }
     }

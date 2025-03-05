@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.sharedcard.R
 import com.example.sharedcard.repository.AccountManager
 import com.example.sharedcard.repository.GroupManager
 import com.example.sharedcard.ui.check.AddButtonFragment
@@ -24,19 +25,18 @@ class NavigationDrawerViewModel @Inject constructor(
 ) :
     ViewModel() {
     enum class State {
-        Start, Group, Statistic, Settings, CategoryProducts, RecipeProducts,Recipes, History, Products
+        Start, Group, Statistic, Settings, CategoryProducts, RecipeProducts, Recipes, History, Products, RecipeDetails
     }
 
     val fragmentStack: Stack<State> = Stack()
-    val fragments: MutableMap<State, Fragment> =
+    val fragments: MutableMap<Int, Fragment> =
         mutableMapOf(
-            State.Start to AddButtonFragment(),
-            State.Group to GroupFragment(),
-            State.Statistic to StatisticFragment(),
-            State.Settings to SettingsFragment(),
-            State.CategoryProducts to ProductCategoriesFragment(),
-            State.RecipeProducts to RecipeCategoriesFragment(),
-            State.History to HistoryFragment()
+            R.id.products to ProductCategoriesFragment(),
+            R.id.recipes to RecipeCategoriesFragment(),
+            R.id.statistic to StatisticFragment(),
+            R.id.group to GroupFragment(),
+            R.id.settings to SettingsFragment(),
+            R.id.history to HistoryFragment()
         )
     private val _transition = MutableLiveData<State>()
     val transitionState: LiveData<State> = _transition
@@ -44,11 +44,11 @@ class NavigationDrawerViewModel @Inject constructor(
     fun getUser() = accountManager.getUser()
 
     fun getGroup() = groupManager.getCurrentGroup()
-    fun setTransitionState(state: State,fragment: Fragment? = null) {
-        fragment?.let {
-            fragments[state] = fragment
-        }
-        _transition.value = state
+    fun setTransitionState(state: State, fragment: Fragment? = null) {
+//        fragment?.let {
+//            fragments[state] = fragment
+//        }
+//        _transition.value = state
     }
 
     fun exit() {

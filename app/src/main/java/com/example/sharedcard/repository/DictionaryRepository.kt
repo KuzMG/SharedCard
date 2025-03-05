@@ -12,6 +12,7 @@ import com.example.sharedcard.database.entity.product.ProductDao
 import com.example.sharedcard.database.entity.product.ProductEntity
 import com.example.sharedcard.database.entity.recipe.Recipe
 import com.example.sharedcard.database.entity.recipe.RecipeDao
+import com.example.sharedcard.database.entity.recipe.RecipeWithProducts
 import com.example.sharedcard.database.entity.recipe_product.RecipeProductDao
 import com.example.sharedcard.database.entity.shop.ShopDao
 import com.example.sharedcard.database.entity.shop.ShopEntity
@@ -84,7 +85,10 @@ class DictionaryRepository @Inject constructor(
     }
 
     fun getCategory(idCategory: Int): LiveData<CategoryEntity> = categoryDao.getById(idCategory)
-    fun getRecipesByCategory(idCategory: Int): LiveData<List<Recipe>>  = recipeDao.getById(idCategory)
+    fun getRecipesByCategory(idCategory: Int): LiveData<List<Recipe>>  = recipeDao.getByIdCategory(idCategory)
+    fun getRecipe(idRecipe: Int): LiveData<RecipeWithProducts> = recipeDao.getById(idRecipe)
+
+
 
 
 }

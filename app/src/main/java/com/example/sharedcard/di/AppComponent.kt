@@ -15,6 +15,7 @@ import com.example.sharedcard.ui.check.delete_item.DeleteItemFragment
 import com.example.sharedcard.ui.check.to_history.ToHistoryFragment
 import com.example.sharedcard.ui.group.edit_group.EditGroupBottomSheet
 import com.example.sharedcard.ui.products.ProductsFragment
+import com.example.sharedcard.ui.recipes.RecipeDetailsFragment
 import com.example.sharedcard.ui.recipes.RecipesFragment
 import com.example.sharedcard.viewmodel.MultiViewModelFactory
 import dagger.BindsInstance
@@ -37,6 +38,7 @@ interface AppComponent {
     fun inject(fragment: EditGroupBottomSheet)
     fun inject(fragment: ProductsFragment)
     fun inject(fragment: RecipesFragment)
+    fun inject(fragment: RecipeDetailsFragment)
 
 
     @Component.Builder

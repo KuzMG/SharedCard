@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.example.sharedcard"
-    compileSdk = 33
+    compileSdk = 35
 
     defaultConfig {
         multiDexEnabled = true

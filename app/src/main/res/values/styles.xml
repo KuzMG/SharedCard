@@ -61,7 +61,10 @@
         <item name="titleTextColor">@color/white</item>
         <item name="titleTextAppearance">@style/TextAppearance.MaterialComponents.Headline6.Сustom</item>
     </style>
-
+    <style name="toolbarStyleRecipe" parent="@style/Widget.MaterialComponents.Toolbar">
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="titleTextColor">@color/colorPrimary</item>
+    </style>
 
     <style name="DialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog">
         <item name="colorAccent">@color/colorPrimary</item>

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
 import com.example.sharedcard.database.entity.category.CategoryEntity
@@ -14,6 +15,7 @@ import com.example.sharedcard.databinding.FragmentRecipeCategoriesBinding
 import com.example.sharedcard.ui.adapter.CategoryAdapter
 import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerActivity
 import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel
+import com.example.sharedcard.ui.products.ProductsFragment
 import com.example.sharedcard.util.appComponent
 
 class RecipeCategoriesFragment : Fragment() {
@@ -67,7 +69,11 @@ class RecipeCategoriesFragment : Fragment() {
                 }
             }
             binding.recyclerView.adapter = CategoryAdapter(list){
-                navigationDrawerViewModel.setTransitionState(NavigationDrawerViewModel.State.Recipes,RecipesFragment.newInstance(it))
+                parentFragmentManager.commit {
+                    setCustomAnimations(R.animator.fragment_enter, R.animator.fragment_exit)
+                    replace(R.id.nav_host_fragment, RecipesFragment.newInstance(it))
+                    addToBackStack(null)
+                }
             }
         }
     }

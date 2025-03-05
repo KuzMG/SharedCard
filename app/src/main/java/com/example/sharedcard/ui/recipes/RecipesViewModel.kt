@@ -16,6 +16,8 @@ class RecipesViewModel(
 ) : ViewModel() {
 
     fun getRecipes() : LiveData<List<Recipe>> = dictionaryRepository.getRecipesByCategory(idCategory)
+    fun getCategory() = dictionaryRepository.getCategory(idCategory)
+
 
 
     class ViewModelFactory @AssistedInject constructor(

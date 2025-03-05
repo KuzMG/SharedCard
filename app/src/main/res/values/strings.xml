@@ -147,6 +147,7 @@
     <string name="enter_code">Код</string>
     <string name="date_format">d MMMM yyyy</string>
     <string name="birthday">День рождения</string>
+    <string name="add_recipe">добавить рецепт</string>
 
 
 </resources>

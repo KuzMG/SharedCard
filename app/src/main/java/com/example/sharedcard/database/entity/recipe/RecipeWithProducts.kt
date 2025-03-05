@@ -5,6 +5,7 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import com.example.sharedcard.database.entity.metric.MetricEntity
 import com.example.sharedcard.database.entity.product.ProductEntity
+import com.example.sharedcard.database.entity.recipe_product.RecipeProductEntity
 
 data class RecipeWithProducts(
     @Embedded
@@ -12,7 +13,7 @@ data class RecipeWithProducts(
     @Relation(
         parentColumn = "id",
         entityColumn = "id_recipe",
-        entity = RecipeProduct::class
+        entity = RecipeProductEntity::class
     )
     val products: List<RecipeProduct>
 )
@@ -22,8 +23,7 @@ data class RecipeProduct(
     private val idProduct: Int,
     @ColumnInfo("id_metric")
     private val idMetric: Int,
-    private val count: Int,
-    private val weight: Int,
+     val count: Int,
     @Relation(
         parentColumn = "id_metric",
         entityColumn = "id"
