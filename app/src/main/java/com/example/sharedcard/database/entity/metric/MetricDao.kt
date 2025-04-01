@@ -8,9 +8,11 @@ import androidx.room.Query
 
 @Dao
 interface MetricDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun add(metricsEntity: List<MetricEntity>)
 
     @Query("Select * from metric")
     fun getAll(): LiveData<List<MetricEntity>>
+    @Query("Select * from metric where id =:id")
+    fun getById(id: Int): MetricEntity
 }

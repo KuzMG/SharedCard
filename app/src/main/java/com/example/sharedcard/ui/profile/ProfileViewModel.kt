@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sharedcard.repository.AccountManager
 import com.example.sharedcard.ui.group.data.Result
-import com.example.sharedcard.ui.profile.data.ImageResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,53 +21,53 @@ class ProfileViewModel @Inject constructor(private val accountManager: AccountMa
     fun setName(name: String) {
         mutableLoadingLiveData.value = Result(Result.State.LOADING)
         viewModelScope.launch(Dispatchers.IO) {
-            accountManager.setName(name).subscribe({
-                mutableLoadingLiveData.postValue(Result(Result.State.OK))
-            }, { e ->
-                mutableLoadingLiveData.postValue(Result(Result.State.ERROR,e))
-            })
+            accountManager.setName(name).blockingGet()?.let {
+                mutableLoadingLiveData.postValue(Result(Result.State.ERROR, it))
+                return@launch
+            }
+            mutableLoadingLiveData.postValue(Result(Result.State.OK))
         }
     }
 
     fun setHeight(height: Int) {
         mutableLoadingLiveData.value = Result(Result.State.LOADING)
         viewModelScope.launch(Dispatchers.IO) {
-            accountManager.setHeight(height).subscribe({
-                mutableLoadingLiveData.postValue(Result(Result.State.OK))
-            }, { e ->
-                mutableLoadingLiveData.postValue(Result(Result.State.ERROR,e))
-            })
+            accountManager.setHeight(height).blockingGet()?.let {
+                mutableLoadingLiveData.postValue(Result(Result.State.ERROR, it))
+                return@launch
+            }
+            mutableLoadingLiveData.postValue(Result(Result.State.OK))
         }
     }
 
     fun setWeight(weight: Double) {
         mutableLoadingLiveData.value = Result(Result.State.LOADING)
         viewModelScope.launch(Dispatchers.IO) {
-            accountManager.setWeight(weight).subscribe({
-                mutableLoadingLiveData.postValue(Result(Result.State.OK))
-            }, { e ->
-                mutableLoadingLiveData.postValue(Result(Result.State.ERROR,e))
-            })
+            accountManager.setWeight(weight).blockingGet()?.let {
+                mutableLoadingLiveData.postValue(Result(Result.State.ERROR, it))
+                return@launch
+            }
+            mutableLoadingLiveData.postValue(Result(Result.State.OK))
         }
     }
 
     fun setDate(date: Long) {
         mutableLoadingLiveData.value = Result(Result.State.LOADING)
         viewModelScope.launch(Dispatchers.IO) {
-            accountManager.setDate(date).subscribe({
-                mutableLoadingLiveData.postValue(Result(Result.State.OK))
-            }, { e ->
-                mutableLoadingLiveData.postValue(Result(Result.State.ERROR,e))
-            })
+            accountManager.setDate(date).blockingGet()?.let {
+                mutableLoadingLiveData.postValue(Result(Result.State.ERROR, it))
+                return@launch
+            }
+            mutableLoadingLiveData.postValue(Result(Result.State.OK))
         }
     }
 
-    fun getUser() = accountManager.getUser()
-    fun getUserAccount() = accountManager.getUserAccountLiveData()
-    fun setImage(isInternetConnection: Boolean, bitmap: Bitmap) {
+    fun getUser() = accountManager.getPerson()
+    fun getUserAccount() = accountManager.getAccountLiveData()
+    fun setImage(bitmap: Bitmap) {
         mutableLoadingLiveData.value = Result(Result.State.LOADING)
-        viewModelScope.launch(Dispatchers.Default) {
-            val result = accountManager.setImage(isInternetConnection, bitmap)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = accountManager.setImage(bitmap)
             mutableLoadingLiveData.postValue(result)
         }
     }

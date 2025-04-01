@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
@@ -60,7 +59,7 @@ class RecipesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipes, container, false)
+        binding = FragmentRecipesBinding.inflate(inflater, container, false)
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         setToolbar()
         return binding.root
@@ -90,7 +89,7 @@ class RecipesFragment : Fragment() {
 
         fun onBind(item: Recipe) {
             binding.run {
-                clickView.setOnClickListener {
+                root.setOnClickListener {
                     ViewCompat.setTransitionName(binding.materialCardView, "recipe_card_view")
                     ViewCompat.setTransitionName(binding.nameTextView, "recipe_name_text_view")
                     parentFragmentManager.commit {
@@ -129,9 +128,8 @@ class RecipesFragment : Fragment() {
     inner class RecipeAdapter(private val list: List<Recipe>) :
         RecyclerView.Adapter<RecipeViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = RecipeViewHolder(
-            DataBindingUtil.inflate(
+            ListItemProductBinding.inflate(
                 layoutInflater,
-                R.layout.list_item_product,
                 parent,
                 false
             )

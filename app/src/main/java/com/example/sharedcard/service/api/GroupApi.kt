@@ -18,13 +18,13 @@ interface GroupApi {
     @GET("/server/group/token")
     fun getToken(
         @Query("group-id") groupId: UUID,
-        @Query("user-id") userId: UUID,
+        @Query("person-id") personId: UUID,
         @Query("password") password: String
     ): Call<TokenResponse>
 
     @POST("/server/group/create")
     fun createGroup(
-        @Query("user-id") userId: UUID,
+        @Query("person-id") personId: UUID,
         @Query("password") password: String,
         @Body body: CreateGroupResponse
     ): Call<ResponseBody>

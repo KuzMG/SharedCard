@@ -5,11 +5,11 @@
     <color name="protein">#45C1C3</color>
     <color name="fat">#FFBA0D</color>
 
-
+    <color name="color_background_view">#D8C6DD</color>
 
     <color name="gray">#1A000000</color>
     <color name="textColorPrimary">#FFFFFFFF</color>
-    <color name="colorPrimaryGray">#196200ED</color>
+    <color name="colorPrimaryGray">#C5B5C9</color>
     <color name="colorPrimary">#6200ED</color>
     <color name="transparent">#00000000</color>
     <color name="black">#FF000000</color>

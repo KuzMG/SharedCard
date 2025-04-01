@@ -16,7 +16,6 @@ import android.widget.NumberPicker.OnValueChangeListener
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
@@ -39,9 +38,8 @@ class RegistrationGeneralInformationFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
+        binding = FragmentRegistrationGeneralInformationBinding.inflate(
             inflater,
-            R.layout.fragment_registration_general_information,
             container,
             false
         )

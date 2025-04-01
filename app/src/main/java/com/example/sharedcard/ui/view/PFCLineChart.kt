@@ -73,11 +73,20 @@ class PFCLineChart @JvmOverloads constructor(
                 invalidate()
             }
         }
-        val bmOriginal = BitmapFactory.decodeResource(
-            resources,
-            com.example.sharedcard.R.drawable.tab_background_selected,
-        )
+
         animator.start()
+    }
+
+    override fun startWithoutAnimation() {
+        animationSweepAngle = 100
+        strokeLine = context.dpToPx(10)
+        if (selectedItem != null) {
+            percentageCircleList.forEach{
+                it.value.stroke = context.dpToPx(10)
+            }
+            selectedItem == null
+        }
+        invalidate()
     }
 
     override fun addOnClickListener(click: (Int, String) -> Unit) {

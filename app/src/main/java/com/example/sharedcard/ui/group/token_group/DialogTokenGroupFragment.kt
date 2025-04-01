@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
@@ -34,7 +33,7 @@ class DialogTokenGroupFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_token_group, container, false)
+        binding = FragmentTokenGroupBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -43,17 +42,17 @@ class DialogTokenGroupFragment : DialogFragment() {
         viewModel.sendLiveData.observe(viewLifecycleOwner) {
             if (it.token != null) {
                 Picasso.get().load(it.token.url).into(binding.groupFragmentTokenImageView)
-                binding.groupFragmentTokenTextView.text= it.token.token
+                binding.groupFragmentTokenTextView.text = it.token.token
                 binding.copyView.isClickable = true
                 binding.progressBar.visibility = View.INVISIBLE
             } else {
-                binding.groupFragmentTokenTextView.text= it.error
+                binding.groupFragmentTokenTextView.text = it.error?.message
                 binding.copyView.isClickable = true
                 binding.progressBar.visibility = View.INVISIBLE
                 binding.groupFragmentTokenImageView.visibility = View.INVISIBLE
             }
         }
-        viewModel.getToken(isInternetConnection(requireContext()), groupId)
+        viewModel.getToken(groupId)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

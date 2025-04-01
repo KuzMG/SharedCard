@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
@@ -63,9 +62,8 @@ class RecipeDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
+        binding = FragmentRecipeDetailsBinding.inflate(
             layoutInflater,
-            R.layout.fragment_recipe_details,
             container,
             false
         )
@@ -135,9 +133,8 @@ class RecipeDetailsFragment : Fragment() {
     private inner class Adapter(private val list: List<RecipeProduct>) :
         RecyclerView.Adapter<ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            ViewHolder (DataBindingUtil.inflate(
+            ViewHolder (ListItemIngredientBinding.inflate(
                 layoutInflater,
-                R.layout.list_item_ingredient,
                 parent,
                 false
             ))

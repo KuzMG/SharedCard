@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
 import com.example.sharedcard.databinding.BottomSheetTextBinding
@@ -24,9 +23,8 @@ class EditTextBottomSheet : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
+        binding = BottomSheetTextBinding.inflate(
             layoutInflater,
-            R.layout.bottom_sheet_text,
             container,
             false
         )

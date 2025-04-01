@@ -11,9 +11,10 @@ interface ShopDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun add(entity: List<ShopEntity>)
 
-    @Query("select * from shop where status = 1")
-    fun getAllProduct(): LiveData<List<ShopEntity>>
+    @Query("select * from shop")
+    fun getAll(): LiveData<List<ShopEntity>>
+    @Query("select * from shop where id=:shopId")
+    fun get(shopId: Int) : LiveData<ShopEntity>
 
-    @Query("select * from shop where status = 0")
-    fun getAllTarget(): LiveData<List<ShopEntity>>
+
 }

@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.example.sharedcard.R
 import com.example.sharedcard.databinding.FragmentSettingsBinding
 import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerActivity
@@ -15,43 +15,44 @@ import com.example.sharedcard.util.appComponent
 
 class SettingsFragment : Fragment() {
 
-    private val viewModel: SettingsViewModel by viewModels {
-        appComponent.multiViewModelFactory
-    }
+    private lateinit var viewModel: SettingsViewModel
     private lateinit var binding: FragmentSettingsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().setTitle(R.string.settings)
+        viewModel = ViewModelProvider(this,appComponent.multiViewModelFactory)[SettingsViewModel::class.java]
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(
+            FragmentSettingsBinding.inflate(
                 layoutInflater,
-                R.layout.fragment_settings,
                 container,
                 false
             )
-        binding.appBar.toolbar.setTitle(R.string.settings)
-        (requireActivity() as NavigationDrawerActivity).setSupportActionBar(binding.appBar.toolbar)
-        (requireActivity() as NavigationDrawerActivity).supportActionBar?.setDisplayHomeAsUpEnabled(
-            true
-        )
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
-            quickDeleteSwitch.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.quickDelete = isChecked
-            }
+            currencyTextView.text
         }
+        viewModel.getCurrency().observe(viewLifecycleOwner){
+            binding.currencyTextView.text = getString(R.string.settings_currency,it.name)
 
+        }
+        binding.currencyTextView.setOnClickListener {
+            CurrencyBottomSheet().show(childFragmentManager,CurrencyBottomSheet.TAG)
+        }
     }
 
+    override fun onStart() {
+        super.onStart()
+        binding.appBar.toolbar.setNavigationOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+    }
 
 }

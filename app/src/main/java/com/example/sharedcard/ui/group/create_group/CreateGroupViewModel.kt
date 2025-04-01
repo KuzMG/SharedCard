@@ -15,27 +15,24 @@ class CreateGroupViewModel @Inject constructor(private val groupManager: GroupMa
     ViewModel() {
 
 
-    var name = ""
-        set(value) {
-            mutableStateLiveData.value = value.isNotEmpty()
-            field = value
-        }
-    private val mutableStateLiveData = MutableLiveData<Boolean>()
+
     private val mutableResultLiveData = MutableLiveData<Result>()
-    val stateLiveData: LiveData<Boolean>
-        get() = mutableStateLiveData
     val resultLiveData: LiveData<Result>
         get() = mutableResultLiveData
 
 
-    fun create(isInternetConnection: Boolean, pic: Bitmap) {
+    fun create(name: String, pic: Bitmap) {
         mutableResultLiveData.postValue(Result(Result.State.LOADING))
-        viewModelScope.launch(Dispatchers.Default) {
-            groupManager.createGroup(isInternetConnection, name, pic).subscribe({
-                mutableResultLiveData.postValue(Result(Result.State.OK))
-            }, { error ->
-                mutableResultLiveData.postValue(Result(Result.State.ERROR,error))
-            })
+        if(name.isBlank()){
+            mutableResultLiveData.value =Result(Result.State.ERROR,NoSuchFieldException("пусто"))
+            return
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            groupManager.createGroup(name, pic).blockingGet()?.let{
+                mutableResultLiveData.postValue(Result(Result.State.ERROR,it))
+                return@launch
+            }
+            mutableResultLiveData.postValue(Result(Result.State.OK))
         }
     }
 

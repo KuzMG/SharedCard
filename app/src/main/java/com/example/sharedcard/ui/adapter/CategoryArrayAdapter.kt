@@ -7,9 +7,9 @@ import android.widget.BaseAdapter
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
-import com.example.sharedcard.database.entity.category.CategoryEntity
+import com.example.sharedcard.database.entity.category_product.CategoryProductEntity
 
-class CategoryArrayAdapter(private val categories: List<CategoryEntity>) :
+class CategoryArrayAdapter(private val categories: List<CategoryProductEntity>) :
     BaseAdapter(), Filterable {
 
     override fun getCount() = categories.size

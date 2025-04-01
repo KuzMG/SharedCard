@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import com.example.sharedcard.R
 import com.example.sharedcard.databinding.ActivityProfileBinding
 import com.example.sharedcard.ui.group.data.Result
@@ -35,17 +34,14 @@ class ProfileActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val stream = contentResolver.openInputStream(result.data?.data!!)
                 val bitmap = BitmapFactory.decodeStream(stream)
-                viewModel.setImage(
-                    isInternetConnection(this),
-                    bitmap
-                )
+                viewModel.setImage(bitmap)
             }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_profile)
-
+        binding = ActivityProfileBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setToolbar()
 
         viewModel.getUser().observe(this) { user ->
@@ -86,8 +82,10 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun setToolbar() {
         binding.appBar.toolbar.setTitle(R.string.profile)
-        setSupportActionBar(binding.appBar.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.appBar.toolbar.setNavigationIcon(R.drawable.ic_arrow_left)
+        binding.appBar.toolbar.setNavigationOnClickListener {
+            finish()
+        }
     }
 
     override fun onStart() {

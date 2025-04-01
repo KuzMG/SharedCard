@@ -21,42 +21,41 @@ class EditGroupViewModel(
 ) :
     ViewModel() {
     var isImageChange = false
-    private val mutableStateLiveData = MutableLiveData<Boolean>()
+
     private val mutableResultLiveData = MutableLiveData<Result>()
-    val stateLiveData: LiveData<Boolean>
-        get() = mutableStateLiveData
+
     val resultLiveData: LiveData<Result>
         get() = mutableResultLiveData
 
 
     fun getGroup() = groupManager.getGroup(idGroup)
-    fun savePic(isInternetConnection: Boolean, bitmap: Bitmap) {
+    fun save(name: String, bitmap: Bitmap) {
         mutableResultLiveData.postValue(Result(Result.State.LOADING))
         viewModelScope.launch(Dispatchers.IO) {
-            groupManager.editGroupPic(isInternetConnection, idGroup, bitmap)
-                .subscribe({
-                    mutableResultLiveData.postValue(Result(Result.State.OK))
-                }, { error ->
-                    mutableResultLiveData.postValue(Result(Result.State.ERROR,error))
-                })
+            if(name.isBlank()){
+                mutableResultLiveData.postValue(Result(Result.State.ERROR,NoSuchFieldException("пусто")))
+                return@launch
+            } else{
+                val thr = groupManager.editGroup(idGroup, name).blockingGet()
+                thr?.let {
+                    mutableResultLiveData.postValue(Result(Result.State.ERROR,it))
+                    return@launch
+                }
+            }
+            if(isImageChange) {
+                val thr = groupManager.editGroupPic(idGroup, bitmap).blockingGet()
+                thr?.let {
+                    mutableResultLiveData.postValue(Result(Result.State.ERROR,it))
+                    return@launch
+                }
+            }
+            mutableResultLiveData.postValue(Result(Result.State.OK))
         }
     }
 
-    fun saveName(isInternetConnection: Boolean, name: String) {
-        mutableResultLiveData.postValue(Result(Result.State.LOADING))
-        viewModelScope.launch(Dispatchers.IO) {
-            groupManager.editGroup(isInternetConnection, idGroup, name)
-                .subscribe({
-                    mutableResultLiveData.postValue(Result(Result.State.OK))
-                }, { error ->
-                    mutableResultLiveData.postValue(Result(Result.State.ERROR,error))
-                })
-        }
-    }
 
-    fun setState(value: String) {
-        mutableStateLiveData.value = value.isNotEmpty()
-    }
+
+
 
     class ViewModelFactory @AssistedInject constructor(
         @Assisted("idGroup") private val idGroup: String,

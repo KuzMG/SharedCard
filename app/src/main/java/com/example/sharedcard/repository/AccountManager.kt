@@ -1,15 +1,13 @@
 package com.example.sharedcard.repository
 
 import android.graphics.Bitmap
-import com.example.sharedcard.database.entity.user.UserDao
-import com.example.sharedcard.database.entity.user.UserEntity
+import com.example.sharedcard.database.entity.person.PersonDao
+import com.example.sharedcard.database.entity.person.PersonEntity
 import com.example.sharedcard.service.api.AuthApi
 import com.example.sharedcard.service.api.FileApi
 import com.example.sharedcard.service.dto.FileResponse
 import com.example.sharedcard.service.stomp.StompHelper
 import com.example.sharedcard.ui.group.data.Result
-import com.example.sharedcard.ui.profile.data.ImageResult
-import com.example.sharedcard.ui.profile.data.UserImage
 import io.reactivex.Completable
 import java.io.ByteArrayOutputStream
 import java.net.ConnectException
@@ -19,74 +17,71 @@ import javax.inject.Singleton
 
 @Singleton
 class AccountManager @Inject constructor(
-    private val userDao: UserDao,
+    private val personDao: PersonDao,
     private val queryPreferences: QueryPreferences,
     private val stompHelper: StompHelper,
     private val fileApi: FileApi
 ) {
 
 
-    fun getUser() = userDao.getLiveData(queryPreferences.userId)
-    fun getUserAccountLiveData() = userDao.getAccountLiveData(queryPreferences.userId)
-    fun getUserAccount() = userDao.getAccount(queryPreferences.userId)
+    fun getPerson() = personDao.getPersonLiveData(queryPreferences.personId)
+    fun getAccountLiveData() = personDao.getAccountLiveData(queryPreferences.personId)
+    fun getAccount() = personDao.getAccount(queryPreferences.personId)
     fun accountExists() =
-        queryPreferences.userId != UUID.fromString(QueryPreferences.DEF_VALUE) && queryPreferences.isSync
+        queryPreferences.personId != UUID.fromString(QueryPreferences.DEF_VALUE) && queryPreferences.isSync
 
 
     fun exitFromAccount() {
         queryPreferences.run {
             groupId = UUID.fromString(QueryPreferences.DEF_VALUE)
-            userId = UUID.fromString(QueryPreferences.DEF_VALUE)
+            personId = UUID.fromString(QueryPreferences.DEF_VALUE)
+            isSync = false
         }
     }
 
-    fun setImage(isInternetConnection: Boolean, bitmap: Bitmap): Result =
-        if (isInternetConnection) {
-            val outputStream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 10, outputStream)
-            val userAccount = userDao.getAccount(queryPreferences.userId)
-            val user = userDao.get(queryPreferences.userId)
-            val header = mapOf(
-                AuthApi.HEADER_ID_USER to userAccount.id.toString(),
-                AuthApi.HEADER_PASSWORD_USER to userAccount.password
+    fun setImage(bitmap: Bitmap): Result = try{
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream)
+        val account = personDao.getAccount(queryPreferences.personId)
+        val person = personDao.get(queryPreferences.personId)
+        val header = mapOf(
+            AuthApi.HEADER_ID_PERSON to account.id.toString(),
+            AuthApi.HEADER_PASSWORD_PERSON to account.password
+        )
+        val response = fileApi.savePersonPic(
+            header,
+            FileResponse(
+                person.id,
+                person.pic,
+                outputStream.toByteArray()
             )
-            val response = fileApi.saveUserPic(
-                header,
-                FileResponse(
-                    user.id,
-                    user.pic,
-                    outputStream.toByteArray()
-                )
-            ).execute()
-            if (response.code() == 200) {
-                Result(Result.State.OK)
-            } else {
-                Result(
-                    Result.State.ERROR,
-                    error = Exception(response.errorBody()?.string() ?: "")
-                )
-            }
+        ).execute()
+        if (response.code() == 200) {
+            Result(Result.State.OK)
         } else {
             Result(
                 Result.State.ERROR,
-                error = ConnectException("Нет подключения к интернету!")
+                error = Exception(response.errorBody()?.string() ?: "")
             )
         }
+    } catch (e:Exception){
+        Result(Result.State.ERROR, e)
+    }
 
     fun setName(name: String): Completable =
-         try {
-            val user = userDao.get(queryPreferences.userId)
-            val userAccount = userDao.getAccount(queryPreferences.userId)
-            val newUser = UserEntity(
-                user.id,
+        try {
+            val person = personDao.get(queryPreferences.personId)
+            val account = personDao.getAccount(queryPreferences.personId)
+            val newPerson = PersonEntity(
+                person.id,
                 name,
-                user.weight,
-                user.height,
-                user.birthday,
-                user.gender,
-                user.pic
+                person.weight,
+                person.height,
+                person.birthday,
+                person.gender,
+                person.pic
             )
-            stompHelper.updateUser(newUser,userAccount.id,userAccount.password)
+            stompHelper.updatePerson(newPerson, account.id, account.password)
         } catch (e: Exception) {
             Completable.error(e)
         }
@@ -96,56 +91,56 @@ class AccountManager @Inject constructor(
 
     }
 
-    fun setWeight(weight: Double):Completable =
+    fun setWeight(weight: Double): Completable =
         try {
-            val user = userDao.get(queryPreferences.userId)
-            val userAccount = userDao.getAccount(queryPreferences.userId)
-            val newUser = UserEntity(
-                user.id,
-                user.name,
+            val person = personDao.get(queryPreferences.personId)
+            val account = personDao.getAccount(queryPreferences.personId)
+            val newPerson = PersonEntity(
+                person.id,
+                person.name,
                 weight,
-                user.height,
-                user.birthday,
-                user.gender,
-                user.pic
+                person.height,
+                person.birthday,
+                person.gender,
+                person.pic
             )
-            stompHelper.updateUser(newUser,userAccount.id,userAccount.password)
+            stompHelper.updatePerson(newPerson, account.id, account.password)
         } catch (e: Exception) {
             Completable.error(e)
         }
 
-    fun setHeight(height: Int):Completable =
+    fun setHeight(height: Int): Completable =
         try {
-            val user = userDao.get(queryPreferences.userId)
-            val userAccount = userDao.getAccount(queryPreferences.userId)
-            val newUser = UserEntity(
-                user.id,
-                user.name,
-                user.weight,
+            val person = personDao.get(queryPreferences.personId)
+            val account = personDao.getAccount(queryPreferences.personId)
+            val newPerson = PersonEntity(
+                person.id,
+                person.name,
+                person.weight,
                 height,
-                user.birthday,
-                user.gender,
-                user.pic
+                person.birthday,
+                person.gender,
+                person.pic
             )
-            stompHelper.updateUser(newUser,userAccount.id,userAccount.password)
+            stompHelper.updatePerson(newPerson, account.id, account.password)
         } catch (e: Exception) {
             Completable.error(e)
         }
 
-    fun setDate(date: Long):Completable =
+    fun setDate(date: Long): Completable =
         try {
-            val user = userDao.get(queryPreferences.userId)
-            val userAccount = userDao.getAccount(queryPreferences.userId)
-            val newUser = UserEntity(
-                user.id,
-                user.name,
-                user.weight,
-                user.height,
+            val person = personDao.get(queryPreferences.personId)
+            val account = personDao.getAccount(queryPreferences.personId)
+            val newPerson = PersonEntity(
+                person.id,
+                person.name,
+                person.weight,
+                person.height,
                 date,
-                user.gender,
-                user.pic
+                person.gender,
+                person.pic
             )
-            stompHelper.updateUser(newUser,userAccount.id,userAccount.password)
+            stompHelper.updatePerson(newPerson, account.id, account.password)
         } catch (e: Exception) {
             Completable.error(e)
         }

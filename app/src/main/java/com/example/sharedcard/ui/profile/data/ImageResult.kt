@@ -1,7 +1,7 @@
 package com.example.sharedcard.ui.profile.data
 
 import android.graphics.Bitmap
-import com.example.sharedcard.database.entity.user.UserEntity
+import com.example.sharedcard.database.entity.person.PersonEntity
 import com.example.sharedcard.ui.group.data.Result
 
 data class ImageResult(
@@ -11,6 +11,6 @@ data class ImageResult(
 )
 
 data class UserImage(
-    val user: UserEntity,
+    val user: PersonEntity,
     val bitmap: Bitmap,
 )

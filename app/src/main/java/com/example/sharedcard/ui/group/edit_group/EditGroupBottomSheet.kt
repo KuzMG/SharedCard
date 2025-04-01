@@ -15,7 +15,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.drawToBitmap
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
 import com.example.sharedcard.database.AppDatabase
@@ -43,10 +42,8 @@ class EditGroupBottomSheet : BottomSheetDialogFragment() {
                 requireActivity().contentResolver.openInputStream(result.data?.data!!)
                     .use { stream ->
                         val bitmap = BitmapFactory.decodeStream(stream)
-                        viewModel.savePic(
-                            isInternetConnection(requireContext()),
-                            bitmap
-                        )
+                        binding.dialogEditGroupImage.setImageBitmap(bitmap)
+                        viewModel.isImageChange = true
                     }
 
             }
@@ -61,9 +58,8 @@ class EditGroupBottomSheet : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
+        binding = FragmentEditGroupBinding.inflate(
             layoutInflater,
-            R.layout.fragment_edit_group,
             container,
             false
         )
@@ -76,16 +72,18 @@ class EditGroupBottomSheet : BottomSheetDialogFragment() {
             binding.dialogEditGroupNameEditView.setText(group.name)
             Picasso.get().load(group.url).into(binding.dialogEditGroupImage)
         }
-        viewModel.stateLiveData.observe(viewLifecycleOwner) {
-            binding.dialogEditGroupAddButton.isEnabled = it
-        }
         viewModel.resultLiveData.observe(viewLifecycleOwner) {
             when (it.state) {
                 Result.State.OK -> dismiss()
                 Result.State.ERROR -> {
-                    binding.viewLayout.visibility = View.VISIBLE
-                    binding.progressBar.visibility = View.INVISIBLE
-                    Toast.makeText(requireContext(), it.error!!.message, Toast.LENGTH_SHORT).show()
+                    if (it.error is NoSuchFieldException) {
+                        binding.dialogEditGroupNameEditView.error = it.error.message
+                    } else {
+                        binding.viewLayout.visibility = View.VISIBLE
+                        binding.progressBar.visibility = View.INVISIBLE
+                        Toast.makeText(requireContext(), it.error!!.message, Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
 
                 Result.State.LOADING -> {
@@ -106,27 +104,11 @@ class EditGroupBottomSheet : BottomSheetDialogFragment() {
                 captureImageLauncher.launch(pickIntent)
             }
             dialogEditGroupAddButton.setOnClickListener {
-                viewModel.saveName(
-                    isInternetConnection(requireContext()),
-                    dialogEditGroupNameEditView.text.toString()
+                viewModel.save(
+                    dialogEditGroupNameEditView.text.toString(),
+                    binding.dialogEditGroupImage.drawToBitmap()
                 )
             }
-            dialogEditGroupNameEditView.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                }
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-                override fun afterTextChanged(s: Editable?) {
-                    viewModel.setState(s.toString())
-                }
-
-            })
         }
     }
 

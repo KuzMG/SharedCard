@@ -7,12 +7,14 @@ import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private const val PREF_USER = "user"
+private const val PREF_PERSON = "person"
 private const val PREF_IS_SYNC = "sync"
 private const val PREF_GROUP = "group"
 private const val PREF_LOCAL = "local"
 private const val PREF_NAME = "CONFIG"
 private const val PREF_QUICK_DELETE = "quick_delete"
+private const val PREF_CURRENCY = "currency"
+
 @Singleton
 class QueryPreferences @Inject  constructor(app: Application) {
 
@@ -26,12 +28,12 @@ class QueryPreferences @Inject  constructor(app: Application) {
         set(value) = prefs.edit {
             putBoolean(PREF_IS_SYNC,value)
         }
-    var userId: UUID
+    var personId: UUID
         get() = UUID.fromString(prefs
-            .getString(PREF_USER, DEF_VALUE))
+            .getString(PREF_PERSON, DEF_VALUE))
         set(value) {
             prefs.edit {
-                putString(PREF_USER, value.toString())
+                putString(PREF_PERSON, value.toString())
             }
         }
 
@@ -53,13 +55,13 @@ class QueryPreferences @Inject  constructor(app: Application) {
             }
         }
 
-    var quickDelete: Boolean
+
+    var currency: Int
         get() = prefs
-            .getBoolean(PREF_QUICK_DELETE, false)
+            .getInt(PREF_CURRENCY, 1)
         set(value) {
             prefs.edit {
-                putBoolean(PREF_QUICK_DELETE, value)
+                putInt(PREF_CURRENCY, value)
             }
         }
-
 }

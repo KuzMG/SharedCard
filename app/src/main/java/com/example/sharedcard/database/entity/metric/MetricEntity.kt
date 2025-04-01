@@ -1,7 +1,7 @@
 package com.example.sharedcard.database.entity.metric
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 @Entity(
     tableName = "metric",
@@ -10,5 +10,6 @@ import androidx.room.PrimaryKey
 data class MetricEntity(
     val id: Int,
     val name: String,
-    val name_en: String
+    @SerializedName("name_en")
+    val nameEn: String
 )

@@ -27,7 +27,7 @@ class DeleteGroupFragment : DialogFragment() {
         return AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.dialog_delete_group, nameGroup))
             .setPositiveButton("Да") { dialog, _ ->
-                viewModel.deleteGroup(isInternetConnection(requireContext()), idGroup)
+                viewModel.deleteGroup(idGroup)
             }.create()
     }
 

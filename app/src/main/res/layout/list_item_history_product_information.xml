@@ -1,149 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingHorizontal="20dp">
+
+
+
+
+    <TextView
+        android:id="@+id/shop_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp">
-        <TextView
-            android:id="@+id/pfc_label"
+        tools:text="Магазин: Магнит"
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:id="@+id/group_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/group_label"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/shop_text_view"/>
+        <LinearLayout
+            android:id="@+id/group_linear_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="@string/pfc"
-            style="@style/TextAppearance.AppCompat.Title.Information"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
+            android:orientation="horizontal"
+            android:layout_marginVertical="4dp"
+            app:cardBackgroundColor="@color/color_background_view"
+            app:layout_constraintTop_toBottomOf="@id/group_text_view"
+            app:layout_constraintLeft_toLeftOf="parent">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/group_image_card_view"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:cardCornerRadius="50dp"
+                app:cardElevation="0dp">
+                <ImageView
+                    android:id="@+id/group_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@color/black"/>
+            </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/group_name_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Михаил"
+                android:paddingStart="5dp"
+                android:layout_gravity="center"
+                app:layout_constraintTop_toTopOf="@id/group_card_view"
+                app:layout_constraintBottom_toBottomOf="@id/group_card_view"
+                app:layout_constraintLeft_toRightOf="@id/group_card_view"/>
+        </LinearLayout>
+    <TextView
+        android:id="@+id/person_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/user"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/group_linear_layout"/>
+    <LinearLayout
+        android:id="@+id/person_linear_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="4dp"
+        app:cardBackgroundColor="@color/color_background_view"
+        app:layout_constraintTop_toBottomOf="@id/person_text_view"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/person_image_card_view"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:cardCornerRadius="50dp"
+            app:cardElevation="0dp">
+            <ImageView
+                android:id="@+id/person_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@color/black"/>
+        </androidx.cardview.widget.CardView>
         <TextView
-            android:id="@+id/pfc_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            style="@style/TextAppearance.AppCompat.Title.Information.Value"
-
-            tools:text="20/40/40/40"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/pfc_label"
-            app:layout_constraintTop_toTopOf="parent"/>
-        <TextView
-            android:id="@+id/category_label"
+            android:id="@+id/person_name_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            style="@style/TextAppearance.AppCompat.Title.Information"
-            android:text="@string/category"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pfc_label"/>
-        <TextView
-            android:id="@+id/category_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            tools:text="Хлебобулочное изделье"
-            style="@style/TextAppearance.AppCompat.Title.Information.Value"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/category_label"
-            app:layout_constraintTop_toBottomOf="@id/pfc_text_view"/>
-        <TextView
-            android:id="@+id/shop_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="@string/shop"
-            style="@style/TextAppearance.AppCompat.Title.Information"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/category_label"/>
-
-        <TextView
-            android:id="@+id/shop_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            tools:text="Магни!"
-            style="@style/TextAppearance.AppCompat.Title.Information.Value"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/shop_label"
-            app:layout_constraintTop_toBottomOf="@id/category_label"/>
-        <TextView
-            android:id="@+id/price_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="@string/price"
-            style="@style/TextAppearance.AppCompat.Title.Information"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/shop_label"/>
-
-        <TextView
-            android:id="@+id/price_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            tools:text="Срочно!"
-            style="@style/TextAppearance.AppCompat.Title.Information.Value"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/price_label"
-            app:layout_constraintTop_toBottomOf="@id/shop_label"/>
-        <TextView
-            android:id="@+id/date_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="@string/date_buy"
-            style="@style/TextAppearance.AppCompat.Title.Information"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/price_label"/>
-        <TextView
-            android:id="@+id/date_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            tools:text="2024-05-21 18:00"
-            style="@style/TextAppearance.AppCompat.Title.Information.Value"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/date_label"
-            app:layout_constraintTop_toBottomOf="@id/price_text_view"/>
-        <TextView
-            android:id="@+id/first_user_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="@string/first_user"
-            style="@style/TextAppearance.AppCompat.Title.Information"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/date_text_view"/>
-        <TextView
-            android:id="@+id/first_user_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
             tools:text="Михаил"
-            style="@style/TextAppearance.AppCompat.Title.Information.Value"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/first_user_label"
-            app:layout_constraintTop_toBottomOf="@id/date_text_view"/>
-        <TextView
-            android:id="@+id/last_user_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="@string/last_user"
-            style="@style/TextAppearance.AppCompat.Title.Information"
-            android:paddingBottom="5dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/first_user_text_view"/>
-        <TextView
-            android:id="@+id/last_user_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:paddingBottom="5dp"
-            tools:text="Михаил"
-            style="@style/TextAppearance.AppCompat.Title.Information.Value"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/last_user_label"
-            app:layout_constraintTop_toBottomOf="@id/first_user_text_view"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+            android:paddingStart="5dp"
+            android:layout_gravity="center"
+            app:layout_constraintTop_toTopOf="@id/group_card_view"
+            app:layout_constraintBottom_toBottomOf="@id/group_card_view"
+            app:layout_constraintLeft_toRightOf="@id/group_card_view"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/date_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="03.03.2025"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

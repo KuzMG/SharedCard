@@ -5,11 +5,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.sharedcard.database.AppDatabase
-import com.example.sharedcard.database.DataGenerator
 import com.example.sharedcard.util.appComponent
 import dagger.Module
 import dagger.Provides
-import kotlinx.coroutines.coroutineScope
 import java.util.concurrent.Executors
 import javax.inject.Singleton
 
@@ -38,27 +36,33 @@ class DBModule {
 
     @Singleton
     @Provides
-    fun provideUserDao(db: AppDatabase) = db.userDao()
+    fun providePersonDao(db: AppDatabase) = db.personDao()
     @Singleton
     @Provides
     fun provideGroupDao(db: AppDatabase) = db.groupDao()
     @Singleton
     @Provides
-    fun provideGroupUsersDao(db: AppDatabase) = db.groupUsersDao()
+    fun provideGroupPersonsDao(db: AppDatabase) = db.groupPersonsDao()
     @Singleton
     @Provides
-    fun provideCheckDao(db: AppDatabase) = db.checkDao()
+    fun providePurchaseDao(db: AppDatabase) = db.purchaseDao()
+    @Singleton
+    @Provides
+    fun provideBasketDao(db: AppDatabase) = db.basketDao()
+    @Singleton
+    @Provides
+    fun provideHistoryDao(db: AppDatabase) = db.historyDao()
     @Singleton
     @Provides
     fun provideProductDao(db: AppDatabase) = db.productDao()
 
-    @Singleton
-    @Provides
-    fun provideTargetDao(db: AppDatabase) = db.targetDao()
+//    @Singleton
+//    @Provides
+//    fun provideTargetDao(db: AppDatabase) = db.targetDao()
 
     @Singleton
     @Provides
-    fun provideCategoryDao(db: AppDatabase) = db.categoryDao()
+    fun provideCategoryProductDao(db: AppDatabase) = db.categoryProductDao()
 
     @Singleton
     @Provides

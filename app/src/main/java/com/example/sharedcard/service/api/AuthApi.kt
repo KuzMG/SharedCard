@@ -14,8 +14,8 @@ import retrofit2.http.Query
 
 interface AuthApi {
     companion object{
-        const val HEADER_ID_USER = "id-user"
-        const val HEADER_PASSWORD_USER = "password-user"
+        const val HEADER_ID_PERSON = "id-person"
+        const val HEADER_PASSWORD_PERSON = "password-person"
     }
     @GET("/authentication")
     fun authorization(

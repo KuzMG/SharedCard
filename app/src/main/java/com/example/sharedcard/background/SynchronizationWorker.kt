@@ -36,12 +36,12 @@ class SynchronizationWorker(context: Context, workerParams: WorkerParameters) : 
     //    private val synchronizationApi = SharedCardService.getInstance().create(SynchronizationApi::class.java)
 //    private val dictionaryRepository = (applicationContext as SharedCardApp).getDictionaryRepository()
     override suspend fun doWork(): Result {
-        val user = accountManager.getUserAccount()
+        val account = accountManager.getAccount()
         Log.d(SynchronizationWorker::class.simpleName, "doWork")
         stompHelper.lifecycle().subscribe { lifecycleEvent: LifecycleEvent ->
             when (lifecycleEvent.type) {
                 LifecycleEvent.Type.OPENED -> {
-                    subscribeStomp(user.id)
+                    subscribeStomp(account.id)
                 }
 
                 LifecycleEvent.Type.ERROR -> Log.e(
@@ -63,7 +63,7 @@ class SynchronizationWorker(context: Context, workerParams: WorkerParameters) : 
         }
 
 
-        stompHelper.connect(user.id, user.password)
+        stompHelper.connect(account.id, account.password)
 
         return Result.success()
     }

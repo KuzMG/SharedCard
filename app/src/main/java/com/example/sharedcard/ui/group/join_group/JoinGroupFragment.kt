@@ -7,15 +7,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
 import com.example.sharedcard.databinding.FragmentJoinGroupBinding
 import com.example.sharedcard.ui.group.GroupViewModel
+import com.example.sharedcard.ui.group.data.Result
 import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerActivity
 import com.example.sharedcard.util.appComponent
 import com.example.sharedcard.util.isInternetConnection
+import com.example.sharedcard.util.isVisible
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 
@@ -24,7 +26,7 @@ class JoinGroupFragment : DialogFragment() {
     private val scanQrResultLauncher =
         registerForActivityResult(ScanContract()) { result ->
             if (result.contents != null) {
-                viewModel.join(isInternetConnection(requireContext()), result.contents)
+                viewModel.join(result.contents)
             }
         }
     private val viewModel by viewModels<GroupViewModel>({ activity as NavigationDrawerActivity }) {
@@ -36,22 +38,26 @@ class JoinGroupFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
+        binding = FragmentJoinGroupBinding.inflate(
             layoutInflater,
-            R.layout.fragment_join_group,
             container,
             false
         )
         return binding.root
     }
 
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.loadingLiveData.observe(viewLifecycleOwner) {
+            if(it.state == Result.State.OK)
+                dismiss()
+        }
+    }
     override fun onStart() {
         super.onStart()
         binding.run {
             joinButton.setOnClickListener {
                 viewModel.join(
-                    isInternetConnection(requireContext()),
                     binding.dialogToHistoryEditView.text.toString()
                 )
             }

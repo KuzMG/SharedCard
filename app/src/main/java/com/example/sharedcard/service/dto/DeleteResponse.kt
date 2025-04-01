@@ -8,6 +8,6 @@ data class DeleteResponse(
     private val deleteId: UUID,
     @SerializedName("group_id")
     private val groupId: UUID,
-    @SerializedName("user_id")
+    @SerializedName("person_id")
 private val userId: UUID
 )

@@ -11,7 +11,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.commit
 import androidx.work.Constraints
 import androidx.work.NetworkType
@@ -20,18 +19,8 @@ import androidx.work.WorkManager
 import com.example.sharedcard.R
 import com.example.sharedcard.databinding.ActivityNavigationDrawerBinding
 import com.example.sharedcard.background.SynchronizationWorker
-import com.example.sharedcard.ui.check.AddButtonFragment
-import com.example.sharedcard.ui.check.CheckFragment
-import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.CategoryProducts
-import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.Group
-import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.History
-import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.Products
-import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.RecipeDetails
-import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.RecipeProducts
-import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.Recipes
-import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.Settings
-import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.Start
-import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel.State.Statistic
+import com.example.sharedcard.ui.purchase.AddButtonFragment
+import com.example.sharedcard.ui.purchase.PurchaseFragment
 import com.example.sharedcard.ui.profile.ProfileActivity
 import com.example.sharedcard.ui.startup.StartupActivity
 import com.example.sharedcard.util.appComponent
@@ -53,12 +42,14 @@ class NavigationDrawerActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityNavigationDrawerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         if (savedInstanceState == null) {
             synchronizationWork()
+            supportFragmentManager.commit {
+                replace(R.id.nav_host_fragment,AddButtonFragment(),AddButtonFragment::class.simpleName)
+            }
         }
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_navigation_drawer)
-
-        binding.appBar.toolbar.setTitle(R.string.check)
         binding.navView.setNavigationItemSelectedListener(this)
         drawerToggle = ActionBarDrawerToggle(
             this,
@@ -72,18 +63,18 @@ class NavigationDrawerActivity : AppCompatActivity(),
 
         initialFragment()
 
-        viewModel.getGroup().observe(this) { group ->
-            group ?: return@observe
-            binding.appBar.toolbar.title = group.name
-        }
-        viewModel.getUser().observe(this) { user ->
-            binding.navView.findViewById<TextView>(R.id.nav_view_user_text_view).text = user.name
-            Picasso.get()
-                .load(user.url)
-                .into(binding.navView.findViewById<ImageView>(R.id.nav_view_user_image_view))
-        }
+        viewModel.getPerson().observe(this) { user ->
+            val header = binding.navView.getHeaderView(0)
+            val userTextView =   header.findViewById<TextView>(R.id.nav_view_user_text_view)
+            val userImageView =   header.findViewById<ImageView>(R.id.nav_view_user_image_view)
 
-
+            userTextView?.text = user.name
+            userImageView?.let {
+                Picasso.get()
+                    .load(user.url)
+                    .into(it)
+            }
+        }
     }
 
     override fun onStart() {
@@ -106,8 +97,7 @@ class NavigationDrawerActivity : AppCompatActivity(),
 
     private fun initialFragment() {
         supportFragmentManager.commit {
-            replace(R.id.background_fragment, CheckFragment(), CheckFragment::class.simpleName)
-            replace(R.id.nav_host_fragment,AddButtonFragment(),AddButtonFragment::class.simpleName)
+            replace(R.id.background_fragment, PurchaseFragment(), PurchaseFragment::class.simpleName)
         }
     }
 

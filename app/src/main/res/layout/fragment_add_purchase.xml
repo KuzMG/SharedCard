@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar_add_purchase"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:paddingHorizontal="5dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/app_bar" />
+    <TextView
+        android:id="@+id/count_text_vew"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:paddingTop="10dp"
+        android:textSize="16sp"
+        android:text="@string/count"
+        app:layout_constraintTop_toBottomOf="@id/recycler_view"/>
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/count_chip_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        app:singleSelection="true"
+        app:selectionRequired="true"
+        app:layout_constraintTop_toBottomOf="@id/count_text_vew"/>
+
+    <TextView
+        android:id="@+id/price_text_vew"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:paddingTop="10dp"
+        android:textSize="16sp"
+        android:text="@string/price"
+        app:layout_constraintTop_toBottomOf="@id/count_chip_group"/>
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/price_chip_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+
+        app:singleSelection="true"
+        app:selectionRequired="true"
+        app:layout_constraintTop_toBottomOf="@id/price_text_vew"/>
+
+    <TextView
+        android:id="@+id/description_text_vew"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:paddingTop="10dp"
+        android:textSize="16sp"
+        android:text="@string/description"
+        app:layout_constraintTop_toBottomOf="@id/price_chip_group"/>
+    <EditText
+        android:id="@+id/description_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:padding="10dp"
+        tools:text="Срочно купи!"
+        android:background="@drawable/description_background"
+        app:layout_constraintTop_toBottomOf="@id/description_text_vew"/>
+
+    <TextView
+        android:id="@+id/group_text_vew"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:paddingTop="10dp"
+        android:textSize="16sp"
+        android:text="@string/group"
+        app:layout_constraintTop_toBottomOf="@id/description_edit_text"/>
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/group_chip_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        app:singleSelection="true"
+        app:selectionRequired="true"
+
+        app:layout_constraintTop_toBottomOf="@id/group_text_vew"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="18dp"
+        android:layout_marginHorizontal="12dp"
+        android:transitionName="fab_start"
+        android:layout_gravity="bottom|right"
+        android:backgroundTint="?attr/colorPrimary"
+        app:srcCompat="@drawable/ic_ok"
+        app:borderWidth="0dp"
+        app:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

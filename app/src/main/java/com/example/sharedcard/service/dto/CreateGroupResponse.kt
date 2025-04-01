@@ -5,8 +5,8 @@ import java.util.UUID
 
 data class CreateGroupResponse(
     val name: String,
-    @SerializedName("user_id")
-    val userId: UUID,
+    @SerializedName("person_id")
+    val personId: UUID,
     val pic: ByteArray
 ) {
     override fun equals(other: Any?): Boolean {
@@ -16,7 +16,7 @@ data class CreateGroupResponse(
         other as CreateGroupResponse
 
         if (name != other.name) return false
-        if (userId != other.userId) return false
+        if (personId != other.personId) return false
         if (!pic.contentEquals(other.pic)) return false
 
         return true
@@ -24,8 +24,9 @@ data class CreateGroupResponse(
 
     override fun hashCode(): Int {
         var result = name.hashCode()
-        result = 31 * result + userId.hashCode()
+        result = 31 * result + personId.hashCode()
         result = 31 * result + pic.contentHashCode()
         return result
     }
+
 }

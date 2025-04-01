@@ -11,6 +11,6 @@ interface FileApi {
     @POST("/pic/group")
     fun saveGroupPic(@HeaderMap header: Map<String,String>,@Body body: FileResponse): Call<ResponseBody>
 
-    @POST("/pic/user")
-    fun saveUserPic(@HeaderMap header: Map<String,String>,@Body body: FileResponse): Call<ResponseBody>
+    @POST("/pic/person")
+    fun savePersonPic(@HeaderMap header: Map<String,String>, @Body body: FileResponse): Call<ResponseBody>
 }

@@ -2,12 +2,13 @@ package com.example.sharedcard.repository
 
 import android.util.Log
 import com.example.sharedcard.R
-import com.example.sharedcard.database.entity.check.CheckDao
-import com.example.sharedcard.database.entity.gpoup_users.GroupUsersDao
+import com.example.sharedcard.database.entity.basket.BasketDao
+import com.example.sharedcard.database.entity.purchase.PurchaseDao
+import com.example.sharedcard.database.entity.gpoup_person.GroupPersonsDao
 import com.example.sharedcard.database.entity.group.GroupDao
-import com.example.sharedcard.database.entity.target.TargetDao
-import com.example.sharedcard.database.entity.user.UserAccountEntity
-import com.example.sharedcard.database.entity.user.UserDao
+import com.example.sharedcard.database.entity.history.HistoryDao
+import com.example.sharedcard.database.entity.person.PersonAccountEntity
+import com.example.sharedcard.database.entity.person.PersonDao
 import com.example.sharedcard.service.api.AuthApi
 import com.example.sharedcard.service.dto.AccountDeleteResponse
 import com.example.sharedcard.service.dto.AccountResponse
@@ -21,11 +22,12 @@ import javax.inject.Inject
 
 class AuthManager @Inject constructor(
     private val groupManager: GroupManager,
+    private val basketDao: BasketDao,
+    private val historyDao: HistoryDao,
     private val groupDao: GroupDao,
-    private val userDao: UserDao,
-    private val groupUsersDao: GroupUsersDao,
-    private val checkDao: CheckDao,
-    private val targetDao: TargetDao,
+    private val personDao: PersonDao,
+    private val groupPersonsDao: GroupPersonsDao,
+    private val purchaseDao: PurchaseDao,
     private val dictionaryRepository: DictionaryRepository,
     private val queryPreferences: QueryPreferences,
     private val authApi: AuthApi
@@ -37,8 +39,8 @@ class AuthManager @Inject constructor(
         password: String,
         isInternetConnection: Boolean
     ): AuthResult {
-        val user = userDao.findUserAccount(email)
-        if (user == null || !queryPreferences.isSync) {
+        val person = personDao.findPersonAccount(email)
+        if (person == null || !queryPreferences.isSync) {
             return if (isInternetConnection) {
                 try {
                     val response = authApi.authorization(email, password).execute()
@@ -46,30 +48,29 @@ class AuthManager @Inject constructor(
                         AuthResult(message = R.string.invalid_sign_in)
                     } else {
                         val auth = response.body()!!
-                        userDao.createUserAccount(UserAccountEntity(auth.idUser, email, password))
-                        saveId(auth.idUser, auth.idGroup, false)
+                        personDao.createPersonAccount(PersonAccountEntity(auth.personId, email, password))
+                        saveId(auth.personId, auth.groupId, false)
                         AuthResult()
                     }
                 } catch (e: Exception) {
                     Log.e("TAG","-------------------------------------------------",e)
-                    println("------------------------------------------------------------")
                     AuthResult(message = R.string.invalid_exception, error = e)
                 }
             } else {
                 AuthResult(message = R.string.invalid_internet_connection)
             }
         } else {
-            if (user.password != password)
+            if (person.password != password)
                 return AuthResult(message = R.string.invalid_sign_in)
-            val idGroup = groupDao.findLocalGroup(user.id).idGroup
-            saveId(user.id, idGroup, true)
+            val groupId = groupDao.findLocalGroup(person.id).idGroup
+            saveId(person.id, groupId, true)
             return AuthResult()
         }
     }
 
-    private fun saveId(_userId: UUID, _groupId: UUID, _isSync: Boolean) {
+    private fun saveId(_personId: UUID, _groupId: UUID, _isSync: Boolean) {
         queryPreferences.run {
-            userId = _userId
+            personId = _personId
             groupId = _groupId
             isLocal = true
             isSync = _isSync
@@ -107,8 +108,8 @@ class AuthManager @Inject constructor(
             val response = authApi.verification(email, password, code).execute()
             if (response.code() == 200) {
                 val authResponse = response.body()!!
-                userDao.createUserAccount(UserAccountEntity(authResponse.idUser, email, password))
-                saveId(authResponse.idUser, authResponse.idGroup, false)
+                personDao.createPersonAccount(PersonAccountEntity(authResponse.personId, email, password))
+                saveId(authResponse.personId, authResponse.groupId, false)
                 RegisterResult(isContinue = true)
             } else {
                 RegisterResult(
@@ -121,16 +122,15 @@ class AuthManager @Inject constructor(
         }
     }
 
-    suspend fun synchronization(): SyncResult = try {
+     fun synchronization(): SyncResult = try {
         if (queryPreferences.isSync) {
             SyncResult(isSync = true)
         } else {
-            val userId = queryPreferences.userId
-            val users = userDao.getAll()
-            val user = userDao.getAccount(userId)
+            val personId = queryPreferences.personId
+            val person = personDao.getAccount(personId)
             val header = mapOf(
-                AuthApi.HEADER_ID_USER to user.id.toString(),
-                AuthApi.HEADER_PASSWORD_USER to user.password
+                AuthApi.HEADER_ID_PERSON to person.id.toString(),
+                AuthApi.HEADER_PASSWORD_PERSON to person.password
             )
             val responseDictionary =
                 authApi.getDictionary(header).execute()
@@ -142,6 +142,7 @@ class AuthManager @Inject constructor(
             saveAccountResponse(bodyAccount,true)
 
             queryPreferences.isSync = true
+            queryPreferences.currency = 1
             SyncResult(isSync = true)
         }
     } catch (e: Exception) {
@@ -149,46 +150,43 @@ class AuthManager @Inject constructor(
     }
 
     fun saveAccountResponse(response: AccountResponse,isStartApp: Boolean) {
-        var flag = true
+
         response.groups.forEach {
-            if(it.id == queryPreferences.groupId)
-                flag = false
             groupDao.insertOrUpdate(it)
         }
-        if(flag && isStartApp)
-            groupManager.setGroupToLocal()
-        response.users.forEach {
-            userDao.insertOrUpdate(it)
+        response.persons.forEach {
+            personDao.insertOrUpdate(it)
         }
-        response.groupUsers.forEach {
-            groupUsersDao.insertOrUpdate(it)
+        response.groupPersons.forEach {
+            groupPersonsDao.insertOrUpdate(it)
         }
-        response.targets.forEach {
-            targetDao.insertOrUpdate(it)
+        response.purchases.forEach {
+            purchaseDao.insertOrUpdate(it)
         }
-        response.checks.forEach {
-            checkDao.insertOrUpdate(it)
+        response.baskets.forEach {
+            basketDao.insertOrUpdate(it)
+        }
+        response.histories.forEach {
+            historyDao.insertOrUpdate(it)
         }
     }
 
     fun deleteAccountResponse(accountDeleteResponse: AccountDeleteResponse) {
         accountDeleteResponse.run {
-            checks.forEach{
-                checkDao.delete(it)
+            purchases.forEach{
+                purchaseDao.delete(it)
             }
-            users.forEach{
-                userDao.delete(it)
+            persons.forEach{
+                personDao.delete(it)
             }
             groups.forEach {
-                if(it ==queryPreferences.groupId)
-                    groupManager.setGroupToLocal()
                 groupDao.delete(it)
             }
-            groupUsers.forEach {
-                groupUsersDao.deleteUser(it.first,it.second)
+            groupPersons.forEach {
+                groupPersonsDao.deletePerson(it.first,it.second)
             }
-            targets.forEach {
-                targetDao.delete(it)
+            baskets.forEach {
+                basketDao.delete(it)
             }
         }
     }

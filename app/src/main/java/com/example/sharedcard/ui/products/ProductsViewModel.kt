@@ -3,7 +3,7 @@ package com.example.sharedcard.ui.products
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.sharedcard.database.entity.category.CategoryEntity
+import com.example.sharedcard.database.entity.category_product.CategoryProductEntity
 import com.example.sharedcard.repository.DictionaryRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -17,7 +17,7 @@ class ProductsViewModel(
 
     fun getProducts() = dictionaryRepository.getProductByCategory(idCategory)
 
-    fun getCategory(): LiveData<CategoryEntity> = dictionaryRepository.getCategory(idCategory)
+    fun getCategory(): LiveData<CategoryProductEntity> = dictionaryRepository.getCategoryProduct(idCategory)
 
     class ViewModelFactory @AssistedInject constructor(
         @Assisted("idCategory") private val idCategory: Int,

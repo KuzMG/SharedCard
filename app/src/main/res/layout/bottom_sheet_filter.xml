@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="30dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface">
+
+        <ImageButton
+            android:id="@+id/close_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:background="@drawable/ripple_background"
+            android:src="@drawable/icon_close"
+            android:scaleType="centerInside"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:id="@+id/sort_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/close_button">
+            <TextView
+                android:id="@+id/sorting_text_vew"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:text="@string/sort"
+                android:textSize="16sp"
+                android:gravity="top"
+                android:layout_gravity="center"
+                />
+
+            <ToggleButton
+                android:id="@+id/sort_mode_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/ic_arrow_selector"
+                android:checked="true"
+                android:foreground="@drawable/ripple_background"
+                android:textOff="@null"
+                android:textOn="@null"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/sorting_chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintTop_toBottomOf="@id/sort_layout"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sorting_category_chip"
+                style="@style/Widget.App.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sorting_by_category" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/soring_name_chip"
+                style="@style/Widget.App.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sorting_by_name" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sorting_date_chip"
+                style="@style/Widget.App.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sorting_by_date" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <TextView
+            android:id="@+id/grouping_text_vew"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/grouping"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/sorting_chip_group" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/grouping_chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintTop_toBottomOf="@id/grouping_text_vew"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/grouping_group_chip"
+                style="@style/Widget.App.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/group_by_groups" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/grouping_person_chip"
+                style="@style/Widget.App.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/group_by_person" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <TextView
+            android:id="@+id/exclude_groups_text_vew"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/exclude_groups"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/grouping_chip_group" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/exclude_groups_chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintTop_toBottomOf="@id/exclude_groups_text_vew" />
+
+        <TextView
+            android:id="@+id/exclude_persons_text_vew"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/exclude_persons"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/exclude_groups_chip_group" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/exclude_persons_chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/complete_button"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintTop_toBottomOf="@id/exclude_persons_text_vew" />
+
+        <Button
+            android:id="@+id/complete_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginVertical="18dp"
+            android:backgroundTint="?attr/colorPrimary"
+            android:text="@string/complete"
+            android:textColor="?attr/colorSurface"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
+

@@ -9,7 +9,6 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.view.children
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -40,7 +39,7 @@ class RegistrationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_registration, container, false)
+            FragmentRegistrationBinding.inflate(inflater, container, false)
         binding.viewPager.adapter =  ViewPagerAdapter(childFragmentManager,lifecycle)
         binding.viewPager.offscreenPageLimit = 5
         binding.viewPager.isUserInputEnabled = false

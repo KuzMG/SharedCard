@@ -8,7 +8,6 @@ import com.example.sharedcard.repository.DictionaryRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import javax.inject.Inject
 
 class RecipesViewModel(
     private val idCategory: Int,
@@ -16,7 +15,7 @@ class RecipesViewModel(
 ) : ViewModel() {
 
     fun getRecipes() : LiveData<List<Recipe>> = dictionaryRepository.getRecipesByCategory(idCategory)
-    fun getCategory() = dictionaryRepository.getCategory(idCategory)
+    fun getCategory() = dictionaryRepository.getCategoryProduct(idCategory)
 
 
 

@@ -43,10 +43,13 @@
     <string name="check">Чек</string>
     <string name="statistic">Статистика</string>
     <string name="history">История</string>
-    <string name="group">Группы</string>
+    <string name="groups">Группы</string>
+    <string name="group">Группа:</string>
+    <string name="chip_custom_default">Свое</string>
+    <string name="chip_custom">Свое: %1s</string>
 
     <!--    Группы в профиле-->
-    <string name="group_label">Группы</string>
+    <string name="group_label">Группа</string>
 
 
     <!--   ЧЕК -->
@@ -75,8 +78,8 @@
     <string name="dialog_add_text_hint_price">Цена</string>
     <string name="dialog_add_text_hint_category">Категория</string>
     <string name="dialog_add">Добавить</string>
-    <string name="dialog_add_item_comment">Комментарий</string>
-
+    <string name="add_purchase_comment">Комментарий:</string>
+    <string name="comment_purchase">Комментарий: %1s</string>
     <!--   диалог удалени -->
     <string name="dialog_delete_item">Вы уверены, что хотите удалить %1$s?</string>
     <string name="dialog_delete_group">Вы уверены, что хотите удалить группу %1$s?</string>
@@ -100,18 +103,20 @@
     <string name="date_creation">Дата создания:</string>
     <string name="description">Комментарий:</string>
     <string name="category">Категория:</string>
-    <string name="shop">Магазин:</string>
+    <string name="shop">Магазин: %1s</string>
     <string name="first_price">Первоначальная цена:</string>
     <string name="last_price">Конечная цена:</string>
 
     <!--    Профиль-->
     <string name="weight">%1$s кг</string>
     <string name="height">%1$s см</string>
+    <string name="height_label">Рост</string>
+
     <string name="age">%1$s лет</string>
 
     <!--    Настройки-->
     <string name="settings">Настройки</string>
-    <string name="settings_delete_swipe">быстрое удаление</string>
+    <string name="settings_currency">Валюта: %1s</string>
     <string name="edit_profile">Редактировать профиль</string>
     <string name="exit">Выход</string>
     <string name="title_activity_main2">MainActivity2</string>
@@ -129,7 +134,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="group_fragment_token">Код приглашения</string>
     <string name="price">Цена:</string>
-    <string name="user">Пользователь:</string>
+    <string name="user">Пользователь</string>
     <string name="date_buy">Дата покупки:</string>
     <string name="first_user">Добавил:</string>
     <string name="last_user">Купил:</string>
@@ -148,6 +153,21 @@
     <string name="date_format">d MMMM yyyy</string>
     <string name="birthday">День рождения</string>
     <string name="add_recipe">добавить рецепт</string>
+    <string name="search">Поиск</string>
+    <string name="count">Количесво:</string>
+    <string name="sort">Сортировка</string>
+    <string name="grouping">Группировка</string>
+    <string name="exclude_groups">Исключить группы</string>
+    <string name="exclude_persons">Исключить пользователей</string>
+    <string name="complete">Применить</string>
+    <string name="group_by_groups">По группам</string>
+    <string name="group_by_person">По пользователям</string>
+    <string name="add_group">Создать группу</string>
+    <string name="select_currency">Выберите валюту</string>
+    <string name="weight_label">Вес</string>
+    <string name="email_label">Email</string>
+    <string name="name_label">Имя</string>
+    <string name="chip_custom_not">Нет</string>
 
 
 </resources>

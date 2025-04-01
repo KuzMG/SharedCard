@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.NumberPicker
-import androidx.databinding.DataBindingUtil
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.widget.EditText
 import androidx.fragment.app.viewModels
-import com.example.sharedcard.R
 import com.example.sharedcard.databinding.BottomSheetNumberBinding
 import com.example.sharedcard.util.appComponent
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+
 
 class EditNumberBottomSheet : BottomSheetDialogFragment() {
     private lateinit var binding: BottomSheetNumberBinding
@@ -30,9 +30,8 @@ class EditNumberBottomSheet : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
+        binding = BottomSheetNumberBinding.inflate(
             layoutInflater,
-            R.layout.bottom_sheet_number,
             container,
             false
         )
@@ -64,7 +63,9 @@ class EditNumberBottomSheet : BottomSheetDialogFragment() {
         binding.profileNumberPicker.wrapSelectorWheel = false
         binding.profileNumberPicker.minValue = 0
         binding.profileNumberPicker.maxValue = array.size
-        binding.profileNumberPicker.value = array.lastIndexOf(value)
+        binding.profileNumberPicker.value = array.indexOf(value)
+        val editText = binding.profileNumberPicker.getChildAt(0) as EditText
+        editText.width = 20
     }
 
     override fun onStart() {

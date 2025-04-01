@@ -2,6 +2,7 @@ package com.example.sharedcard.database.entity.shop
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 @Entity(
     tableName = "shop",
@@ -10,7 +11,7 @@ import androidx.room.PrimaryKey
 class ShopEntity(
     val id: Int,
     val name: String,
-    val name_en: String,
-    val status: Boolean
+    @SerializedName("name_en")
+    val nameEn: String
 
 )

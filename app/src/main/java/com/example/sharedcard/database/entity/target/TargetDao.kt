@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.project.shared_card.database.dao.group_users.GroupUsersEntity
 import com.project.shared_card.database.dao.target.TargetEntity
 import java.util.UUID
 

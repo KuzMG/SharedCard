@@ -9,12 +9,15 @@ import androidx.room.Query
 @Dao
 interface ProductDao {
     @Query("select * from product " +
-            "where id_category=:id_category")
-    fun getAllByCategory(id_category: Int): LiveData<List<ProductEntity>>
+            "where id_category_product=:categoryId")
+    fun getAllByCategory(categoryId: Int): LiveData<List<Product>>
 
     @Query("select * from product " +
-            "where name like :query limit 5")
-    fun getAllByQuery(query: String): LiveData<List<ProductEntity>>
+            "where name like :query limit 4")
+    fun getAllByQuery(query: String): LiveData<List<Product>>
+    @Query("select * from product limit 4")
+    fun getPopular():  LiveData<List<Product>>
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun add(products :List<ProductEntity>)
+
 }

@@ -4,18 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import com.example.sharedcard.R
-import com.example.sharedcard.database.entity.category.CategoryEntity
-import com.example.sharedcard.databinding.FragmentProductCategoriesBinding
+import com.example.sharedcard.database.entity.category_product.CategoryProductEntity
 import com.example.sharedcard.databinding.FragmentRecipeCategoriesBinding
-import com.example.sharedcard.ui.adapter.CategoryAdapter
+import com.example.sharedcard.ui.products.adapters.CategoryAdapter
 import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerActivity
 import com.example.sharedcard.ui.navigation_drawer.NavigationDrawerViewModel
-import com.example.sharedcard.ui.products.ProductsFragment
 import com.example.sharedcard.util.appComponent
 
 class RecipeCategoriesFragment : Fragment() {
@@ -33,9 +30,8 @@ class RecipeCategoriesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
+        binding = FragmentRecipeCategoriesBinding.inflate(
             inflater,
-            R.layout.fragment_recipe_categories,
             container,
             false
         )
@@ -54,7 +50,7 @@ class RecipeCategoriesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getRecipeCategories().observe(viewLifecycleOwner) { categories ->
-            val list = arrayListOf<ArrayList<CategoryEntity>>()
+            val list = arrayListOf<ArrayList<CategoryProductEntity>>()
             categories.forEachIndexed { index, category ->
                 if(index/4 == 0){
                     if(index/2 >= list.size){

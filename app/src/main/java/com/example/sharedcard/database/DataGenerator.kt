@@ -1,9 +1,7 @@
 package com.example.sharedcard.database
 
-import com.example.sharedcard.database.entity.category.CategoryEntity
-import com.example.sharedcard.database.entity.currency.CurrencyEntity
+import com.example.sharedcard.database.entity.category_product.CategoryProductEntity
 import com.example.sharedcard.database.entity.metric.MetricEntity
-import com.example.sharedcard.database.entity.product.ProductEntity
 import com.example.sharedcard.database.entity.shop.ShopEntity
 
 object DataGenerator {
@@ -19,26 +17,7 @@ object DataGenerator {
 //        CurrencyEntity(name="Доллар США", name_en = "U.S. dollar", symbol = "$")
 //    )
 
-    fun getShopProduct(): List<ShopEntity> = listOf(
-        ShopEntity(1,"Аптека","",true),
-        ShopEntity(2,"Азбука вкуса","",true),
-        ShopEntity(3,"Ашан","",true),
-        ShopEntity(4,"Бристоль","",true),
-        ShopEntity(5,"Виктория","",true),
-        ShopEntity(6,"Вкусвилл","",true),
-        ShopEntity(7,"Красное и белое","",true),
-        ShopEntity(8,"Лента","",true),
-        ShopEntity(9,"Магнит","",true),
-        ShopEntity(10,"Окей","",true),
-        ShopEntity(11,"Перекрёсток","",true),
-        ShopEntity(12,"Пятерочка","",true),
-        ShopEntity(13,"Продуктовый","",true),
-        ShopEntity(14,"Рынок","",true),
-        ShopEntity(15,"Самокат","",false),
-        ShopEntity(16,"Спортпит","",false),
-        ShopEntity(17,"Фикспрайс","",false),
-        ShopEntity(18,"Другое","",false)
-    )
+
 
 //    fun getProducts(): List<ProductEntity> = listOf(
 //        ProductEntity(1,"гречка","",3.3,12.6,57.1,308.0,1,true),
@@ -50,7 +29,7 @@ object DataGenerator {
 //        ProductEntity(7,"булгур","",1.5,15.0,14.1,85.0,4,true)
 //    )
 
-    fun getCategoryProduct(): List<CategoryEntity> = listOf(
+    fun getCategoryProduct(): List<CategoryProductEntity> = listOf(
 //        CategoryEntity(1,"Алкоголь","",0),
 //        CategoryEntity(2,"Готовая еда","",0),
 //        CategoryEntity(3,"Грибы","",0),
