@@ -15,7 +15,10 @@ interface CurrencyDao {
     @Query("select * from currency")
     fun getAll(): LiveData<List<CurrencyEntity>>
     @Query("select * from currency where id =:id")
-    fun get(id: Int): LiveData<CurrencyEntity>
+    fun getLiveData(id: Int): LiveData<CurrencyEntity>
+
+    @Query("select * from currency where id =:id")
+    fun get(id: Int): CurrencyEntity
     @Query("select * from currency where id = (select id_currency from purchase where purchase.id = (select id_purchase from basket where basket.id = :basketId))")
     fun getByBasketId(basketId: UUID): LiveData<CurrencyEntity>
 }

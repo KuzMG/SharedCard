@@ -12,8 +12,6 @@ import java.util.UUID
 data class PersonEntity(
     val id: UUID = UUID.randomUUID(),
     val name: String,
-    val weight: Double,
-    val height: Int,
     val birthday: Long,
     val gender: Boolean,
     val pic: String

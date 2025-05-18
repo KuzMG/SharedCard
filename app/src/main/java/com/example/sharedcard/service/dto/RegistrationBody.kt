@@ -5,7 +5,5 @@ data class RegistrationBody(
     val password: String,
     val name: String,
     val date: Long,
-    val gender: Boolean,
-    val weight: Double,
-    val height: Int
+    val gender: Boolean
 )

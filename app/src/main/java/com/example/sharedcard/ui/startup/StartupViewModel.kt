@@ -57,8 +57,6 @@ class StartupViewModel @Inject constructor(private val authManager: AuthManager)
             }
         }
     var regDate = Date()
-    var regWeight = 60.0
-    var regHeight = 170
     var regGender = true
     var regPassword = ""
         set(value) {
@@ -131,7 +129,7 @@ class StartupViewModel @Inject constructor(private val authManager: AuthManager)
     fun registration() {
         viewModelScope.launch(Dispatchers.IO) {
             _registerResult.postValue(RegisterResult(loading = true))
-            val result = authManager.registration(regEmail, regPassword,regName,regDate, regGender,regWeight,regHeight)
+            val result = authManager.registration(regEmail, regPassword,regName,regDate, regGender)
             _registerResult.postValue(result)
         }
     }

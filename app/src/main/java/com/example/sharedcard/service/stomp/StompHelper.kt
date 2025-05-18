@@ -1,5 +1,6 @@
 package com.example.sharedcard.service.stomp
 
+import android.util.Log
 import com.example.sharedcard.database.entity.basket.BasketEntity
 import com.example.sharedcard.database.entity.history.HistoryEntity
 import com.example.sharedcard.database.entity.purchase.PurchaseEntity
@@ -25,18 +26,18 @@ import java.util.UUID
 import javax.inject.Inject
 
 class StompHelper @Inject constructor(private val stompClient: StompClient) {
-
+    fun isConnected() = stompClient.isConnected
     fun lifecycle(): Flowable<LifecycleEvent> = stompClient.lifecycle()
-
     fun connect(personId: UUID, password: String) {
         val headers = listOf(
             StompHeader(AuthApi.HEADER_ID_PERSON, personId.toString()),
             StompHeader(AuthApi.HEADER_PASSWORD_PERSON, password)
         )
-        if (!stompClient.isConnected) {
-            stompClient.connect(headers)
-        }
+        stompClient.connect(headers)
     }
+    fun disconnect() = stompClient.disconnectCompletable()
+
+    fun recconect() = stompClient.reconnect()
 
     fun subscribeOnSyncFull(userId: UUID): Flowable<StompMessage> =
         stompClient.topic(fullSyncFullPath(userId))
@@ -50,22 +51,16 @@ class StompHelper @Inject constructor(private val stompClient: StompClient) {
 
     fun sendPurchase(purchase: PurchaseEntity, groupId: UUID, personId: UUID, password: String): Completable {
         val response = PurchaseResponse(purchase, groupId)
-        connect(personId, password)
         val jsonResponse = Gson().toJson(response)
         return stompClient.send(PURCHASE_PATH_SEND, jsonResponse)
     }
 
-    fun sendTarget(
-        target: TargetEntity,
-        groupId: UUID,
-        userId: UUID,
-        password: String
-    ): Completable {
-        connect(userId, password)
-        val response = TargetResponse(target, groupId)
+    fun sendPurchaseToHistory(purchase: PurchaseEntity, groupId: UUID): Completable {
+        val response = PurchaseResponse(purchase, groupId)
         val jsonResponse = Gson().toJson(response)
-        return stompClient.send(TARGET_PATH_SEND, jsonResponse)
+        return stompClient.send(PURCHASE_TO_HISTORY_PATH_SEND, jsonResponse)
     }
+
 
     fun deletePurchase(
         purchaseId: UUID,
@@ -73,7 +68,6 @@ class StompHelper @Inject constructor(private val stompClient: StompClient) {
         groupId: UUID,
         password: String
     ): Completable {
-        connect(personId, password)
         val response = DeleteResponse(purchaseId, groupId, personId)
         val jsonResponse = Gson().toJson(response)
         return stompClient.send(PURCHASE_DELETE_PATH_SEND, jsonResponse)
@@ -88,7 +82,6 @@ class StompHelper @Inject constructor(private val stompClient: StompClient) {
         personId: UUID,
         password: String
     ): Completable {
-        connect(personId, password)
         val response = UpdateGroupResponse(name, groupId)
         val jsonResponse = Gson().toJson(response)
         return stompClient.send(UPDATE_GROUP_PATH_SEND, jsonResponse)
@@ -99,7 +92,6 @@ class StompHelper @Inject constructor(private val stompClient: StompClient) {
         personId: UUID,
         password: String
     ): Completable{
-        connect(personId, password)
         val response = UpdatePersonResponse(person)
         val jsonResponse = Gson().toJson(response)
         return stompClient.send(UPDATE_PERSON_PATH_SEND, jsonResponse)
@@ -110,15 +102,12 @@ class StompHelper @Inject constructor(private val stompClient: StompClient) {
         personId: UUID,
         password: String
     ): Completable {
-        connect(personId, password)
-
         val response = DeleteResponse(groupId, groupId, personId)
         val jsonResponse = Gson().toJson(response)
         return stompClient.send(DELETE_GROUP_PATH_SEND, jsonResponse)
     }
 
     fun deletePerson(personDelId: UUID, groupId: UUID, personId: UUID, password: String): Completable {
-        connect(personId, password)
         val response = DeleteResponse(personDelId, groupId, personId)
         val jsonResponse = Gson().toJson(response)
         return stompClient.send(DELETE_PERSON_PATH_SEND, jsonResponse)
@@ -131,7 +120,6 @@ class StompHelper @Inject constructor(private val stompClient: StompClient) {
         personId: UUID,
         password: String
     ): Completable {
-        connect(personId, password)
         val response = SetUserStatusResponse(personAdminId, groupId, personId,status)
         val jsonResponse = Gson().toJson(response)
         return stompClient.send(MAKE_PERSON_ADMIN_PATH_SEND, jsonResponse)
@@ -144,13 +132,11 @@ class StompHelper @Inject constructor(private val stompClient: StompClient) {
         password: String
     ): Completable {
         val response = BasketResponse(basket, groupId)
-        connect(personId, password)
         val jsonResponse = Gson().toJson(response)
         return stompClient.send(BASKET_PATH_SEND, jsonResponse)
     }
 
     fun deleteBasket(basketId: UUID, personId: UUID, groupId: UUID, password: String): Completable {
-        connect(personId, password)
         val response = DeleteResponse(basketId, groupId, personId)
         val jsonResponse = Gson().toJson(response)
         return stompClient.send(DELETE_BASKET_PATH_SEND, jsonResponse)
@@ -162,7 +148,6 @@ class StompHelper @Inject constructor(private val stompClient: StompClient) {
         personId: UUID,
         password: String
     ): Completable {
-        connect(personId, password)
         val response = HistoryResponse(history, groupId)
         val jsonResponse = Gson().toJson(response)
         return stompClient.send(HISTORY_PATH_SEND, jsonResponse)
@@ -186,6 +171,8 @@ class StompHelper @Inject constructor(private val stompClient: StompClient) {
         private const val HISTORY_PATH_SEND = "/server/history"
         private const val BASKET_PATH_SEND = "/server/basket"
         private const val PURCHASE_PATH_SEND = "/server/purchase"
+        private const val PURCHASE_TO_HISTORY_PATH_SEND = "/server/purchase/history"
+
         private const val TARGET_PATH_SEND = "/server/target"
         private const val PURCHASE_DELETE_PATH_SEND = "/server/purchase/delete"
         private const val TARGET_DELETE_PATH_SEND = "/server/target/delete"

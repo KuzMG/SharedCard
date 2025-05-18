@@ -1,12 +1,12 @@
-package com.example.sharedcard.ui.purchase.add_purchase
+package com.example.sharedcard.ui.purchase.bottom_sheet
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import com.example.sharedcard.databinding.BottomSheetNumberTextBinding
-import com.example.sharedcard.util.appComponent
+import com.example.sharedcard.ui.purchase.add_purchase.AddPurchaseFragment
 import com.example.sharedcard.util.getSerializableCompat
 import com.example.sharedcard.util.toStringFormat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -14,13 +14,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 class NumberTextBottomSheet : BottomSheetDialogFragment() {
     private lateinit var binding: BottomSheetNumberTextBinding
     var count = 0.0
-    private lateinit var connect:AddPurchaseFragment.Connect
+    private lateinit var connect: AddPurchaseFragment.Connect
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         count = arguments?.getDouble(ARG_COUNT, 0.0) ?: 0.0
         connect = arguments?.getSerializableCompat(ARG_CONNECT)!!
     }
-
 
 
     override fun onCreateView(
@@ -33,13 +32,17 @@ class NumberTextBottomSheet : BottomSheetDialogFragment() {
             container,
             false
         )
+        binding.editText.inputType = when (arguments?.getBoolean(ARG_IS_DOUBLE) ?: true) {
+            true -> InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
+            false -> InputType.TYPE_CLASS_NUMBER
+        }
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (count != 0.0){
-
+        if (count != 0.0) {
             binding.editText.setText(count.toStringFormat())
         }
         binding.profileOkButton.setOnClickListener {
@@ -61,12 +64,17 @@ class NumberTextBottomSheet : BottomSheetDialogFragment() {
         const val TAG = "EditTextBottomSheet"
         private const val ARG_COUNT = "count"
         private const val ARG_CONNECT = "connect"
-        fun newInstance(count: Double, function: AddPurchaseFragment.Connect) = NumberTextBottomSheet().apply {
-            val bundle = Bundle()
-            bundle.putDouble(ARG_COUNT, count)
-            bundle.putSerializable(ARG_CONNECT, function)
-            arguments = bundle
-        }
+        private const val ARG_IS_DOUBLE = "isDouble"
+
+        fun newInstance(count: Double, isDouble: Boolean, function: AddPurchaseFragment.Connect) =
+            NumberTextBottomSheet().apply {
+                val bundle = Bundle()
+                bundle.putDouble(ARG_COUNT, count)
+                bundle.putBoolean(ARG_IS_DOUBLE, isDouble)
+
+                bundle.putSerializable(ARG_CONNECT, function)
+                arguments = bundle
+            }
 
     }
 }

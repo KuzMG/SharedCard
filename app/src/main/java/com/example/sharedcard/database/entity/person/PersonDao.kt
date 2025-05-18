@@ -43,20 +43,16 @@ interface PersonDao {
     fun getAccount(id: UUID): PersonAccountEntity
     @Query("update person set name = :name where  id = :id")
     fun setName(id: UUID,name: String)
-    @Query("update person set weight = :weight where  id = :id")
-    fun setWeight(id: UUID,weight: Double)
-    @Query("update person set height = :height where  id = :id")
-    fun setHeight(id: UUID,height: Int)
 
     @Query("delete from person where id=:idUser")
     fun delete(idUser: UUID)
-    @Query("select * from person where id= (select id_person from group_persons where id_group= (select id_group from group_persons where id_person=:personId)and id_person != :personId)")
+    @Query("select * from person where id in (select id_person from group_persons where id_group in (select id_group from group_persons where id_person=:personId)and id_person != :personId)")
     fun getAllWithoutYou(personId: UUID): LiveData<List<PersonEntity>>
 
     @Query("select * from group_persons where id_group= :groupId")
     fun getByGroup(groupId:UUID): LiveData<List<UserEntityWithStatus>>
-    @Query("select * from person where id= (select id_person from group_persons where id_group= (select id_group from group_persons where id_person=:personId) and id_person not in (:excludePersonsSet)) " +
-            "and (select count(*) from purchase where purchase.id_person=person.id) >0")
-    fun getAllWithoutYou(personId: UUID, excludePersonsSet: Set<UUID>): LiveData<List<PersonEntity>>
 
+    @Query("select * from person where id in (select id_person from group_persons where id_group in (select id_group from group_persons where id_person=:personId) and id_person not in (:excludePersonsSet)) " +
+            "and (select count(*) from purchase where purchase.id_person=person.id and purchase.is_bought = 0 and (select name from product where id=purchase.id_product) like :query) >0 ")
+    fun getAll(query:String,personId: UUID, excludePersonsSet: Set<UUID>): LiveData<List<PersonEntity>>
 }

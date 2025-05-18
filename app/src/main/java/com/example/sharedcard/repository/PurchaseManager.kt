@@ -1,13 +1,13 @@
 package com.example.sharedcard.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.sharedcard.database.entity.basket.BasketDao
 import com.example.sharedcard.database.entity.basket.BasketEntity
 import com.example.sharedcard.database.entity.history.HistoryDao
 import com.example.sharedcard.database.entity.history.HistoryEntity
-import com.example.sharedcard.database.entity.history.History
+import com.example.sharedcard.database.entity.statistic.data.CountWithMetricAndPrice
 import com.example.sharedcard.database.entity.person.PersonDao
+import com.example.sharedcard.database.entity.product.Product
 import com.example.sharedcard.database.entity.purchase.Purchase
 import com.example.sharedcard.database.entity.purchase.PurchaseDao
 import com.example.sharedcard.database.entity.purchase.PurchaseEntity
@@ -16,6 +16,7 @@ import com.example.sharedcard.service.stomp.StompHelper
 import com.example.sharedcard.ui.purchase.filter.enums.GROUPING_BY
 import com.example.sharedcard.ui.purchase.filter.enums.SORTING_BY
 import com.example.sharedcard.ui.purchase.filter.enums.SORT_MODE
+import com.example.sharedcard.ui.statistic.data.ChartDate
 import io.reactivex.Completable
 import java.util.UUID
 import javax.inject.Inject
@@ -31,12 +32,6 @@ class PurchaseManager @Inject constructor(
     private val stompHelper: StompHelper,
 ) {
     fun getAllHistory() = historyDao.getAll(queryPreferences.personId)
-
-
-    fun getAllHistoryQuery(
-        query: String
-    ) = MutableLiveData<List<History>>()
-
 
     fun add(purchases: List<PurchaseEntity>) {
         purchaseDao.add(purchases)
@@ -141,7 +136,8 @@ class PurchaseManager @Inject constructor(
     } catch (e: Exception) {
         Completable.error(Exception())
     }
-    fun deleteBasket(basketId: UUID,groupId: UUID)  = try {
+
+    fun deleteBasket(basketId: UUID, groupId: UUID) = try {
         if (queryPreferences.groupId == groupId) {
             basketDao.delete(basketId)
             Completable.complete()
@@ -157,6 +153,7 @@ class PurchaseManager @Inject constructor(
     } catch (e: Exception) {
         Completable.error(e)
     }
+
     fun getBaskets(purchaseId: UUID) = basketDao.getByPurchase(purchaseId)
 
     fun getCountBasket(purchaseId: UUID) = basketDao.getCount(purchaseId)
@@ -167,16 +164,14 @@ class PurchaseManager @Inject constructor(
         if (countHistory != 0) {
             if (queryPreferences.groupId == groupId) {
                 purchaseDao.toHistory(purchaseId)
+                basketDao.deleteAllByPurchase(purchaseId)
                 Completable.complete()
             } else {
                 val purchase = purchaseDao.findById(purchaseId)
                 val boughtPurchase = purchase.toHistory()
-                val password = personDao.getAccount(queryPreferences.personId).password
-                stompHelper.sendPurchase(
+                stompHelper.sendPurchaseToHistory(
                     boughtPurchase,
-                    groupId,
-                    queryPreferences.personId,
-                    password
+                    groupId
                 )
             }
         } else {
@@ -235,7 +230,12 @@ class PurchaseManager @Inject constructor(
     }
 
     fun getById(purchaseId: UUID) = purchaseDao.findByIdLiveData(purchaseId)
+    fun getCountHistory(purchaseId: UUID): LiveData<Double> =
+        historyDao.getCountPurchase(purchaseId)
 
+    fun getAllByPersonId() = purchaseDao.getByPersonId(queryPreferences.personId)
+    fun getAll() = purchaseDao.getAll(queryPreferences.personId)
 
-
+    fun getCountPurchaseByPersonId(personId: UUID = queryPreferences.personId) =
+        purchaseDao.getCountByPersonId(personId)
 }

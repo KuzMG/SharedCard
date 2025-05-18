@@ -31,5 +31,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:dividerColor="@color/color_background_view"/>
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/notification_switch"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/notification"
+        android:textColor="?colorPrimary"
+        android:padding="20dp"
+        android:textSize="18sp" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerColor="@color/color_background_view"/>
 </LinearLayout>
 

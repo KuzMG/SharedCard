@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +15,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.sharedcard.R
 import com.example.sharedcard.database.entity.product.Product
 import com.example.sharedcard.databinding.FragmentAddPurchaseBinding
-import com.example.sharedcard.ui.products.adapters.ProductAdapter
 import com.example.sharedcard.ui.purchase.adapters.ProductSelectAdapter
+import com.example.sharedcard.ui.purchase.bottom_sheet.NumberTextBottomSheet
 import com.example.sharedcard.util.appComponent
 import com.example.sharedcard.util.createChipChose
 import com.example.sharedcard.util.toStringFormat
@@ -128,7 +127,7 @@ class AddPurchaseFragment : Fragment() {
                     else -> splitText[1].toDouble()
                 }
                 NumberTextBottomSheet
-                    .newInstance(count, object : Connect {
+                    .newInstance(count, true,object : Connect {
                         override fun ok(count: Double) {
                             viewModel.price = count
                             chip.text = getString(
@@ -176,9 +175,12 @@ class AddPurchaseFragment : Fragment() {
             }
         }
         viewModel.selectableCountChipIndex = viewModel.selectableListMetric.size
-
+        val isDouble = when(viewModel.product?.metric?.name){
+            "шт" -> false
+            else -> true
+        }
         NumberTextBottomSheet
-            .newInstance(count, connect)
+            .newInstance(count, isDouble,connect)
             .show(childFragmentManager, NumberTextBottomSheet.TAG)
     }
 

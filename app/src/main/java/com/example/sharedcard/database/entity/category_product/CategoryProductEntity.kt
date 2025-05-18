@@ -14,7 +14,7 @@ class CategoryProductEntity(
     @SerializedName("name_en")
     val nameEn: String,
     val pic: String,
-    val popularity: Int = 0
+    val weight: Float = 0F
 ){
     val url: String
         get() = ServiceModule.URL_REST+"/$pic"

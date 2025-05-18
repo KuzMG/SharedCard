@@ -15,7 +15,7 @@ class RecipesViewModel(
 ) : ViewModel() {
 
     fun getRecipes() : LiveData<List<Recipe>> = dictionaryRepository.getRecipesByCategory(idCategory)
-    fun getCategory() = dictionaryRepository.getCategoryProduct(idCategory)
+    fun getCategory() = dictionaryRepository.getCategoryProductLiveData(idCategory)
 
 
 

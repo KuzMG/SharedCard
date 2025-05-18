@@ -1,11 +1,16 @@
 package com.example.sharedcard.ui.group
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
@@ -37,7 +42,8 @@ class GroupFragment : Fragment() {
     private lateinit var fabButton: FabSpeedDial
     private lateinit var progressBar: LinearProgressIndicator
 
-
+    private val requestPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
     private val itemTouchHelper = ItemTouchHelper(object : GroupSwipeCallback() {
         override fun swipeLeft(group: GroupEntity) {
             DeleteGroupFragment
@@ -111,5 +117,25 @@ class GroupFragment : Fragment() {
                 }
             }
         }
+        check()
     }
+    private fun check() {
+        when {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                Unit
+            }
+
+            shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
+                Unit
+            }
+
+            else -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requestPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
+
 }

@@ -21,7 +21,6 @@ import java.util.UUID
 import javax.inject.Inject
 
 class AuthManager @Inject constructor(
-    private val groupManager: GroupManager,
     private val basketDao: BasketDao,
     private val historyDao: HistoryDao,
     private val groupDao: GroupDao,
@@ -84,11 +83,9 @@ class AuthManager @Inject constructor(
         name: String,
         date: Date,
         gender: Boolean,
-        weight: Double,
-        height: Int
     ): RegisterResult {
         return try {
-            val body = RegistrationBody(email,password,name,date.time,gender,weight, height)
+            val body = RegistrationBody(email,password,name,date.time,gender)
             val response = authApi.registration(body).execute()
             if (response.code() == 200) {
                 RegisterResult(codeSend = true)

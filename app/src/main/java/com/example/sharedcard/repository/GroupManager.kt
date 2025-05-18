@@ -191,15 +191,19 @@ class GroupManager @Inject constructor(
     fun getPersonsByGroup(groupId: UUID): LiveData<List<UserEntityWithStatus>> =
         personDao.getByGroup(groupId)
 
-    fun getGroups(excludeGroupsSet: MutableSet<UUID>) =
-        groupDao.getAll(queryPreferences.personId, excludeGroupsSet)
+    fun getGroups(query:String,excludeGroupsSet: MutableSet<UUID>) =
+        groupDao.getAll("%$query%",queryPreferences.personId, excludeGroupsSet)
 
 
-    fun getPersonsWithoutYou(excludePersonsSet: MutableSet<UUID>) =
-        personDao.getAllWithoutYou(queryPreferences.personId, excludePersonsSet)
+    fun getPersons(query:String,excludePersonsSet: MutableSet<UUID>) =
+        personDao.getAll("%$query%",queryPreferences.personId, excludePersonsSet)
 
-    fun getPersonById(personId: UUID) = personDao.getPersonLiveData(personId)
+    fun getPersonByIdLiveData(personId: UUID) = personDao.getPersonLiveData(personId)
+
+    fun getPersonById(personId: UUID) = personDao.get(personId)
     fun getGroupById(groupId: UUID) = groupDao.getGroupLiveData(groupId)
+    fun testQuery(value: String?, excludeGroupsSet: MutableSet<UUID>)=
+        groupDao.testQuery("%$value%")
 
 
 

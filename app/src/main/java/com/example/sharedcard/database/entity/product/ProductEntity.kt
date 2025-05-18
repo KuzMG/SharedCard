@@ -16,19 +16,14 @@ data class ProductEntity(
     val protein: Double?,
     val carb: Double?,
     val calories: Double?,
-    val weight: Int,
+    val popularity: Float = 0F,
     @ColumnInfo(name = "id_category_product")
     @SerializedName("id_category_product")
     val idCategory: Int,
     @ColumnInfo(name = "id_metric")
     @SerializedName("id_metric")
     val idMetric: Int,
-    val allergy: Boolean,
-    val pic: String,
     @ColumnInfo(name = "quantity_multiplier")
     @SerializedName("quantity_multiplier")
     val quantityMultiplier: Int
-){
-    val url: String
-        get() = ServiceModule.URL_REST+"/$pic"
-}
+)

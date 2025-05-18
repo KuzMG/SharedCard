@@ -10,7 +10,6 @@ import com.example.sharedcard.service.stomp.StompHelper
 import com.example.sharedcard.ui.group.data.Result
 import io.reactivex.Completable
 import java.io.ByteArrayOutputStream
-import java.net.ConnectException
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,7 +23,9 @@ class AccountManager @Inject constructor(
 ) {
 
 
-    fun getPerson() = personDao.getPersonLiveData(queryPreferences.personId)
+    fun getPersonLiveData() = personDao.getPersonLiveData(queryPreferences.personId)
+    fun getPerson() = personDao.get(queryPreferences.personId)
+
     fun getAccountLiveData() = personDao.getAccountLiveData(queryPreferences.personId)
     fun getAccount() = personDao.getAccount(queryPreferences.personId)
     fun accountExists() =
@@ -75,8 +76,6 @@ class AccountManager @Inject constructor(
             val newPerson = PersonEntity(
                 person.id,
                 name,
-                person.weight,
-                person.height,
                 person.birthday,
                 person.gender,
                 person.pic
@@ -91,41 +90,8 @@ class AccountManager @Inject constructor(
 
     }
 
-    fun setWeight(weight: Double): Completable =
-        try {
-            val person = personDao.get(queryPreferences.personId)
-            val account = personDao.getAccount(queryPreferences.personId)
-            val newPerson = PersonEntity(
-                person.id,
-                person.name,
-                weight,
-                person.height,
-                person.birthday,
-                person.gender,
-                person.pic
-            )
-            stompHelper.updatePerson(newPerson, account.id, account.password)
-        } catch (e: Exception) {
-            Completable.error(e)
-        }
 
-    fun setHeight(height: Int): Completable =
-        try {
-            val person = personDao.get(queryPreferences.personId)
-            val account = personDao.getAccount(queryPreferences.personId)
-            val newPerson = PersonEntity(
-                person.id,
-                person.name,
-                person.weight,
-                height,
-                person.birthday,
-                person.gender,
-                person.pic
-            )
-            stompHelper.updatePerson(newPerson, account.id, account.password)
-        } catch (e: Exception) {
-            Completable.error(e)
-        }
+
 
     fun setDate(date: Long): Completable =
         try {
@@ -134,8 +100,6 @@ class AccountManager @Inject constructor(
             val newPerson = PersonEntity(
                 person.id,
                 person.name,
-                person.weight,
-                person.height,
                 date,
                 person.gender,
                 person.pic

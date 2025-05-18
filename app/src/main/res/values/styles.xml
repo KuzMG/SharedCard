@@ -58,6 +58,13 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name ="TextAppearance.TabLayout" parent="TextAppearance.MaterialComponents.Headline6.Сustom">
+        <item name="fontFamily">@font/update_gothic</item>
+        <item name="android:fontFamily">@font/update_gothic</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="toolbarStyle" parent="@style/Widget.MaterialComponents.Toolbar">
         <item name="titleTextColor">@color/white</item>
         <item name="titleTextAppearance">@style/TextAppearance.MaterialComponents.Headline6.Сustom

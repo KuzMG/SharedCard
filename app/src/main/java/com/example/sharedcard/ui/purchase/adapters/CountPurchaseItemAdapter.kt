@@ -1,24 +1,22 @@
 package com.example.sharedcard.ui.purchase.adapters
 
-import android.util.Log
+import android.text.format.DateFormat
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.commit
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sharedcard.R
 import com.example.sharedcard.database.entity.basket.Basket
-import com.example.sharedcard.database.entity.purchase.Purchase
 import com.example.sharedcard.databinding.ListItemCountPurchaseBinding
-import com.example.sharedcard.ui.purchase.PurchaseViewModel
 import com.example.sharedcard.ui.purchase.to_history.ToHistoryBottomSheet
+import com.example.sharedcard.util.isVisible
 import com.example.sharedcard.util.toStringFormat
+import com.squareup.picasso.Picasso
 import java.util.UUID
 
-
+private const val DATE_FORMAT = "MM.dd.yyyy HH:mm"
 class CountPurchaseItemAdapter(
     private val fragmentManager: FragmentManager,
     private val groupId: UUID
@@ -38,6 +36,7 @@ class CountPurchaseItemAdapter(
 ) {
 
     var metric = ""
+    var currency = ""
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CountPurchaseItemHolder(
         ListItemCountPurchaseBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -54,22 +53,31 @@ class CountPurchaseItemAdapter(
         RecyclerView.ViewHolder(binding.root) {
         lateinit var basket: Basket
         fun onBind(basket: Basket) {
-            Log.d("TAG", "onBind basket count = ${basket.count}")
             this.basket = basket
             binding.apply {
-                binding.historyView.visibility = when(basket.history){
-                    null -> {
-                        purchaseButton.visibility = View.VISIBLE
-                        View.GONE
-                    }
-                    else ->{
-                        purchaseButton.visibility = View.GONE
-                        View.VISIBLE
-                    }
+                purchaseButton.isVisible(basket.history == null)
+                personCardView.isVisible(basket.history != null)
+                personTextView.isVisible(basket.history != null)
+                dateTextView.isVisible(basket.history != null)
+                shopTextView.isVisible(basket.history != null)
+                val sb = StringBuilder()
+                sb.append("${basket.count.toStringFormat()} $metric")
+                binding.root.setCardBackgroundColor(root.context.getColor(R.color.color_background_view))
+                basket.history?.let { history ->
+                    shopTextView.text = history.shop.name
+                    personTextView.text = history.person.name
+                    binding.root.setCardBackgroundColor(root.context.getColor(R.color.light_green))
+                    Picasso.get().load(history.person.url).into(personImageView)
+                    val locale = root.resources.configuration.locales[0]
+                    val localDateFormat = DateFormat.getBestDateTimePattern(locale, DATE_FORMAT)
+                    binding.dateTextView.text = DateFormat.format(localDateFormat, history.purchaseDate)
+                    if (history.price != 0.0)
+                        sb.append(" - ${history.price.toStringFormat()} $currency")
                 }
-                quantityTextView.text = "${basket.count.toStringFormat()} $metric"
+                historyTextView.text = sb
                 purchaseButton.setOnClickListener {
-                    ToHistoryBottomSheet.newInstance(basket.id, groupId).show(fragmentManager,ToHistoryBottomSheet.DIALOG_TO_HISTORY)
+                    ToHistoryBottomSheet.newInstance(basket.id, groupId)
+                        .show(fragmentManager, ToHistoryBottomSheet.DIALOG_TO_HISTORY)
                 }
             }
         }

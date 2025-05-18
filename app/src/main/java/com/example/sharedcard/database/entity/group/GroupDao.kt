@@ -7,6 +7,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import com.example.sharedcard.database.entity.purchase.Purchase
+import com.example.sharedcard.database.entity.purchase.PurchaseEntity
 import com.project.shared_card.database.dao.group_users.GroupPersonsEntity
 import java.util.UUID
 
@@ -55,10 +57,18 @@ interface GroupDao {
     fun deleteAllGroups()
     @Query("select * from `group` where id in (select id_group from group_persons where id_person=:personId) order by name asc")
     fun getAll(personId: UUID): LiveData<List<GroupEntity>>
-    @Query("select * from `group` where id in " +
-            "(select id_group from group_persons where id_person=:personId and id_group not in (:excludeGroupsSet)) " +
-            "and (select count(*) from purchase where purchase.id_group=`group`.id) >0 order by name asc")
-    fun getAll(personId: UUID, excludeGroupsSet: Set<UUID>): LiveData<List<GroupEntity>>
+
+    @Query(
+        "select * from `group` where id in " +
+                "(select id_group from group_persons where id_person=:personId and id_group not in (:excludeGroupsSet)) " +
+                "and (select count(*) from purchase where purchase.id_group=`group`.id and purchase.is_bought = 0 and (select name from product where id=purchase.id_product) like :query) >0 order by name asc"
+    )
+    fun getAll(query: String,personId: UUID, excludeGroupsSet: Set<UUID>): LiveData<List<GroupEntity>>
+
     @Query("select * from `group` where id in (select id_group from group_persons where id_person=:personId) and name != '' order by name asc")
     fun getAllWithoutDefault(personId: UUID): LiveData<List<GroupEntity>>
+    @Query(
+        "select * from purchase where  purchase.is_bought = 0 and (select name from product where id=purchase.id_product) like :s"
+    )
+    fun testQuery(s: String): LiveData<List<PurchaseEntity>>
 }

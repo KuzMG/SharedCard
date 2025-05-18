@@ -168,6 +168,32 @@
     <string name="email_label">Email</string>
     <string name="name_label">Имя</string>
     <string name="chip_custom_not">Нет</string>
+    <string name="pair_string">%1$s %2$s</string>
+    <string name="bought">Куплено</string>
+    <string name="loading_server">Подключение...</string>
+    <string name="connection_ok">Подключение восстановлено</string>
+    <string name="not_internet">Нет подключения к интернету</string>
+    <string name="not_purchases_items">Нет купленных позиций</string>
+    <string name="notification">Уведомления</string>
+    <string name="for_all_time">За все время</string>
+    <string name="most_popular">Самый популярный</string>
+    <string name="most_popular_value">Самый популярный: %1s</string>
+    <string name="most_expensive">Самый дорогой</string>
+    <string name="most_expensive_value">Самый дорогой: %1s\u00A0%1s\u00A0%1s\u00A0%1s</string>
+
+    <string name="count_purchase">Покупок:</string>
+    <string name="money_spent">Денег потрачено:</string>
+    <string name="count_purchase_value">Покупок: %1s</string>
+    <string name="money_spent_value">Денег потрачено: %1s</string>
+    <string name="add_most_purchases">Добавил больше всего товаров:</string>
+    <string name="buy_most_purchases">Купил больше всего товаров:</string>
+    <string name="add_most_purchases_value">Добавил больше всего товаров: %1s</string>
+    <string name="buy_most_purchases_value">Купил больше всего товаров: %1s</string>
+    <string name="personal">Личная</string>
+    <string name="select_range">Выберете интервал</string>
+    <string name="year">Год</string>
+    <string name="month">Мес</string>
+    <string name="week">Нед</string>
 
 
 </resources>

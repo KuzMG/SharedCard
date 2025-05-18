@@ -29,27 +29,6 @@ class ProfileViewModel @Inject constructor(private val accountManager: AccountMa
         }
     }
 
-    fun setHeight(height: Int) {
-        mutableLoadingLiveData.value = Result(Result.State.LOADING)
-        viewModelScope.launch(Dispatchers.IO) {
-            accountManager.setHeight(height).blockingGet()?.let {
-                mutableLoadingLiveData.postValue(Result(Result.State.ERROR, it))
-                return@launch
-            }
-            mutableLoadingLiveData.postValue(Result(Result.State.OK))
-        }
-    }
-
-    fun setWeight(weight: Double) {
-        mutableLoadingLiveData.value = Result(Result.State.LOADING)
-        viewModelScope.launch(Dispatchers.IO) {
-            accountManager.setWeight(weight).blockingGet()?.let {
-                mutableLoadingLiveData.postValue(Result(Result.State.ERROR, it))
-                return@launch
-            }
-            mutableLoadingLiveData.postValue(Result(Result.State.OK))
-        }
-    }
 
     fun setDate(date: Long) {
         mutableLoadingLiveData.value = Result(Result.State.LOADING)
@@ -62,7 +41,7 @@ class ProfileViewModel @Inject constructor(private val accountManager: AccountMa
         }
     }
 
-    fun getUser() = accountManager.getPerson()
+    fun getUser() = accountManager.getPersonLiveData()
     fun getUserAccount() = accountManager.getAccountLiveData()
     fun setImage(bitmap: Bitmap) {
         mutableLoadingLiveData.value = Result(Result.State.LOADING)

@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @Module
 class ServiceModule {
     companion object {
-        private const val IP = "192.168.0.103:8080"
+        private const val IP = "192.168.0.100:8081"
         const val URL_REST = "http://$IP"
         private const val URL_STOMP = "ws://$IP/stomp"
     }

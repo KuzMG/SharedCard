@@ -9,59 +9,15 @@ import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.room.Update
 import androidx.sqlite.db.SupportSQLiteQuery
+import com.example.sharedcard.database.entity.person.PersonEntity
 import java.util.Date
 import java.util.UUID
 
 @Dao
 interface PurchaseDao {
-//    @Query(
-//        "select purchase.id, " +
-//                "pr.name as name," +
-//                "c.name as category," +
-//                "purchase.count," +
-//                "m.name as metric," +
-//                "p.name as person," +
-//                "p.pic as personPicId," +
-//                "description," +
-//                "purchase.creation_date," +
-//                "pr.calories," +
-//                "pr.carb as carb," +
-//                "pr.fat as fat," +
-//                "pr.protein as protein from purchase " +
-//                "join product as pr on purchase.id_product = pr.id " +
-//                "join category_product as c on pr.id_category_product = c.id " +
-//                "join person as p on p.id = purchase.id_person " +
-//                "join metric as m on m.id = id_metric " +
-//                "where id_group = :groupId and is_bought = 0 " +
-//                "order by name desc"
-//    )
-//    fun getByGroup(groupId: UUID): LiveData<List<Purchase>>
 
     @Query("select * from `group` where (select count(purchase.id) from purchase where purchase.id_group = `group`.id)>0")
     fun getAllGroups() : LiveData<List<PurchaseGroup>>
-//    @Query(
-//        "select purchase.id, " +
-//                "pr.name as name," +
-//                "c.name as category," +
-//                "purchase.count," +
-//                "m.name as metric," +
-//                "p.name as person," +
-//                "p.pic as personPicId," +
-//                "description," +
-//                "purchase.creation_date," +
-//                "pr.calories," +
-//                "pr.carb as carb," +
-//                "pr.fat as fat," +
-//                "pr.protein as protein from purchase " +
-//                "join product as pr on purchase.id_product = pr.id " +
-//                "join category_product as c on pr.id_category_product = c.id " +
-//                "join person as p on p.id = purchase.id_person " +
-//                "join metric as m on m.id = id_metric " +
-//                "where id_group = :groupId and is_bought = 0 and pr.name like :query " +
-//                "order by name desc"
-//    )
-//    fun getByGroupQuery(groupId: UUID, query: String): LiveData<List<Purchase>>
-
 
     @Query("delete from purchase where id = :id")
     fun delete(id: UUID)
@@ -91,14 +47,15 @@ interface PurchaseDao {
     @Query("select * from purchase where id_group = :groupId and purchase_date is NULL")
     fun getByGroup(groupId: UUID): LiveData<List<Purchase>>
 
-
+    @Query("select * from purchase where id_group in (select id_group from group_persons where id_person=:personId)")
+    fun getAll(personId: UUID): List<PurchaseEntity>
     @Query("select * from purchase where " +
             "(CASE " +
             "WHEN :isGroup = 1 THEN purchase.id_group " +
             "WHEN :isGroup = 0 THEN purchase.id_person " +
             "END) = :id and " +
             "(select name from product where product.id = purchase.id_product) like :query " +
-            "and purchase_date is NULL " +
+            "and is_bought =0  " +
             "and id_group not in (:excludeGroupsSet) " +
             "and id_person not in (:excludePersonsSet) " +
             "order by  CASE WHEN :isAsc = 1 THEN creation_date END ASC, \n" +
@@ -118,7 +75,7 @@ interface PurchaseDao {
             "WHEN :isGroup = 0 THEN purchase.id_person " +
             "END) = :id and " +
             "(select name from product where product.id = purchase.id_product) like :query " +
-            "and purchase_date is NULL " +
+            "and is_bought =0 " +
             "and id_group not in (:excludeGroupsSet) " +
             "and id_person not in (:excludePersonsSet) " +
             "order by  CASE WHEN :isAsc = 1 THEN (select id_category_product from product where product.id = id_product) END ASC, \n" +
@@ -137,7 +94,7 @@ interface PurchaseDao {
             "WHEN :isGroup = 0 THEN purchase.id_person " +
             "END) = :id and " +
             "(select name from product where product.id = purchase.id_product) like :query " +
-            "and purchase_date is NULL " +
+            "and is_bought =0  " +
             "and id_group not in (:excludeGroupsSet) " +
             "and id_person not in (:excludePersonsSet) " +
             "order by  CASE WHEN :isAsc = 1 THEN (select product.name from product where product.id = id_product) END ASC, \n" +
@@ -154,7 +111,7 @@ interface PurchaseDao {
     fun getCount(groupId: UUID): LiveData<Int>
     @Query("select count(*) from purchase where id_group = :groupId and (select name from product where product.id=id_product) like :query ")
     fun getCountQuery(groupId: UUID, query: String): LiveData<Int>
-    @Query("update purchase set purchase_date = :date where id=:purchaseId")
+    @Query("update purchase set is_bought = 1,  purchase_date = :date where id=:purchaseId")
     fun toHistory(purchaseId: UUID,date: Long = Date().time)
 
     @RawQuery
@@ -163,5 +120,11 @@ interface PurchaseDao {
     ): LiveData<List<Purchase>>
     @Query("select * from purchase where id = :purchaseId")
     fun findByIdLiveData(purchaseId: UUID): LiveData<Purchase>
+
+    @Query("select * from purchase where id_person=:personId")
+    fun getByPersonId(personId: UUID): List<PurchaseEntity>
+
+    @Query("select count(*) from purchase where id_person = :personId ")
+    fun getCountByPersonId(personId: UUID): LiveData<Int>
 
 }

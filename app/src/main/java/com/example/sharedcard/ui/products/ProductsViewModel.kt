@@ -17,7 +17,7 @@ class ProductsViewModel(
 
     fun getProducts() = dictionaryRepository.getProductByCategory(idCategory)
 
-    fun getCategory(): LiveData<CategoryProductEntity> = dictionaryRepository.getCategoryProduct(idCategory)
+    fun getCategory(): LiveData<CategoryProductEntity> = dictionaryRepository.getCategoryProductLiveData(idCategory)
 
     class ViewModelFactory @AssistedInject constructor(
         @Assisted("idCategory") private val idCategory: Int,

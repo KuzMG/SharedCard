@@ -37,6 +37,10 @@ class DBModule {
     @Singleton
     @Provides
     fun providePersonDao(db: AppDatabase) = db.personDao()
+
+    @Singleton
+    @Provides
+    fun provideStatisticDao(db: AppDatabase) = db.statisticDao()
     @Singleton
     @Provides
     fun provideGroupDao(db: AppDatabase) = db.groupDao()

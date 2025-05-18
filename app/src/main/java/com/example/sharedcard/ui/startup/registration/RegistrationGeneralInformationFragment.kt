@@ -74,22 +74,7 @@ class RegistrationGeneralInformationFragment : Fragment() {
                     birthdayButton.text = format.format(viewModel.regDate)
                 }
             }
-            heightButton.setOnClickListener {
-                showNumberPickerDialog(Array(200) {
-                    (50 + it).toString()
-                }, R.string.registration_height_label, viewModel.regHeight.toString()) { p0 ->
-                    heightButton.text = getString(R.string.height, p0.toString())
-                    viewModel.regHeight = p0.toInt()
-                }
-            }
-            weightButton.setOnClickListener {
-                showNumberPickerDialog(Array(320) {
-                    (40F + (it.toFloat()) / 2).toString()
-                }, R.string.registration_weight_label, viewModel.regWeight.toString()) { p0 ->
-                    weightButton.text = getString(R.string.weight, p0)
-                    viewModel.regWeight = p0.toDouble()
-                }
-            }
+
             genderEditText.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -100,8 +85,6 @@ class RegistrationGeneralInformationFragment : Fragment() {
             })
 
 
-            weightButton.text = getString(R.string.weight, viewModel.regWeight.toString())
-            heightButton.text = getString(R.string.height, viewModel.regHeight.toString())
             val genedr = getString(if (viewModel.regGender) R.string.male else R.string.female)
             genderEditText.setText(genedr,false)
             val format = SimpleDateFormat(getString(R.string.date_format))
@@ -109,32 +92,6 @@ class RegistrationGeneralInformationFragment : Fragment() {
         }
     }
 
-    private fun showNumberPickerDialog(
-        array: Array<String>,
-        @StringRes
-        title: Int,
-        value: String,
-        click: (String) -> Unit
-    ) {
-        val dialog = AlertDialog.Builder(requireContext())
-        val view = layoutInflater.inflate(R.layout.number_picker_dialog, null)
-        dialog.setTitle(title)
-        dialog.setView(view)
-        val numberPicker = view.findViewById<NumberPicker>(R.id.dialog_number_picker)
-
-        numberPicker.displayedValues = array
-        numberPicker.wrapSelectorWheel = false
-        numberPicker.minValue = 0
-        numberPicker.maxValue = array.size
-        numberPicker.value = array.lastIndexOf(value)
-        dialog.setPositiveButton(getString(R.string.dialog_ok_button)) { dialogInterface, i ->
-            click.invoke(array[numberPicker.value])
-        }
-        dialog.setNegativeButton(getString(R.string.dialog_cancel_button)) { dialogInterface, _ ->
-            dialogInterface.dismiss()
-        }
-        dialog.create().show()
-    }
 
     private fun showDatePickerDialog(click: DatePickerDialog.OnDateSetListener) {
         val calendar = GregorianCalendar()

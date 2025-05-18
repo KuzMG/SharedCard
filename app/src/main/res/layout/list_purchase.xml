@@ -36,7 +36,8 @@
                     android:id="@+id/pic_image_view"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_home" />
+                    android:scaleType="centerCrop"
+                    tools:src="@drawable/ic_home" />
             </androidx.cardview.widget.CardView>
 
 

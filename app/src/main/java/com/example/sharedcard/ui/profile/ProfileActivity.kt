@@ -50,8 +50,6 @@ class ProfileActivity : AppCompatActivity() {
                     .load(user.url)
                     .into(profileImageView)
                 nameTextView.text = user.name
-                heightTextView.text = getString(R.string.height, user.height.toString())
-                weightTextView.text = getString(R.string.weight, user.weight.toString())
                 val format = SimpleDateFormat(getString(R.string.date_format))
                 ageTextView.text = format.format(user.birthday)
             }
@@ -102,18 +100,6 @@ class ProfileActivity : AppCompatActivity() {
                     .show(supportFragmentManager, EditTextBottomSheet.TAG)
             }
             emailLayout.setOnClickListener {
-            }
-            weightLayout.setOnClickListener {
-                EditNumberBottomSheet.run {
-                    newInstance(WEIGHT)
-                        .show(supportFragmentManager, TAG)
-                }
-            }
-            heightLayout.setOnClickListener {
-                EditNumberBottomSheet.run {
-                    newInstance(HEIGHT)
-                        .show(supportFragmentManager, TAG)
-                }
             }
             ageLayout.setOnClickListener {
                 showDatePickerDialog { datePicker, i, i2, i3 ->

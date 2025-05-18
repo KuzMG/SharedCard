@@ -9,6 +9,7 @@ import com.example.sharedcard.R
 import com.example.sharedcard.database.entity.product.Product
 import com.example.sharedcard.databinding.ListItemProductBinding
 import com.example.sharedcard.ui.purchase.add_purchase.AddPurchaseViewModel
+import com.example.sharedcard.util.isVisible
 import com.squareup.picasso.Picasso
 
 
@@ -74,33 +75,41 @@ class ProductSelectAdapter(
             binding.run {
                 Picasso.get().load(product.category.url).into(binding.picImageView)
                 nameTextView.text = product.productEntity.name
-                caloriesTextView.text =
-                    context.getString(
-                        R.string.pie_chart_calories,
-                        item.productEntity.calories!!.toInt().toString()
-                    )
                 root.strokeColor = when (absoluteAdapterPosition) {
                     selectedItemPos -> binding.root.context.getColor(R.color.colorPrimary)
                     else -> binding.root.context.getColor(R.color.color_background_view)
                 }
-                pointCardView.setCardBackgroundColor(context.getColor(android.R.color.transparent))
-                pfcTextView.text = ""
-                pfcLineChart.apply {
-                    setDataChart(
-                        product.productEntity.protein!!.toFloat(),
-                        product.productEntity.fat!!.toFloat(),
-                        product.productEntity.carb!!.toFloat()
-                    )
-                    addOnClickListener { color, name ->
-                        pointCardView.setCardBackgroundColor(
-                            ContextCompat.getColor(
-                                context,
-                                color
-                            )
+                pfcLineChart.isVisible(item.productEntity.calories!= null)
+                caloriesTextView.isVisible(item.productEntity.calories!= null)
+                pfcTextView.isVisible(item.productEntity.calories!= null)
+                pointCardView.isVisible(item.productEntity.calories!= null)
+
+                item.productEntity.calories?.let {
+
+                    caloriesTextView.text =
+                        context.getString(
+                            R.string.pie_chart_calories,
+                            item.productEntity.calories.toInt().toString()
                         )
-                        pfcTextView.text = name
+                    pointCardView.setCardBackgroundColor(context.getColor(android.R.color.transparent))
+                    pfcTextView.text = ""
+                    pfcLineChart.apply {
+                        setDataChart(
+                            product.productEntity.protein!!.toFloat(),
+                            product.productEntity.fat!!.toFloat(),
+                            product.productEntity.carb!!.toFloat()
+                        )
+                        addOnClickListener { color, name ->
+                            pointCardView.setCardBackgroundColor(
+                                ContextCompat.getColor(
+                                    context,
+                                    color
+                                )
+                            )
+                            pfcTextView.text = name
+                        }
+                        startWithoutAnimation()
                     }
-                    startWithoutAnimation()
                 }
             }
 

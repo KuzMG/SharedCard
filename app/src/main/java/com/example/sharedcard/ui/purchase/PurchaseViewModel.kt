@@ -1,5 +1,6 @@
 package com.example.sharedcard.ui.purchase
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,16 +34,15 @@ class PurchaseViewModel @Inject constructor(
     var sortingBy = SORTING_BY.CATEGORY
     var groupingBy = GROUPING_BY.GROUP
 
-    val filterLiveData: LiveData<Boolean>
-        get() = _filterLiveData
+
     private val _filterLiveData = MutableLiveData<Boolean>()
 
     val basketSwipeLiveData: LiveData<Pair<Int,Throwable>?>
         get() = _basketSwipeLiveData
     private val _basketSwipeLiveData = MutableLiveData<Pair<Int,Throwable>?>()
-    val purchaseSwipeLiveData: LiveData<Pair<Int,Throwable>?>
+    val purchaseSwipeLiveData: LiveData<Triple<UUID,Int,Throwable>?>
         get() = _purchaseSwipeLiveData
-    private val _purchaseSwipeLiveData = MutableLiveData<Pair<Int,Throwable>?>()
+    private val _purchaseSwipeLiveData = MutableLiveData<Triple<UUID,Int,Throwable>?>()
     val groupChanged: LiveData<UUID>
         get() = groupManager.groupChangedLiveData
 
@@ -53,15 +53,22 @@ class PurchaseViewModel @Inject constructor(
         mutableSearch.value = ""
     }
 
-    fun getPurchases(id: UUID) = mutableSearch.switchMap { query ->
-        purchaseManager.getByFilter(groupingBy,id,sortingBy,sortMode,excludeGroupsSet,excludePersonsSet,query)
+    fun getPurchases(id: UUID) =_filterLiveData.switchMap {
+        mutableSearch.switchMap { query ->
+            purchaseManager.getByFilter(groupingBy,id,sortingBy,sortMode,excludeGroupsSet,excludePersonsSet,query)
+        }
     }
 
-    fun getGroupsItem() =
-        when (groupingBy) {
-            GROUPING_BY.GROUP -> groupManager.getGroups(excludeGroupsSet)
-            GROUPING_BY.PERSON -> groupManager.getPersonsWithoutYou(excludePersonsSet)
+    fun getGroupsItem() = _filterLiveData.switchMap {
+        mutableSearch.switchMap { query ->
+            when (groupingBy) {
+                GROUPING_BY.GROUP -> groupManager.getGroups(query,excludeGroupsSet)
+                GROUPING_BY.PERSON -> groupManager.getPersons(query,excludePersonsSet)
+            }
         }
+    }
+    fun testQuery() = groupManager.testQuery(mutableSearch.value,excludeGroupsSet)
+
 
 
     fun getBaskets(purchaseId: UUID) = purchaseManager.getBaskets(purchaseId)
@@ -78,7 +85,8 @@ class PurchaseViewModel @Inject constructor(
     fun deletePurchase(groupId: UUID, purchaseId: UUID,position: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             purchaseManager.delete(groupId,purchaseId).blockingGet()?.let {e ->
-                _purchaseSwipeLiveData.postValue(position to e)
+                Log.d("TAG","purchaseManager.delete")
+                _purchaseSwipeLiveData.postValue(Triple(purchaseId,position,e))
                 return@launch
             }
             _purchaseSwipeLiveData.postValue(null)
@@ -114,6 +122,7 @@ class PurchaseViewModel @Inject constructor(
         set.add(c)
         return set
     }
+
     private fun generateSetPiece(c: Int): Set<Double> {
         val set = sortedSetOf<Double>()
         set.add(1.0)
@@ -147,11 +156,15 @@ class PurchaseViewModel @Inject constructor(
 
         else -> throw IndexOutOfBoundsException()
     }
+
     fun addBasket(id: UUID, count: Double, groupId: UUID) {
         viewModelScope.launch(Dispatchers.IO) {
             purchaseManager.addBasket(id, count, groupId).blockingGet()?.let {
                 _sendLiveData.postValue(it)
+                return@launch
             }
+            _sendLiveData.postValue(null)
+
         }
     }
 
@@ -167,14 +180,14 @@ class PurchaseViewModel @Inject constructor(
 
     }
 
-    fun getCountBasket(purchaseId: UUID) =purchaseManager.getCountBasket(purchaseId)
+    fun getCountBasket(purchaseId: UUID) = purchaseManager.getCountBasket(purchaseId)
     fun toHistory(groupId: UUID, basketId: UUID, price: Double, shopId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            purchaseManager.basketToHistory(groupId,basketId,shopId, price).subscribe({
-
-            },{e ->
-
-            })
+            purchaseManager.basketToHistory(groupId,basketId,shopId, price).blockingGet()?.let {
+                _sendLiveData.postValue(it)
+                return@launch
+            }
+            _sendLiveData.postValue(null)
         }
     }
 
@@ -183,7 +196,7 @@ class PurchaseViewModel @Inject constructor(
     fun purchaseToHistory(groupId:UUID,purchaseId: UUID,position: Int) {
         viewModelScope.launch(Dispatchers.IO){
             purchaseManager.purchaseToHistory(groupId,purchaseId).blockingGet()?.let {
-                _purchaseSwipeLiveData.postValue(position to it)
+                _purchaseSwipeLiveData.postValue(Triple(purchaseId,position,it))
                 return@launch
             }
             _purchaseSwipeLiveData.postValue(null)
@@ -193,7 +206,6 @@ class PurchaseViewModel @Inject constructor(
 
     fun getPersons() = groupManager.getPersonsWithoutYou()
     fun getCurrency(basketId: UUID) = dictionaryRepository.getCurrencyByBasketId(basketId)
-
-
+    fun getCountHistory(purchaseId: UUID): LiveData<Double>  =purchaseManager.getCountHistory(purchaseId)
 
 }

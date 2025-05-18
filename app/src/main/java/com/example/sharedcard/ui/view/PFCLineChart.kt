@@ -57,10 +57,13 @@ class PFCLineChart @JvmOverloads constructor(
         calculatePercentageOfData()
     }
 
-    /**
-     * Имплиментируемый метод интерфейса взаимодействия [PFCLinetInterface].
-     * Запуск анимации отрисовки View.
-     */
+    override fun clear() {
+        data = mapOf()
+        calculatePercentageOfData()
+        invalidate()
+    }
+
+
     override fun startAnimation() {
         // Проход значений от 0 до 360 (целый круг), с длительностью - 1.5 секунды
         val animator = ValueAnimator.ofInt(0, 100).apply {
@@ -136,7 +139,6 @@ class PFCLineChart @JvmOverloads constructor(
         lineStartX = strokeLine
         lineStartY = initSizeHeight.toFloat() - context.dpToPx(15).toInt()/2
         lineSize = initSizeWidth -  context.dpToPx(10).toInt()*2
-
         setMeasuredDimension(initSizeWidth, initSizeHeight)
     }
 

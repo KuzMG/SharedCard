@@ -24,7 +24,7 @@ class PurchaseFragment : Fragment() {
 
     private lateinit var localDateFormat: String
 
-    val viewModel by viewModels<PurchaseViewModel>({ requireActivity() }) {
+    val viewModel by viewModels<PurchaseViewModel>({ this }) {
         appComponent.multiViewModelFactory
     }
     private lateinit var groupListAdapter: GroupListAdapter
@@ -50,7 +50,7 @@ class PurchaseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        groupListAdapter = GroupListAdapter(viewModel, viewLifecycleOwner, parentFragmentManager)
+        groupListAdapter = GroupListAdapter(viewModel, viewLifecycleOwner, childFragmentManager)
         binding.apply {
             recyclerView.adapter = groupListAdapter
         }
@@ -65,12 +65,11 @@ class PurchaseFragment : Fragment() {
                 Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
             }
         }
-        viewModel.filterLiveData.observe(viewLifecycleOwner) {
-            if (it) {
-                viewModel.getGroupsItem().observe(viewLifecycleOwner) { list ->
-                    groupListAdapter.submitList(list)
-                }
-            }
+        viewModel.testQuery().observe(viewLifecycleOwner){
+            Log.d("TAG",it.joinToString())
+        }
+        viewModel.getGroupsItem().observe(viewLifecycleOwner) { list ->
+            groupListAdapter.submitList(list)
         }
     }
 

@@ -29,6 +29,7 @@ import com.example.sharedcard.database.entity.shop.ShopEntity
 import com.example.sharedcard.database.entity.person.PersonAccountEntity
 import com.example.sharedcard.database.entity.person.PersonDao
 import com.example.sharedcard.database.entity.person.PersonEntity
+import com.example.sharedcard.database.entity.statistic.StatisticDao
 import com.example.sharedcard.database.type_converter.DateConverter
 import com.project.shared_card.database.dao.group_users.GroupPersonsEntity
 import com.project.shared_card.database.dao.target.TargetEntity
@@ -57,6 +58,7 @@ import com.project.shared_card.database.dao.target.TargetEntity
 abstract class AppDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
     abstract fun categoryProductDao(): CategoryProductDao
+    abstract fun statisticDao(): StatisticDao
     abstract fun groupDao(): GroupDao
     abstract fun groupPersonsDao(): GroupPersonsDao
     abstract fun personDao(): PersonDao

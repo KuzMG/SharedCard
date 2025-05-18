@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Relation
 import com.example.sharedcard.database.entity.basket.BasketEntity
 import com.example.sharedcard.database.entity.currency.CurrencyEntity
+import com.example.sharedcard.database.entity.group.GroupEntity
 import com.example.sharedcard.database.entity.history.HistoryEntity
 import com.example.sharedcard.database.entity.person.PersonEntity
 import com.example.sharedcard.database.entity.product.Product
@@ -40,15 +41,18 @@ data class Purchase(
     )
     val person: PersonEntity,
     @ColumnInfo("id_group")
-    val idGroup: UUID,
+    private val idGroup: UUID,
+    @Relation(
+        parentColumn = "id_group",
+        entityColumn = "id"
+    )
+    val group: GroupEntity,
     val description: String,
     @ColumnInfo("creation_date")
     private val creationDate: Long
 ) {
     val cost: String
         get() = "${price.toStringFormat()} ${currency.symbol}"
-    val personPic: String
-        get() = ServiceModule.URL_REST + "/${person.url}"
     val quantity: String
         get() = "${count.toStringFormat()} ${product.metric.name}"
     val date: Date

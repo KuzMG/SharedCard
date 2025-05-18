@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -55,6 +56,7 @@ class GroupListAdapter(
     override fun onBindViewHolder(holder: PurchaseHolder, position: Int) {
         holder.onBind(getItem(position))
     }
+
     override fun onViewRecycled(holder: PurchaseHolder) {
         holder.unbind()
         super.onViewRecycled(holder)
@@ -62,64 +64,59 @@ class GroupListAdapter(
 
     inner class PurchaseHolder(private val binding: ListPurchaseBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private val adapter =
-            PurchaseItemListAdapter(viewModel, viewLifecycleOwner, fragmentManager)
+        private lateinit var adapter: PurchaseItemListAdapter
         private val itemTouchHelper = ItemTouchHelper(object : PurchaseSwipeCallback() {
             override fun swipeLeft(purchase: Purchase, position: Int) {
-                viewModel.deletePurchase(purchase.idGroup, purchase.id, position)
+                viewModel.deletePurchase(purchase.group.id, purchase.id, position)
             }
 
             override fun swipeRight(purchase: Purchase, position: Int) {
-                viewModel.purchaseToHistory(purchase.idGroup, purchase.id, position)
+                viewModel.purchaseToHistory(purchase.group.id, purchase.id, position)
             }
-
         })
-
-        private var filter: LiveData<Boolean>? = null
-        private val filterObserver = { b: Boolean ->
-            if (b) {
-                viewModel.getPurchases(group._id).observe(viewLifecycleOwner) { list ->
-                    binding.root.visibility = when (list.isEmpty()) {
-                        true -> View.GONE
-                        false -> View.VISIBLE
-                    }
-                    adapter.submitList(list)
-                }
-            }
+        private var purchase:  LiveData<List<Purchase>>? = null
+        private var purchaseObserve = { list: List<Purchase> ->
+            adapter.submitList(list,group is GroupEntity)
         }
-        private var purchaseSwipe: LiveData<Pair<Int, Throwable>?>? = null
-        private var purchaseSwipeObserver = { pair: Pair<Int, Throwable>? ->
-            pair?.let {
-                binding.recyclerView.adapter?.notifyItemChanged(it.first)
+
+        private var purchaseSwipe: LiveData<Triple<UUID, Int, Throwable>?>? = null
+        private var purchaseSwipeObserver = { triple: Triple<UUID, Int, Throwable>? ->
+            triple?.let {
+                val purchaseId = it.first
+                val position = it.second
+                val e = it.third
+                if (position >= adapter.itemCount) return@let
+                val purchase = adapter.currentList[position]
+                if (purchase.id == purchaseId) {
+                    adapter.notifyItemChanged(position)
+                    Toast.makeText(binding.root.context,e.message ?: binding.root.context.getString(R.string.not_purchases_items), Toast.LENGTH_SHORT).show()
+                }
             }
             Unit
         }
 
-        init {
-            binding.recyclerView.adapter = adapter
-        }
 
         fun unbind() {
-            filter?.removeObserver(filterObserver)
+            purchase?.removeObserver(purchaseObserve)
             purchaseSwipe?.removeObserver(purchaseSwipeObserver)
-            filter = null
             purchaseSwipe = null
+            purchase = null
         }
 
         lateinit var group: GroupItem
         fun onBind(item: GroupItem) {
+            adapter = PurchaseItemListAdapter(viewModel, viewLifecycleOwner, fragmentManager)
+            binding.recyclerView.adapter = adapter
             group = item
             binding.apply {
                 if (item._name.isNotBlank()) {
-                    Picasso.get().load(item._pic).into(picImageView)
+                    Picasso.get().load(group._pic).into(picImageView)
                 } else {
-                    root.strokeColor = root.context.getColor(R.color.colorPrimary)
-                    root.strokeWidth = root.context.dpToPx(1).toInt()
+                    picImageView.setImageResource(R.drawable.ic_home)
                 }
                 itemFilterTextView.text = item._name
-
-                val filter = viewModel.filterLiveData
-                filter.observe(viewLifecycleOwner, filterObserver)
+                purchase =  viewModel.getPurchases(group._id)
+                purchase?.observe(viewLifecycleOwner, purchaseObserve)
                 purchaseSwipe = viewModel.purchaseSwipeLiveData
                 purchaseSwipe?.observe(viewLifecycleOwner, purchaseSwipeObserver)
                 itemTouchHelper.attachToRecyclerView(binding.recyclerView)

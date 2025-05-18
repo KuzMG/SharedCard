@@ -7,6 +7,9 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import com.example.sharedcard.database.entity.statistic.data.CountAndPrice
+import com.example.sharedcard.database.entity.statistic.data.CountWithMetricAndPrice
+import com.example.sharedcard.database.entity.product.Product
 import java.util.UUID
 
 @Dao
@@ -42,11 +45,16 @@ interface HistoryDao {
     @Query("select count(*) from history where id_basket = (select id from basket where id_purchase= :purchaseId)")
     fun getCount(purchaseId: UUID) : Int
 
+    @Query("select sum(basket.count) from basket where id_purchase = :purchaseId and (select id_basket from history where id_basket = basket.id) is not null")
+    fun getCountPurchase(purchaseId: UUID) : LiveData<Double>
+
     @Query("select history.id_person,id_purchase,purchase.purchase_date, sum(history.price) as price, sum(basket.count) as count, id_shop from history " +
             "    join basket on basket.id = history.id_basket " +
             "    join purchase on purchase.id = basket.id_purchase " +
-            "        where history.id_person in (select id_person from group_persons where id_group in " +
-            "        (select id_group from group_persons where group_persons.id_person =:personId)) " +
+            "        where " +
+            "           history.id_person in (select id_person from group_persons where id_group in " +
+            "               (select id_group from group_persons where group_persons.id_person =:personId)) and" +
+            "           purchase.is_bought = 1" +
             "        group by id_purchase,purchase.purchase_date,history.id_shop, history.id_person " +
             "        order by purchase.purchase_date")
 

@@ -16,6 +16,7 @@ import androidx.annotation.LayoutRes
 import androidx.core.graphics.withTranslation
 import com.example.sharedcard.R
 import com.google.android.material.chip.Chip
+import java.util.Calendar
 
 
 fun View.isVisible(flag: Boolean) {
@@ -30,17 +31,20 @@ fun Context.dpToPx(dp: Int): Float {
 }
 
 
-
-/**
- * Context Extension для конвертирования значения размера шрифта в пиксели.
- * @property sp - значение scale-independent pixels
- */
 fun Context.spToPx(sp: Int): Float {
     return TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_SP,
         sp.toFloat(),
         this.resources.displayMetrics
     );
+}
+
+
+fun Context.getPrimaryColor(): Int {
+    val typedValue = TypedValue()
+    val theme = theme
+    theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimary, typedValue, true)
+    return typedValue.data
 }
 
 fun StaticLayout.draw(canvas: Canvas, x: Float, y: Float) {
@@ -56,6 +60,26 @@ fun Canvas.drawRegion(region: Region, paint: Paint) {
         drawRect(r, paint)
     }
 }
+
+fun Long.getDaysInMonthFromTimestamp(): Int {
+    val calendar = Calendar.getInstance()
+    calendar.timeInMillis = this
+    return calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+}
+
+fun Long.getWeekDaysForDate(): List<Int> {
+    val calendar = Calendar.getInstance().apply {
+        timeInMillis = this@getWeekDaysForDate
+        set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+    }
+
+    return (0..6).map { offset ->
+        (calendar.clone() as Calendar).apply {
+            add(Calendar.DATE, offset)
+        }.get(Calendar.DAY_OF_MONTH)
+    }
+}
+
 
 fun createChipAction(chipGroup: ViewGroup, text: String, click: (View) -> Unit) =
     createChip(R.layout.chip_action, chipGroup, text, click)

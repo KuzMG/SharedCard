@@ -13,11 +13,14 @@ import java.util.UUID
 interface BasketDao {
     @Query("select * from `basket` where id_purchase = :purchaseId order by (select id from history where history.id_basket = id)")
     fun getByPurchase(purchaseId: UUID): LiveData<List<Basket>>
-    @Query("select sum(count) from `basket` where id_purchase = :purchaseId")
+    @Query("select sum(count) from `basket` where id_purchase = :purchaseId and (select id_basket from history where history.id_basket=basket.id) is null")
     fun getCount(purchaseId: UUID): LiveData<Double>
 
     @Query("delete from `basket` where id = :id")
     fun delete(id: UUID)
+
+    @Query("delete from `basket` where id_purchase = :purchaseId and (select id_basket from history where id_basket=basket.id) is null")
+    fun deleteAllByPurchase(purchaseId: UUID)
 
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

@@ -11,11 +11,14 @@ interface CategoryProductDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun add(entity: List<CategoryProductEntity>)
 
-    @Query("Select * from category_product order by popularity desc")
+    @Query("Select * from category_product order by weight desc")
     fun getAllProduct(): LiveData<List<CategoryProductEntity>>
 
-
+    @Query("Select * from category_product where id = :categoryId")
+    fun getById(categoryId: Int): CategoryProductEntity
 
     @Query("Select * from category_product where id = :categoryId")
-    fun getById(categoryId: Int): LiveData<CategoryProductEntity>
+    fun getByIdLiveData(categoryId: Int): LiveData<CategoryProductEntity>
+    @Query("update category_product set weight = :weight where id=:categoryId")
+    fun updateWeight(categoryId: Int, weight: Float)
 }

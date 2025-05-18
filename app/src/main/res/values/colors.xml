@@ -15,10 +15,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="cold_green_gray">#809593</color>
+    <color name="light_red">#FFA5AA</color>
+    <color name="light_green">#B0D471</color>
     <color name="red">#FE7886</color>
     <color name="sky_blue">#5b62ad</color>
     <color name="lavander">#c3c6e2</color>
     <color name="pink">#ba4992</color>
     <color name="light_yellow">#F3E58C</color>
     <color name="green_blue">#004040</color>
+    <color name="green">#54FF41</color>
 </resources>

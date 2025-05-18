@@ -121,12 +121,7 @@ class RecipeDetailsFragment : Fragment() {
     private inner class ViewHolder(private val listItemIngredientBinding: ListItemIngredientBinding) :
         RecyclerView.ViewHolder(listItemIngredientBinding.root) {
         fun bind(item: RecipeProduct) {
-            listItemIngredientBinding.apply {
-                nameTextView.text = item.product.name
-                Picasso.get().load(item.product.url).into(picImageView)
-                countTextView.text = item.count.toString()
-                metricTextView.text = item.metric.name
-            }
+
         }
     }
 

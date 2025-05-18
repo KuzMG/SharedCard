@@ -1,15 +1,17 @@
 package com.example.sharedcard.ui.purchase.adapters
 
+import android.annotation.SuppressLint
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sharedcard.R
@@ -18,6 +20,8 @@ import com.example.sharedcard.database.entity.purchase.Purchase
 import com.example.sharedcard.databinding.ListItemPurchaseBinding
 import com.example.sharedcard.databinding.ListItemPurchaseInformationBinding
 import com.example.sharedcard.ui.purchase.PurchaseViewModel
+import com.example.sharedcard.ui.purchase.add_purchase.AddPurchaseFragment
+import com.example.sharedcard.ui.purchase.bottom_sheet.NumberTextBottomSheet
 import com.example.sharedcard.util.createChipAction
 import com.example.sharedcard.util.toStringFormat
 import com.google.android.material.chip.Chip
@@ -44,6 +48,12 @@ class PurchaseItemListAdapter(
     }
 ) {
     private lateinit var groupId: UUID
+    private var isGroup: Boolean = true
+
+    fun submitList(list: List<Purchase>, _isGroup: Boolean) {
+        isGroup = _isGroup
+        submitList(list)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PurchaseItemHolder(
         ListItemPurchaseBinding.inflate(
@@ -62,6 +72,7 @@ class PurchaseItemListAdapter(
         super.onViewRecycled(holder)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     inner class PurchaseItemHolder(private val binding: ListItemPurchaseBinding) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         lateinit var purchase: Purchase
@@ -74,19 +85,82 @@ class PurchaseItemListAdapter(
         }
         private lateinit var adapter: CountPurchaseItemAdapter
         private var press = false
+        private var countHistory: LiveData<Double>? = null
+        private val countHistoryObserver = { c: Double? ->
+            val m = purchase.product.metric.name
+            val cur = purchase.currency.symbol
+
+            when {
+                c != null && c > 0 -> {
+                    val count = purchase.count - c
+                    val factor = count / purchase.count
+                    val newPrice = factor * purchase.price
+                    when {
+                        count > 0 -> {
+                            binding.countTextView.setTypeface(binding.countTextView.typeface, Typeface.NORMAL)
+                            binding.countTextView.text = binding.root.context.getString(
+                                R.string.pair_string,
+                                count.toStringFormat(),
+                                m
+                            )
+                            binding.priceTextView.text = if (purchase.price > 0) {
+                                binding.root.context.getString(
+                                    R.string.pair_string,
+                                    newPrice.toStringFormat(),
+                                    cur
+                                )
+                            } else {
+                                ""
+                            }
+
+                        }
+
+                        else -> {
+                            binding.countTextView.setTypeface(binding.countTextView.typeface, Typeface.BOLD)
+                            binding.countTextView.text =
+                                binding.root.context.getString(R.string.bought)
+                            binding.priceTextView.text = ""
+                        }
+                    }
+                }
+
+                else -> {
+                    binding.countTextView.setTypeface(binding.countTextView.typeface, Typeface.NORMAL)
+                    binding.countTextView.text = binding.root.context.getString(
+                        R.string.pair_string,
+                        purchase.count.toStringFormat(),
+                        m
+                    )
+                    binding.priceTextView.text = if (purchase.price > 0.0) {
+                        binding.root.context.getString(
+                            R.string.pair_string,
+                            purchase.price.toStringFormat(),
+                            cur
+                        )
+                    } else {
+                        ""
+                    }
+                }
+            }
+        }
+
+
         private var countBasket: LiveData<Double>? = null
-
-
         private val countBasketObserver = { c: Double? ->
             val m = purchase.product.metric.name
             binding.purchaseConstraintLayout.visibility = when {
-                c != null -> {
-                    binding.countPurchaseTextView.text = "${c.toStringFormat()} $m"
+                c != null && c > 0 -> {
+                    binding.countPurchaseTextView.text =
+                        binding.root.context.getString(R.string.pair_string, c.toStringFormat(), m)
                     if (purchase.price > 0.0) {
                         val factor = c / purchase.count
                         val newPrice = factor * purchase.price
                         val cur = purchase.currency.symbol
-                        binding.pricePurchaseTextView.text = "${newPrice.toStringFormat()} $cur"
+                        binding.pricePurchaseTextView.text = binding.root.context.getString(
+                            R.string.pair_string,
+                            newPrice.toStringFormat(),
+                            cur
+                        )
                     }
                     View.VISIBLE
                 }
@@ -106,7 +180,7 @@ class PurchaseItemListAdapter(
 
         init {
             informationBinding.recyclerView.setOnTouchListener { v, event ->
-                if (event.action === MotionEvent.ACTION_DOWN) {
+                if (event.action == MotionEvent.ACTION_DOWN) {
                     v.parent.requestDisallowInterceptTouchEvent(true)
                 }
                 false
@@ -115,6 +189,7 @@ class PurchaseItemListAdapter(
             itemTouchHelper.attachToRecyclerView(informationBinding.recyclerView)
 
         }
+
         fun unbind() {
             removeObservers()
             if (press) {
@@ -122,24 +197,26 @@ class PurchaseItemListAdapter(
                 press = false
             }
         }
+
         fun onBind(purchase: Purchase) {
             this.purchase = purchase
-            groupId = purchase.idGroup
-            adapter = CountPurchaseItemAdapter(fragmentManager, purchase.idGroup)
+            groupId = purchase.group.id
+            adapter = CountPurchaseItemAdapter(fragmentManager, groupId)
             informationBinding.recyclerView.adapter = adapter
 
             binding.apply {
                 nameTextView.text = purchase.product.productEntity.name
-                countTextView.text = purchase.quantity
-                Picasso.get().load(purchase.product.category.url).into(userImageView)
-                if (purchase.price != 0.0)
-                    priceTextView.text = purchase.cost
+                Picasso.get().load(purchase.product.category.url).into(categoryImageView)
             }
             countBasket = viewModel.getCountBasket(purchase.id)
-            countBasket?.observe(viewLifecycleOwner,countBasketObserver)
+            countHistory = viewModel.getCountHistory(purchase.id)
+            countHistory?.observe(viewLifecycleOwner, countHistoryObserver)
+            countBasket?.observe(viewLifecycleOwner, countBasketObserver)
             viewModel.basketSwipeLiveData.observe(viewLifecycleOwner) {
                 it?.let {
                     informationBinding.recyclerView.adapter?.notifyItemChanged(it.first)
+                    Toast.makeText(binding.root.context, it.second.message, Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 
@@ -148,9 +225,11 @@ class PurchaseItemListAdapter(
         private fun removeObservers() {
             baskets?.removeObserver(basketsObserver)
             countBasket?.removeObserver(countBasketObserver)
+            countHistory?.removeObserver(countHistoryObserver)
             viewModel.basketSwipeLiveData.removeObservers(viewLifecycleOwner)
             countBasket = null
             baskets = null
+            countHistory = null
         }
 
         private fun generateCountProductChips() {
@@ -163,14 +242,33 @@ class PurchaseItemListAdapter(
                     informationBinding.chipGroup,
                     "${s.toStringFormat()} $metric"
                 ) {
-                    val count = (it as Chip).text.split(" ")[0].toDouble()
-                    viewModel.addBasket(purchase.id, count, purchase.idGroup)
-                    if (adapter.itemCount > 0) {
-                        informationBinding.recyclerView.smoothScrollToPosition(adapter.itemCount)
-                    }
+                    val countChip = (it as Chip).text.split(" ")[0].toDouble()
+                    viewModel.addBasket(purchase.id, countChip, groupId)
                 }
                 informationBinding.chipGroup.addView(chip)
             }
+            val customChip = createChipAction(
+                informationBinding.chipGroup,
+                binding.root.context.getString(R.string.chip_custom_default)
+            ) {
+                val connect = object : AddPurchaseFragment.Connect {
+                    override fun ok(count: Double) {
+                        viewModel.addBasket(purchase.id, count, groupId)
+                        if (adapter.itemCount > 0) {
+                            informationBinding.recyclerView.smoothScrollToPosition(adapter.itemCount)
+                        }
+                    }
+                }
+                val isDouble = when (purchase.product.metric.name) {
+                    "шт" -> false
+                    else -> true
+                }
+                NumberTextBottomSheet
+                    .newInstance(0.0, isDouble, connect)
+                    .show(fragmentManager, NumberTextBottomSheet.TAG)
+            }
+            informationBinding.chipGroup.addView(customChip)
+
         }
 
         override fun onClick(p0: View) {
@@ -179,6 +277,7 @@ class PurchaseItemListAdapter(
                 binding.itemLayout.addView(informationBinding.root)
                 informationBinding.apply {
                     adapter.metric = purchase.product.metric.name
+                    adapter.currency = purchase.currency.symbol
                     descriptionTextView.visibility = when (purchase.description.isNotBlank()) {
                         true -> {
                             descriptionTextView.text =
@@ -191,8 +290,13 @@ class PurchaseItemListAdapter(
 
                         false -> View.GONE
                     }
-                    personNameTextView.text = purchase.person.name
-                    Picasso.get().load(purchase.personPic).into(imageView)
+                    if (isGroup) {
+                        Picasso.get().load(purchase.person.url).into(imageView)
+                        personNameTextView.text = purchase.person.name
+                    } else {
+                        Picasso.get().load(purchase.group.url).into(imageView)
+                        personNameTextView.text = purchase.group.name
+                    }
                 }
                 baskets = viewModel.getBaskets(purchase.id)
                 baskets?.observe(viewLifecycleOwner, basketsObserver)

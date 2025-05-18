@@ -110,18 +110,9 @@ class RegistrationFragment : Fragment() {
                     emailEditText.setText(viewModel.regEmail)
                 }
                 2 -> {
-                    val weightButton = page.findViewById<Button>(R.id.weight_button)
-                    val heightButton = page.findViewById<Button>(R.id.height_button)
                     val birthDayButton = page.findViewById<Button>(R.id.birthday_button)
-
-                    weightButton.text = getString(R.string.weight,viewModel.regWeight.toString())
-                    heightButton.text = getString(R.string.height,viewModel.regHeight.toString())
-
-
                     val format = SimpleDateFormat(getString(R.string.date_format))
                     birthDayButton.text = format.format(viewModel.regDate)
-
-
                 }
                 3 -> {
                     val passwordEditText = page.findViewById<TextInputEditText>(R.id.password_edit_text)
